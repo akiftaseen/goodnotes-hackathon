@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gamified Anki Flashcards</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // Sample data
+    const sampleQuestions = {
+      science: [
+        { q: "What process do plants use to make food?", a: "photosynthesis", type: "fillblank" },
+        { q: "How many planets are in our solar system?", a: "eight", type: "fillblank" },
+        { q: "What is the largest planet in our solar system?", a: "jupiter", type: "fillblank" }
+      ],
+      math: [
+        { q: "What is 15 × 8?", a: "120", type: "fillblank" },
+        { q: "What is the square root of 64?", a: "8", type: "fillblank" },
+        { q: "What is 144 ÷ 12?", a: "12", type: "fillblank" }
+      ],
+      english: [
+        { q: "Write a short story about a magical forest", a: "", type: "openended" },
+        { q: "Describe your favorite season in 3 sentences", a: "", type: "openended" }
+      ]
+    };
+
+    const cardSeries = {
+      "Solar System": {
+        cards: ["Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
+        rarity: { common: 0.6, rare: 0.3, legendary: 0.1 }
+      },
+      "Ocean Life": {
+        cards: ["Whale", "Dolphin", "Shark", "Octopus", "Coral", "Seahorse", "Jellyfish", "Starfish"],
+        rarity: { common: 0.6, rare: 0.3, legendary: 0.1 }
+      },
+      "Dinosaurs": {
+        cards: ["T-Rex", "Triceratops", "Stegosaurus", "Brontosaurus", "Velociraptor", "Pterodactyl"],
+        rarity: { common: 0.5, rare: 0.35, legendary: 0.15 }
+      }
+    };
+
+    const leaderboardData = [
+      { name: "Alex", score: 2450, cards: 89 },
+      { name: "Maya", score: 2180, cards: 76 },
+      { name: "Sam", score: 1920, cards: 82 },
+      { name: "Zoe", score: 1875, cards: 71 },
+      { name: "Riley", score: 1654, cards: 68 }
+    ];
+
+    // Main App Component
+    const ANKIDApp = () => {
+      // Core state
+      const [currentScreen, setCurrentScreen] = useState('home');
+      const [playerName, setPlayerName] = useState('Player');
+      const [gems, setGems] = useState(150);
+      const [totalScore, setTotalScore] = useState(1200);
+      const [collectedCards, setCollectedCards] = useState(['Sun', 'Earth', 'Mars', 'Whale', 'T-Rex']);
+      const [achievements, setAchievements] = useState([]);
+      const [streak, setStreak] = useState(7);
+      
+      // Quiz state
+      const [currentQuiz, setCurrentQuiz] = useState(null);
+      const [currentQuestion, setCurrentQuestion] = useState(0);
+      const [userAnswer, setUserAnswer] = useState('');
+      const [feedback, setFeedback] = useState('');
+      const [isListening, setIsListening] = useState(false);
+      const [quizScore, setQuizScore] = useState(0);
+      
+      // AI Conversation state
+      const [isTeaching, setIsTeaching] = useState(false);
+      const [conversationHistory, setConversationHistory] = useState([]);
+      const [currentTopic, setCurrentTopic] = useState('');
+      
+      // Card pack opening
+      const [isOpeningPack, setIsOpeningPack] = useState(false);
+      const [newCards, setNewCards] = useState([]);
+      
+      // Reading state
+      const [currentBook, setCurrentBook] = useState(null);
+      const [currentChapter, setCurrentChapter] = useState(0);
+
+      // Speech functions
+      const speak = (text) => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.pitch = 1.1;
+        window.speechSynthesis.speak(utterance);
+      };
+
+      const listen = () => {
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+          alert('Speech recognition not supported in this browser');
+          return;
+        }
+        
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        
+        setIsListening(true);
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          setUserAnswer(transcript);
+          setIsListening(false);
+          
+          if (currentQuiz) {
+            checkAnswer(transcript);
+          }
+        };
+        
+        recognition.onerror = () => {
+          setIsListening(false);
+        };
+        
+        recognition.start();
+      };
+
+      // Quiz functions
+      const startQuiz = (subject) => {
+        const questions = sampleQuestions[subject] || [];
+        if (questions.length > 0) {
+          setCurrentQuiz({ subject, questions });
+          setCurrentQuestion(0);
+          setQuizScore(0);
+          setUserAnswer('');
+          setFeedback('');
+          setCurrentScreen('quiz');
+          
+          setTimeout(() => {
+            speak(`Welcome to the ${subject} quiz! Let's start with question 1.`);
+            speak(questions[0].q);
+          }, 500);
+        }
+      };
+
+      const checkAnswer = (answer) => {
+        if (!currentQuiz) return;
+        
+        const question = currentQuiz.questions[currentQuestion];
+        const isCorrect = answer.toLowerCase().includes(question.a.toLowerCase());
+        
+        if (isCorrect) {
+          const points = 50 + Math.floor(Math.random() * 30);
+          setQuizScore(prev => prev + points);
+          setGems(prev => prev + Math.floor(points / 10));
+          setFeedback(`🎉 Correct! You earned ${points} points!`);
+          speak(`Excellent! You earned ${points} points. Great job!`);
+        } else {
+          setFeedback(`❌ Not quite right. The answer is ${question.a}. Try the next question!`);
+          speak(`Not quite right. The correct answer is ${question.a}. Don't worry, keep trying!`);
+        }
+        
+        setTimeout(() => {
+          if (currentQuestion < currentQuiz.questions.length - 1) {
+            setCurrentQuestion(prev => prev + 1);
+            setUserAnswer('');
+            setFeedback('');
+            setTimeout(() => {
+              speak(currentQuiz.questions[currentQuestion + 1].q);
+            }, 1000);
+          } else {
+            completeQuiz();
+          }
+        }, 3000);
+      };
+
+      const completeQuiz = () => {
+        setTotalScore(prev => prev + quizScore);
+        const gemsEarned = Math.floor(quizScore / 25);
+        setGems(prev => prev + gemsEarned);
+        
+        speak(`Quiz completed! You scored ${quizScore} points and earned ${gemsEarned} gems!`);
+        
+        setTimeout(() => {
+          setCurrentScreen('home');
+          setCurrentQuiz(null);
+        }, 2000);
+      };
+
+      // Card functions
+      const openCardPack = () => {
+        if (gems < 100) {
+          speak("You need at least 100 gems to open a card pack!");
+          return;
+        }
+        
+        setGems(prev => prev - 100);
+        setIsOpeningPack(true);
+        
+        setTimeout(() => {
+          const allCards = Object.values(cardSeries).flatMap(series => series.cards);
+          const newCard = allCards[Math.floor(Math.random() * allCards.length)];
+          setNewCards([newCard]);
+          setCollectedCards(prev => [...prev, newCard]);
+          setIsOpeningPack(false);
+          speak(`Congratulations! You got a ${newCard} card!`);
+        }, 2000);
+      };
+
+      // AI Teaching functions
+      const startTeaching = (topic) => {
+        setCurrentTopic(topic);
+        setIsTeaching(true);
+        setConversationHistory([]);
+        setCurrentScreen('teaching');
+        
+        const greetings = [
+          `Hi ${playerName}! I'm Ender, your learning fairy! 🧚‍♀️`,
+          `I don't know much about ${topic}. Can you teach me about it?`,
+          `I'm really curious to learn! Please explain it to me in your own words.`
+        ];
+        
+        setTimeout(() => {
+          greetings.forEach((msg, index) => {
+            setTimeout(() => {
+              speak(msg);
+              setConversationHistory(prev => [...prev, { speaker: 'Ender', message: msg }]);
+            }, index * 2000);
+          });
+        }, 500);
+      };
+
+      // Navigation Components
+      const NavBar = () => (
+        <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 shadow-lg">
+          <div className="flex justify-between items-center max-w-6xl mx-auto">
+            <div className="flex items-center space-x-4">
+              <h1 className="text-2xl font-bold">🧚‍♀️ ANKID</h1>
+              <span className="text-sm bg-white bg-opacity-20 px-2 py-1 rounded">
+                Hi, {playerName}! 
+              </span>
+            </div>
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-2">
+                <span className="text-yellow-300">💎</span>
+                <span className="font-bold">{gems}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span>⭐</span>
+                <span className="font-bold">{totalScore}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span>🔥</span>
+                <span className="font-bold">{streak} days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      const BottomNav = () => (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2">
+          <div className="flex justify-around max-w-md mx-auto">
+            {[
+              { id: 'home', icon: '🏠', label: 'Home' },
+              { id: 'quizzes', icon: '📚', label: 'Learn' },
+              { id: 'cards', icon: '🎴', label: 'Cards' },
+              { id: 'leaderboard', icon: '🏆', label: 'Ranks' },
+              { id: 'profile', icon: '👤', label: 'Profile' }
+            ].map(item => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentScreen(item.id)}
+                className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+                  currentScreen === item.id 
+                    ? 'bg-purple-100 text-purple-600' 
+                    : 'text-gray-600 hover:text-purple-600'
+                }`}
+              >
+                <span className="text-lg">{item.icon}</span>
+                <span className="text-xs">{item.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+
+      // Screen Components
+      const HomeScreen = () => (
+        <div className="p-6 max-w-4xl mx-auto space-y-6 pb-20">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome back, {playerName}! 🌟</h2>
+            <p className="text-gray-600">Ready for another learning adventure?</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div 
+              onClick={() => setCurrentScreen('quizzes')}
+              className="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-xl shadow-lg cursor-pointer hover:scale-105 transform transition-all"
+            >
+              <div className="text-3xl mb-3">📚</div>
+              <h3 className="text-xl font-bold mb-2">Start Learning</h3>
+              <p className="text-blue-100">Take quizzes and earn gems!</p>
+            </div>
+
+            <div 
+              onClick={() => setCurrentScreen('cards')}
+              className="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-xl shadow-lg cursor-pointer hover:scale-105 transform transition-all"
+            >
+              <div className="text-3xl mb-3">🎴</div>
+              <h3 className="text-xl font-bold mb-2">Collect Cards</h3>
+              <p className="text-purple-100">Open packs and trade cards!</p>
+            </div>
+
+            <div 
+              onClick={() => setCurrentScreen('teaching')}
+              className="bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-xl shadow-lg cursor-pointer hover:scale-105 transform transition-all"
+            >
+              <div className="text-3xl mb-3">🧚‍♀️</div>
+              <h3 className="text-xl font-bold mb-2">Teach Ender</h3>
+              <p className="text-green-100">Explain topics to your AI friend!</p>
+            </div>
+
+            <div 
+              onClick={() => setCurrentScreen('reading')}
+              className="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-6 rounded-xl shadow-lg cursor-pointer hover:scale-105 transform transition-all"
+            >
+              <div className="text-3xl mb-3">📖</div>
+              <h3 className="text-xl font-bold mb-2">Read Stories</h3>
+              <p className="text-orange-100">Chapter by chapter adventures!</p>
+            </div>
+
+            <div 
+              onClick={() => setCurrentScreen('leaderboard')}
+              className="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-6 rounded-xl shadow-lg cursor-pointer hover:scale-105 transform transition-all"
+            >
+              <div className="text-3xl mb-3">🏆</div>
+              <h3 className="text-xl font-bold mb-2">Leaderboard</h3>
+              <p className="text-yellow-100">See who's leading!</p>
+            </div>
+
+            <div 
+              onClick={openCardPack}
+              className="bg-gradient-to-br from-pink-500 to-pink-600 text-white p-6 rounded-xl shadow-lg cursor-pointer hover:scale-105 transform transition-all"
+            >
+              <div className="text-3xl mb-3">🎁</div>
+              <h3 className="text-xl font-bold mb-2">Open Pack</h3>
+              <p className="text-pink-100">100 gems for a surprise!</p>
+            </div>
+          </div>
+
+          {isOpeningPack && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-8 rounded-xl text-center">
+                <div className="text-6xl mb-4 animate-spin">🎁</div>
+                <p className="text-xl font-bold">Opening your card pack...</p>
+              </div>
+            </div>
+          )}
+
+          {newCards.length > 0 && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-8 rounded-xl text-center max-w-sm">
+                <h3 className="text-2xl font-bold mb-4">New Card! 🎉</h3>
+                <div className="bg-gradient-to-br from-purple-400 to-purple-600 text-white p-6 rounded-lg mb-4">
+                  <div className="text-3xl mb-2">⭐</div>
+                  <h4 className="text-xl font-bold">{newCards[0]}</h4>
+                </div>
+                <button 
+                  onClick={() => setNewCards([])}
+                  className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700"
+                >
+                  Awesome!
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+
+      const QuizScreen = () => (
+        <div className="p-6 max-w-2xl mx-auto pb-20">
+          <h2 className="text-2xl font-bold text-center mb-8">Choose Your Subject 📚</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {Object.keys(sampleQuestions).map(subject => (
+              <div
+                key={subject}
+                onClick={() => startQuiz(subject)}
+                className="bg-white p-6 rounded-xl shadow-lg border-2 border-gray-200 hover:border-purple-400 cursor-pointer hover:scale-105 transform transition-all"
+              >
+                <div className="text-center">
+                  <div className="text-4xl mb-3">
+                    {subject === 'science' ? '🔬' : subject === 'math' ? '🔢' : '📝'}
+                  </div>
+                  <h3 className="text-xl font-bold capitalize mb-2">{subject}</h3>
+                  <p className="text-gray-600">
+                    {sampleQuestions[subject].length} questions available
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+      const QuizPlayScreen = () => {
+        if (!currentQuiz) return null;
+        
+        const question = currentQuiz.questions[currentQuestion];
+        const progress = ((currentQuestion + 1) / currentQuiz.questions.length) * 100;
+        
+        return (
+          <div className="p-6 max-w-2xl mx-auto pb-20">
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm text-gray-600">
+                  Question {currentQuestion + 1} of {currentQuiz.questions.length}
+                </span>
+                <span className="text-sm text-purple-600 font-bold">
+                  Score: {quizScore}
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+              <div className="text-5xl mb-6">🧚‍♀️</div>
+              <h3 className="text-xl font-bold mb-6">{question.q}</h3>
+              
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  value={userAnswer}
+                  onChange={(e) => setUserAnswer(e.target.value)}
+                  placeholder="Type your answer or use speech..."
+                  className="w-full p-4 border-2 border-gray-300 rounded-lg text-center text-lg focus:border-purple-500 focus:outline-none"
+                />
+                
+                <div className="flex justify-center space-x-4">
+                  <button
+                    onClick={listen}
+                    disabled={isListening}
+                    className={`px-6 py-3 rounded-lg font-bold text-white transition-all ${
+                      isListening 
+                        ? 'bg-red-500 animate-pulse' 
+                        : 'bg-blue-500 hover:bg-blue-600'
+                    }`}
+                  >
+                    {isListening ? '🎤 Listening...' : '🎤 Speak Answer'}
+                  </button>
+                  
+                  <button
+                    onClick={() => checkAnswer(userAnswer)}
+                    disabled={!userAnswer.trim()}
+                    className="px-6 py-3 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 disabled:bg-gray-400 transition-all"
+                  >
+                    Submit ✨
+                  </button>
+                </div>
+              </div>
+
+              {feedback && (
+                <div className="mt-6 p-4 bg-gray-100 rounded-lg">
+                  <p className="text-lg">{feedback}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      };
+
+      const CardsScreen = () => (
+        <div className="p-6 max-w-4xl mx-auto pb-20">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold mb-2">Your Card Collection 🎴</h2>
+            <p className="text-gray-600">Collected: {collectedCards.length} cards</p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+            {collectedCards.map((card, index) => (
+              <div key={index} className="bg-gradient-to-br from-purple-400 to-purple-600 text-white p-4 rounded-lg shadow-lg text-center">
+                <div className="text-2xl mb-2">⭐</div>
+                <h4 className="font-bold">{card}</h4>
+                <p className="text-xs text-purple-100">Rare</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={openCardPack}
+              disabled={gems < 100}
+              className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:scale-105 transform transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Open Card Pack (100 💎)
+            </button>
+            {gems < 100 && (
+              <p className="text-gray-500 mt-2">Need more gems! Complete quizzes to earn them.</p>
+            )}
+          </div>
+        </div>
+      );
+
+      const TeachingScreen = () => (
+        <div className="p-6 max-w-2xl mx-auto pb-20">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold mb-2">Teach Ender! 🧚‍♀️</h2>
+            <p className="text-gray-600">Choose a topic to explain to your AI friend</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {['Photosynthesis', 'Solar System', 'Water Cycle', 'Dinosaurs', 'Fractions', 'Gravity'].map(topic => (
+              <button
+                key={topic}
+                onClick={() => startTeaching(topic)}
+                className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 hover:border-green-400 hover:scale-105 transform transition-all"
+              >
+                <h3 className="font-bold text-lg">{topic}</h3>
+                <p className="text-green-600 text-sm">Teach Ender about this!</p>
+              </button>
+            ))}
+          </div>
+
+          {conversationHistory.length > 0 && (
+            <div className="mt-8 bg-white rounded-xl shadow-lg p-6">
+              <h3 className="font-bold mb-4">Conversation with Ender:</h3>
+              <div className="space-y-4 max-h-64 overflow-y-auto">
+                {conversationHistory.map((msg, index) => (
+                  <div key={index} className={`p-3 rounded-lg ${
+                    msg.speaker === 'Ender' ? 'bg-purple-100' : 'bg-blue-100'
+                  }`}>
+                    <span className="font-bold">{msg.speaker}: </span>
+                    {msg.message}
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mt-4 flex space-x-2">
+                <button
+                  onClick={listen}
+                  className="flex-1 bg-green-500 text-white p-3 rounded-lg font-bold hover:bg-green-600"
+                >
+                  🎤 Speak to Ender
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+
+      const LeaderboardScreen = () => (
+        <div className="p-6 max-w-2xl mx-auto pb-20">
+          <h2 className="text-2xl font-bold text-center mb-8">Leaderboard 🏆</h2>
+          
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            {leaderboardData.map((player, index) => (
+              <div key={index} className={`p-4 border-b border-gray-200 flex items-center justify-between ${
+                index < 3 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100' : ''
+              }`}>
+                <div className="flex items-center space-x-4">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${
+                    index === 0 ? 'bg-yellow-500' : 
+                    index === 1 ? 'bg-gray-400' : 
+                    index === 2 ? 'bg-orange-500' : 'bg-purple-500'
+                  }`}>
+                    {index + 1}
+                  </div>
+                  <div>
+                    <h3 className="font-bold">{player.name}</h3>
+                    <p className="text-gray-600 text-sm">{player.cards} cards collected</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-lg">{player.score}</p>
+                  <p className="text-gray-600 text-sm">points</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-6 text-center">
+            <p className="text-gray-600">Your current rank: #6 with {totalScore} points</p>
+          </div>
+        </div>
+      );
+
+      const ProfileScreen = () => (
+        <div className="p-6 max-w-2xl mx-auto pb-20">
+          <div className="text-center mb-8">
+            <div className="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl text-white">
+              👤
+            </div>
+            <h2 className="text-2xl font-bold">{playerName}</h2>
+            <p className="text-gray-600">Learning Champion</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="bg-white p-4 rounded-lg shadow text-center">
+              <div className="text-2xl font-bold text-purple-600">{totalScore}</div>
+              <div className="text-gray-600">Total Score</div>
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow text-center">
+              <div className="text-2xl font-bold text-yellow-600">{gems}</div>
+              <div className="text-gray-600">Gems</div>
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow text-center">
+              <div className="text-2xl font-bold text-green-600">{collectedCards.length}</div>
+              <div className="text-gray-600">Cards</div>
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow text-center">
+              <div className="text-2xl font-bold text-red-600">{streak}</div>
+              <div className="text-gray-600">Day Streak</div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <h3 className="font-bold text-lg mb-4">Achievements 🏆</h3>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
+                <span className="text-2xl">🔥</span>
+                <div>
+                  <h4 className="font-bold">Week Warrior</h4>
+                  <p className="text-gray-600 text-sm">7-day learning streak!</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+                <span className="text-2xl">🎴</span>
+                <div>
+                  <h4 className="font-bold">Card Collector</h4>
+                  <p className="text-gray-600 text-sm">Collected 5+ cards</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      // Main render
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <NavBar />
+          
+          {currentScreen === 'home' && <HomeScreen />}
+          {currentScreen === 'quizzes' && <QuizScreen />}
+          {currentScreen === 'quiz' && <QuizPlayScreen />}
+          {currentScreen === 'cards' && <CardsScreen />}
+          {currentScreen === 'teaching' && <TeachingScreen />}
+          {currentScreen === 'leaderboard' && <LeaderboardScreen />}
+          {currentScreen === 'profile' && <ProfileScreen />}
+          
+          <BottomNav />
+        </div>
+      );
+    };
+
+    ReactDOM.render(<ANKIDApp />, document.getElementById("root"));
+  </script>
+</body>
+</html>
