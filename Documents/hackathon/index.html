@@ -176,7 +176,7 @@
       { name: "Sam", score: 1920, cards: 82, streak: 15, improvement: "+8%" },
       { name: "Zoe", score: 1875, cards: 71, streak: 5, improvement: "+31%" },
       { name: "Riley", score: 1654, cards: 68, streak: 9, improvement: "+18%" }
-    };
+    ];
 
     // Books for reading system
     const bookLibrary = [
@@ -557,11 +557,12 @@
             newCard = rareCards[Math.floor(Math.random() * rareCards.length)];
             rarity = newCard.rarity;
             setPitySystem(0);
+            speak("Pity system activated! You're guaranteed a rare card!");
           } else {
-            // Normal randomization
+            // Normal randomization with improved rates
             const random = Math.random();
-            if (random < 0.1) rarity = 'legendary';
-            else if (random < 0.4) rarity = 'rare';
+            if (random < 0.15) rarity = 'legendary'; // Increased from 0.1
+            else if (random < 0.45) rarity = 'rare'; // Increased from 0.4
             else rarity = 'common';
             
             const availableCards = Object.values(cardSeries).flatMap(series => 
@@ -576,18 +577,26 @@
             }
           }
           
-          setNewCards([newCard]);
-          setCollectedCards(prev => [...prev, newCard]);
+          // Add series information to the card
+          const cardWithSeries = {
+            ...newCard,
+            series: Object.entries(cardSeries).find(([name, series]) => 
+              series.cards.some(card => card.name === newCard.name)
+            )?.[0] || 'Unknown'
+          };
+          
+          setNewCards([cardWithSeries]);
+          setCollectedCards(prev => [...prev, cardWithSeries]);
           setIsOpeningPack(false);
           
           const rarityEmoji = rarity === 'legendary' ? '💫' : rarity === 'rare' ? '⭐' : '✨';
           speak(`Congratulations! You got a ${rarity} ${newCard.name} card! ${rarityEmoji}`);
           
           // Check for quest completion
-          checkQuestProgress(newCard);
+          checkQuestProgress(cardWithSeries);
           
           // Check for series completion
-          checkSeriesCompletion(newCard);
+          checkSeriesCompletion(cardWithSeries);
           
         }, 2000);
       };
@@ -907,11 +916,13 @@
 
       const BottomNav = () => (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2">
-          <div className="flex justify-around max-w-md mx-auto">
+          <div className="flex justify-around max-w-lg mx-auto">
             {[
               { id: 'home', icon: '🏠', label: 'Home' },
               { id: 'quizzes', icon: '📚', label: 'Learn' },
               { id: 'cards', icon: '🎴', label: 'Cards' },
+              { id: 'teams', icon: '👥', label: 'Teams' },
+              { id: 'reading', icon: '📖', label: 'Read' },
               { id: 'leaderboard', icon: '🏆', label: 'Ranks' },
               { id: 'profile', icon: '👤', label: 'Profile' }
             ].map(item => (
@@ -1009,9 +1020,18 @@
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-white p-8 rounded-xl text-center max-w-sm">
                 <h3 className="text-2xl font-bold mb-4">New Card! 🎉</h3>
-                <div className="bg-gradient-to-br from-purple-400 to-purple-600 text-white p-6 rounded-lg mb-4">
-                  <div className="text-3xl mb-2">⭐</div>
-                  <h4 className="text-xl font-bold">{newCards[0]}</h4>
+                <div className={`bg-gradient-to-br text-white p-6 rounded-lg mb-4 ${
+                  newCards[0].rarity === 'legendary' ? 'from-yellow-400 to-yellow-600' :
+                  newCards[0].rarity === 'rare' ? 'from-purple-400 to-purple-600' :
+                  'from-gray-400 to-gray-600'
+                }`}>
+                  <div className="text-3xl mb-2">
+                    {newCards[0].rarity === 'legendary' ? '💫' :
+                     newCards[0].rarity === 'rare' ? '⭐' : '✨'}
+                  </div>
+                  <h4 className="text-xl font-bold">{newCards[0].name}</h4>
+                  <p className="text-sm opacity-75">{newCards[0].series}</p>
+                  <p className="text-sm opacity-90 capitalize font-bold">{newCards[0].rarity}</p>
                 </div>
                 <button 
                   onClick={() => setNewCards([])}
@@ -1074,33 +1094,77 @@
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
+              
+              {/* Pity System Indicator */}
+              {pitySystеm > 0 && (
+                <div className="mt-2 text-center">
+                  <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
+                    Rare card guaranteed in {5 - pitySystеm} more pack{5 - pitySystеm !== 1 ? 's' : ''}! 🎁
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-8 text-center">
               <div className="text-5xl mb-6">🧚‍♀️</div>
               <h3 className="text-xl font-bold mb-6">{question.q}</h3>
               
+              {/* Input Mode Toggle */}
+              <div className="flex justify-center mb-4">
+                <div className="bg-gray-100 rounded-lg p-1 flex">
+                  <button
+                    onClick={() => setInputMode('speech')}
+                    className={`px-4 py-2 rounded-md transition-all ${
+                      inputMode === 'speech' 
+                        ? 'bg-purple-600 text-white' 
+                        : 'text-gray-600 hover:text-purple-600'
+                    }`}
+                  >
+                    🎤 Speech
+                  </button>
+                  <button
+                    onClick={() => setInputMode('text')}
+                    className={`px-4 py-2 rounded-md transition-all ${
+                      inputMode === 'text' 
+                        ? 'bg-purple-600 text-white' 
+                        : 'text-gray-600 hover:text-purple-600'
+                    }`}
+                  >
+                    ⌨️ Text
+                  </button>
+                </div>
+              </div>
+              
               <div className="space-y-4">
                 <input
                   type="text"
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
-                  placeholder="Type your answer or use speech..."
+                  placeholder={inputMode === 'speech' ? "Speak your answer or type here..." : "Type your answer here..."}
                   className="w-full p-4 border-2 border-gray-300 rounded-lg text-center text-lg focus:border-purple-500 focus:outline-none"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && userAnswer.trim()) {
+                      checkAnswer(userAnswer);
+                    }
+                  }}
                 />
                 
                 <div className="flex justify-center space-x-4">
-                  <button
-                    onClick={listen}
-                    disabled={isListening}
-                    className={`px-6 py-3 rounded-lg font-bold text-white transition-all ${
-                      isListening 
-                        ? 'bg-red-500 animate-pulse' 
-                        : 'bg-blue-500 hover:bg-blue-600'
-                    }`}
-                  >
-                    {isListening ? '🎤 Listening...' : '🎤 Speak Answer'}
-                  </button>
+                  {inputMode === 'speech' && (
+                    <button
+                      onClick={listen}
+                      disabled={isListening || !speechPreferences.enabled}
+                      className={`px-6 py-3 rounded-lg font-bold text-white transition-all ${
+                        isListening 
+                          ? 'bg-red-500 animate-pulse cursor-not-allowed' 
+                          : !speechPreferences.enabled
+                          ? 'bg-gray-400 cursor-not-allowed'
+                          : 'bg-blue-500 hover:bg-blue-600'
+                      }`}
+                    >
+                      {isListening ? '🎤 Listening...' : '🎤 Speak Answer'}
+                    </button>
+                  )}
                   
                   <button
                     onClick={() => checkAnswer(userAnswer)}
@@ -1109,11 +1173,28 @@
                   >
                     Submit ✨
                   </button>
+                  
+                  <button
+                    onClick={() => {
+                      if (question.type === 'openended') {
+                        speak(`Here's a hint: Try to explain the main concepts and use specific examples. Don't worry about length, focus on showing your understanding!`);
+                      } else {
+                        speak(`Think about what you've learned. Take your time!`);
+                      }
+                    }}
+                    className="px-4 py-3 bg-yellow-500 text-white rounded-lg font-bold hover:bg-yellow-600"
+                  >
+                    💡 Hint
+                  </button>
                 </div>
               </div>
 
               {feedback && (
-                <div className="mt-6 p-4 bg-gray-100 rounded-lg">
+                <div className={`mt-6 p-4 rounded-lg ${
+                  feedback.includes('🎉') ? 'bg-green-100 border border-green-400' :
+                  feedback.includes('⭐') ? 'bg-yellow-100 border border-yellow-400' :
+                  'bg-red-100 border border-red-400'
+                }`}>
                   <p className="text-lg">{feedback}</p>
                 </div>
               )}
@@ -1127,19 +1208,80 @@
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold mb-2">Your Card Collection 🎴</h2>
             <p className="text-gray-600">Collected: {collectedCards.length} cards</p>
+            
+            {/* Pity System Display */}
+            {pitySystеm > 0 && (
+              <div className="mt-2">
+                <span className="text-sm bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">
+                  {5 - pitySystеm} pack{5 - pitySystеm !== 1 ? 's' : ''} until guaranteed rare! 🎁
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Series Progress */}
+          <div className="mb-8">
+            <h3 className="text-lg font-bold mb-4">Collection Progress</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {Object.entries(cardSeries).map(([seriesName, series]) => {
+                const collected = collectedCards.filter(card => card.series === seriesName).length;
+                const total = series.cards.length;
+                const progress = (collected / total) * 100;
+                const isComplete = collected === total;
+                
+                return (
+                  <div key={seriesName} className={`p-4 rounded-lg border-2 ${
+                    isComplete ? 'border-gold-400 bg-yellow-50' : 'border-gray-200 bg-white'
+                  }`}>
+                    <h4 className="font-bold mb-2">{seriesName}</h4>
+                    <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+                      <div 
+                        className={`h-2 rounded-full transition-all ${
+                          isComplete ? 'bg-yellow-500' : 'bg-purple-600'
+                        }`}
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-sm text-gray-600">{collected}/{total} cards</p>
+                    {isComplete && <span className="text-yellow-600 text-sm font-bold">✨ Complete!</span>}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-            {collectedCards.map((card, index) => (
-              <div key={index} className="bg-gradient-to-br from-purple-400 to-purple-600 text-white p-4 rounded-lg shadow-lg text-center">
-                <div className="text-2xl mb-2">⭐</div>
-                <h4 className="font-bold">{card}</h4>
-                <p className="text-xs text-purple-100">Rare</p>
-              </div>
-            ))}
+            {collectedCards.map((card, index) => {
+              const rarityColors = {
+                legendary: 'from-yellow-400 to-yellow-600',
+                rare: 'from-purple-400 to-purple-600',
+                common: 'from-gray-400 to-gray-600'
+              };
+              
+              const rarityEmojis = {
+                legendary: '💫',
+                rare: '⭐',
+                common: '✨'
+              };
+
+              return (
+                <div 
+                  key={index} 
+                  className={`bg-gradient-to-br ${rarityColors[card.rarity]} text-white p-4 rounded-lg shadow-lg text-center hover:scale-105 transform transition-all cursor-pointer`}
+                  onClick={() => {
+                    speak(`This is your ${card.rarity} ${card.name} card from the ${card.series} series!`);
+                  }}
+                >
+                  <div className="text-2xl mb-2">{rarityEmojis[card.rarity]}</div>
+                  <h4 className="font-bold">{card.name}</h4>
+                  <p className="text-xs opacity-75">{card.series}</p>
+                  <p className="text-xs opacity-90 capitalize">{card.rarity}</p>
+                </div>
+              );
+            })}
           </div>
 
-          <div className="text-center">
+          <div className="text-center space-y-4">
             <button
               onClick={openCardPack}
               disabled={gems < 100}
@@ -1147,8 +1289,26 @@
             >
               Open Card Pack (100 💎)
             </button>
+            
             {gems < 100 && (
-              <p className="text-gray-500 mt-2">Need more gems! Complete quizzes to earn them.</p>
+              <p className="text-gray-500">Need more gems! Complete quizzes to earn them.</p>
+            )}
+            
+            {gems >= 500 && (
+              <button
+                onClick={() => {
+                  if (gems >= 500) {
+                    setGems(prev => prev - 500);
+                    // Open 5 packs at once
+                    for (let i = 0; i < 5; i++) {
+                      setTimeout(() => openCardPack(), i * 500);
+                    }
+                  }
+                }}
+                className="ml-4 bg-gradient-to-r from-gold-500 to-yellow-600 text-white px-6 py-3 rounded-lg font-bold hover:scale-105 transform transition-all"
+              >
+                Premium Bundle (500 💎)
+              </button>
             )}
           </div>
         </div>
@@ -1205,34 +1365,67 @@
         <div className="p-6 max-w-2xl mx-auto pb-20">
           <h2 className="text-2xl font-bold text-center mb-8">Leaderboard 🏆</h2>
           
+          <div className="flex justify-center mb-6 space-x-4">
+            {['overall', 'improvement', 'streak'].map(type => (
+              <button
+                key={type}
+                onClick={() => setLeaderboardType(type)}
+                className={`px-4 py-2 rounded-lg font-bold transition-all ${
+                  leaderboardType === type 
+                    ? 'bg-purple-600 text-white' 
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                {type === 'overall' ? 'Overall Score' : type === 'improvement' ? 'Most Improved' : 'Longest Streak'}
+              </button>
+            ))}
+          </div>
+          
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             {leaderboardData.map((player, index) => (
               <div key={index} className={`p-4 border-b border-gray-200 flex items-center justify-between ${
                 index < 3 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100' : ''
               }`}>
                 <div className="flex items-center space-x-4">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${
-                    index === 0 ? 'bg-yellow-500' : 
-                    index === 1 ? 'bg-gray-400' : 
-                    index === 2 ? 'bg-orange-500' : 'bg-purple-500'
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                    index === 0 ? 'bg-yellow-500 text-white' :
+                    index === 1 ? 'bg-gray-400 text-white' :
+                    index === 2 ? 'bg-orange-500 text-white' :
+                    'bg-gray-200 text-gray-700'
                   }`}>
                     {index + 1}
                   </div>
                   <div>
-                    <h3 className="font-bold">{player.name}</h3>
-                    <p className="text-gray-600 text-sm">{player.cards} cards collected</p>
+                    <div className="font-bold">{player.name}</div>
+                    <div className="text-sm text-gray-600">
+                      {leaderboardType === 'overall' ? `${player.score} points` :
+                       leaderboardType === 'improvement' ? player.improvement :
+                       `${player.streak} day streak`}
+                    </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-lg">{player.score}</p>
-                  <p className="text-gray-600 text-sm">points</p>
+                  <div className="text-sm text-gray-500">{player.cards} cards</div>
                 </div>
               </div>
             ))}
           </div>
           
-          <div className="mt-6 text-center">
-            <p className="text-gray-600">Your current rank: #6 with {totalScore} points</p>
+          <div className="mt-6 bg-blue-50 p-4 rounded-lg">
+            <h3 className="font-bold text-blue-800 mb-2">Your Progress</h3>
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div>
+                <div className="text-lg font-bold text-blue-600">#{6}</div>
+                <div className="text-sm text-blue-600">Current Rank</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold text-blue-600">{totalScore}</div>
+                <div className="text-sm text-blue-600">Total Points</div>
+              </div>
+            </div>
+            <p className="text-blue-700 text-sm mt-2 text-center">
+              Keep learning to climb the ranks! Remember, it's about progress, not perfection. 🌟
+            </p>
           </div>
         </div>
       );
@@ -1241,10 +1434,10 @@
         <div className="p-6 max-w-2xl mx-auto pb-20">
           <div className="text-center mb-8">
             <div className="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl text-white">
-              👤
+              🧚‍♀️
             </div>
             <h2 className="text-2xl font-bold">{playerName}</h2>
-            <p className="text-gray-600">Learning Champion</p>
+            <p className="text-gray-600">Level {playerLevel} Learning Champion</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
@@ -1266,40 +1459,434 @@
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="font-bold text-lg mb-4">Achievements 🏆</h3>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
-                <span className="text-2xl">🔥</span>
-                <div>
-                  <h4 className="font-bold">Week Warrior</h4>
-                  <p className="text-gray-600 text-sm">7-day learning streak!</p>
+          {/* Avatar Customization */}
+          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+            <h3 className="font-bold text-lg mb-4">Customize Ender 🧚‍♀️</h3>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-bold mb-2">Personality: {currentAvatar.personality}</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {avatarOptions.personalities.map(personality => (
+                    <button
+                      key={personality.name}
+                      onClick={() => {
+                        if (unlockedItems.includes(personality.name)) {
+                          setCurrentAvatar(prev => ({ ...prev, personality: personality.name }));
+                          speak(getPersonalityGreeting()[0]);
+                        }
+                      }}
+                      disabled={!unlockedItems.includes(personality.name)}
+                      className={`p-3 rounded-lg text-sm border-2 transition-all ${
+                        currentAvatar.personality === personality.name
+                          ? 'border-purple-500 bg-purple-50'
+                          : unlockedItems.includes(personality.name)
+                          ? 'border-gray-300 hover:border-purple-300'
+                          : 'border-gray-200 bg-gray-100 opacity-50'
+                      }`}
+                    >
+                      <div className="font-bold">{personality.name}</div>
+                      <div className="text-xs text-gray-600">{personality.description}</div>
+                      {!unlockedItems.includes(personality.name) && (
+                        <div className="text-xs text-purple-600 mt-1">{personality.cost} �</div>
+                      )}
+                    </button>
+                  ))}
                 </div>
               </div>
-              <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-                <span className="text-2xl">🎴</span>
-                <div>
-                  <h4 className="font-bold">Card Collector</h4>
-                  <p className="text-gray-600 text-sm">Collected 5+ cards</p>
+
+              <div>
+                <h4 className="font-bold mb-2">Speech Settings</h4>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Language</label>
+                    <select 
+                      value={speechPreferences.language}
+                      onChange={(e) => setSpeechPreferences(prev => ({ ...prev, language: e.target.value }))}
+                      className="w-full p-2 border rounded-lg"
+                    >
+                      {speechSettings.languages.map(lang => (
+                        <option key={lang.code} value={lang.code}>{lang.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Speed: {speechSettings.speeds.find(s => s.value === speechPreferences.speed)?.label}</label>
+                    <input
+                      type="range"
+                      min="0.7"
+                      max="1.1"
+                      step="0.2"
+                      value={speechPreferences.speed}
+                      onChange={(e) => setSpeechPreferences(prev => ({ ...prev, speed: parseFloat(e.target.value) }))}
+                      className="w-full"
+                    />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={speechPreferences.enabled}
+                      onChange={(e) => setSpeechPreferences(prev => ({ ...prev, enabled: e.target.checked }))}
+                      className="rounded"
+                    />
+                    <label className="text-sm">Enable Speech</label>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Achievements */}
+          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+            <h3 className="font-bold text-lg mb-4">Achievements 🏆</h3>
+            <div className="space-y-3">
+              {achievements.map((achievement, index) => (
+                <div key={index} className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
+                  <span className="text-2xl">�</span>
+                  <div>
+                    <h4 className="font-bold">{achievement}</h4>
+                    <p className="text-gray-600 text-sm">Achievement unlocked!</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Accessibility Settings */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <h3 className="font-bold text-lg mb-4">Accessibility 🌟</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium">Dyslexia-Friendly Mode</h4>
+                  <p className="text-sm text-gray-600">Easier to read fonts and spacing</p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={dyslexiaFriendly}
+                  onChange={(e) => setDyslexiaFriendly(e.target.checked)}
+                  className="rounded"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium">Reduced Animations</h4>
+                  <p className="text-sm text-gray-600">Less motion for sensitive users</p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={reducedAnimations}
+                  onChange={(e) => setReducedAnimations(e.target.checked)}
+                  className="rounded"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium">High Contrast Mode</h4>
+                  <p className="text-sm text-gray-600">Better visibility for all</p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={accessibilityMode}
+                  onChange={(e) => setAccessibilityMode(e.target.checked)}
+                  className="rounded"
+                />
               </div>
             </div>
           </div>
         </div>
       );
 
+      const TeamsScreen = () => (
+        <div className="p-6 max-w-2xl mx-auto pb-20">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold mb-2">Team Challenges 👥</h2>
+            <p className="text-gray-600">Learn together, achieve together!</p>
+          </div>
+
+          {/* Current Team */}
+          {playerTeam ? (
+            <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+              <h3 className="font-bold text-lg mb-4">Your Team: {playerTeam.name}</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">{playerTeam.totalScore}</div>
+                  <div className="text-gray-600">Team Score</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">{playerTeam.members}</div>
+                  <div className="text-gray-600">Members</div>
+                </div>
+              </div>
+              <div className="mt-4">
+                <h4 className="font-bold mb-2">Active Challenge</h4>
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <div className="font-bold">Science Quest Week</div>
+                  <div className="text-sm text-gray-600">Complete 50 science quizzes as a team</div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                    <div className="bg-blue-600 h-2 rounded-full" style={{width: '70%'}}></div>
+                  </div>
+                  <div className="text-sm text-gray-600 mt-1">35/50 completed</div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl shadow-lg p-6 mb-6 text-center">
+              <div className="text-4xl mb-4">👥</div>
+              <h3 className="font-bold text-lg mb-2">Join a Team!</h3>
+              <p className="text-gray-600 mb-4">Team up with friends to tackle challenges together</p>
+              <button 
+                onClick={() => {
+                  setPlayerTeam({
+                    name: "Space Explorers",
+                    totalScore: 5420,
+                    members: 4,
+                    rank: 3
+                  });
+                  speak("Welcome to the Space Explorers team! Let's learn together!");
+                }}
+                className="bg-purple-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-700"
+              >
+                Find Team
+              </button>
+            </div>
+          )}
+
+          {/* Available Challenges */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <h3 className="font-bold text-lg mb-4">Team Challenges</h3>
+            <div className="space-y-4">
+              {[
+                { name: "Math Masters", description: "Complete 30 math quizzes together", reward: "100 gems each", difficulty: "Easy" },
+                { name: "Reading Rangers", description: "Read 10 books as a team", reward: "Rare card pack", difficulty: "Medium" },
+                { name: "Science Squad", description: "Perfect scores on 20 science quizzes", reward: "Legendary avatar outfit", difficulty: "Hard" }
+              ].map((challenge, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className="font-bold">{challenge.name}</h4>
+                    <span className={`px-2 py-1 rounded text-xs font-bold ${
+                      challenge.difficulty === 'Easy' ? 'bg-green-100 text-green-700' :
+                      challenge.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-red-100 text-red-700'
+                    }`}>
+                      {challenge.difficulty}
+                    </span>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-2">{challenge.description}</p>
+                  <p className="text-purple-600 text-sm font-bold">Reward: {challenge.reward}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+      const ReadingScreen = () => (
+        <div className="p-6 max-w-2xl mx-auto pb-20">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold mb-2">Reading Adventures 📚</h2>
+            <p className="text-gray-600">Explore amazing stories and learn!</p>
+          </div>
+
+          {currentBook ? (
+            <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="font-bold text-lg">{currentBook.title}</h3>
+                  <p className="text-gray-600">by {currentBook.author}</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setCurrentBook(null);
+                    setCurrentChapter(0);
+                  }}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+              
+              <div className="mb-4">
+                <div className="flex justify-between text-sm text-gray-600 mb-1">
+                  <span>Progress</span>
+                  <span>{currentChapter + 1}/{currentBook.chapters.length} chapters</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-purple-600 h-2 rounded-full transition-all"
+                    style={{width: `${((currentChapter + 1) / currentBook.chapters.length) * 100}%`}}
+                  ></div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {currentBook.chapters.map((chapter, index) => (
+                  <div 
+ 
+                    key={index}
+                    onClick={() => readChapter(index)}
+                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      index === currentChapter 
+                        ? 'border-purple-500 bg-purple-50' 
+                        : index <= currentChapter
+                        ? 'border-green-300 bg-green-50 hover:border-green-400'
+                        : 'border-gray-200 bg-gray-50 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className={`text-lg ${
+                        index < currentChapter ? '✅' : 
+                        index === currentChapter ? '📖' : '🔒'
+                      }`}>
+                        {index < currentChapter ? '✅' : 
+                         index === currentChapter ? '📖' : '🔒'}
+                      </span>
+                      <div>
+                        <h4 className="font-bold">{chapter.title}</h4>
+                        <p className="text-sm text-gray-600">
+                          {index < currentChapter ? 'Completed' :
+                           index === currentChapter ? 'Continue reading' :
+                           'Locked'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {currentChapter < currentBook.chapters.length && (
+                <button
+                  onClick={completeChapter}
+                  className="w-full mt-4 bg-purple-600 text-white py-3 rounded-lg font-bold hover:bg-purple-700"
+                >
+                  {currentBook.chapters[currentChapter].quiz ? 'Take Chapter Quiz' : 'Mark as Read'}
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {bookLibrary.map(book => (
+                <div 
+                  key={book.id}
+                  onClick={() => startReading(book.id)}
+                  className="bg-white p-6 rounded-xl shadow-lg border-2 border-gray-200 hover:border-purple-400 cursor-pointer hover:scale-105 transform transition-all"
+                >
+                  <div className="text-center">
+                    <div className="text-4xl mb-3">📖</div>
+                    <h3 className="font-bold text-lg mb-2">{book.title}</h3>
+                    <p className="text-gray-600 text-sm mb-2">by {book.author}</p>
+                    <p className="text-purple-600 text-sm">
+                      {book.chapters.length} chapters • {book.difficulty}
+                    </p>
+                    <div className="mt-3">
+                      <span className={`px-2 py-1 rounded text-xs font-bold ${
+                        book.difficulty === 'beginner' ? 'bg-green-100 text-green-700' :
+                        book.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-700' :
+                        'bg-red-100 text-red-700'
+                      }`}>
+                        {book.difficulty}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+
+      // Enhanced Teaching Screen with conversation history
+      const EnhancedTeachingScreen = () => (
+        <div className="p-6 max-w-2xl mx-auto pb-20">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold mb-2">Teach Ender! 🧚‍♀️</h2>
+            <p className="text-gray-600">Choose a topic to explain to your AI friend</p>
+          </div>
+
+          {!isTeaching ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {['Photosynthesis', 'Solar System', 'Water Cycle', 'Dinosaurs', 'Fractions', 'Gravity'].map(topic => (
+                <button
+                  key={topic}
+                  onClick={() => startTeaching(topic)}
+                  className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 hover:border-green-400 hover:scale-105 transform transition-all"
+                >
+                  <h3 className="font-bold text-lg">{topic}</h3>
+                  <p className="text-green-600 text-sm">Teach Ender about this!</p>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Current Topic */}
+              <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-xl">
+                <h3 className="text-xl font-bold">Teaching: {currentTopic}</h3>
+                <p className="text-green-100">Score: {teachingScore} points</p>
+              </div>
+
+              {/* Conversation History */}
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="font-bold mb-4">Conversation with Ender</h3>
+                <div className="space-y-4 max-h-64 overflow-y-auto">
+                  {conversationHistory.map((msg, index) => (
+                    <div 
+                      key={index} 
+                      className={`p-3 rounded-lg ${
+                        msg.speaker === 'Ender' 
+                          ? 'bg-purple-50 border-l-4 border-purple-400' 
+                          : 'bg-blue-50 border-l-4 border-blue-400'
+                      }`}
+                    >
+                      <div className="font-bold text-sm text-gray-600 mb-1">
+                        {msg.speaker === 'Ender' ? '🧚‍♀️ Ender' : `👤 ${msg.speaker}`}
+                      </div>
+                      <p className="text-gray-800">{msg.message}</p>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-4 flex space-x-2">
+                  <button
+                    onClick={listen}
+                    disabled={isListening}
+                    className={`flex-1 py-3 rounded-lg font-bold text-white transition-all ${
+                      isListening 
+                        ? 'bg-gray-400 cursor-not-allowed' 
+                        : 'bg-green-500 hover:bg-green-600'
+                    }`}
+                  >
+                    {isListening ? '🎤 Listening...' : '🎤 Explain More'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsTeaching(false);
+                      setCurrentScreen('home');
+                      speak(`Great teaching session! You earned ${teachingScore} points for explaining ${currentTopic}!`);
+                    }}
+                    className="px-6 py-3 bg-purple-500 text-white rounded-lg font-bold hover:bg-purple-600"
+                  >
+                    Finish
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+
       // Main render
       return (
-        <div className="min-h-screen bg-gray-50">
+        <div className={`min-h-screen ${accessibilityMode ? 'bg-black text-white' : 'bg-gray-50'} ${dyslexiaFriendly ? 'font-mono' : ''}`}>
           <NavBar />
           
           {currentScreen === 'home' && <HomeScreen />}
           {currentScreen === 'quizzes' && <QuizScreen />}
           {currentScreen === 'quiz' && <QuizPlayScreen />}
           {currentScreen === 'cards' && <CardsScreen />}
-          {currentScreen === 'teaching' && <TeachingScreen />}
+          {currentScreen === 'teaching' && <EnhancedTeachingScreen />}
           {currentScreen === 'leaderboard' && <LeaderboardScreen />}
           {currentScreen === 'profile' && <ProfileScreen />}
+          {currentScreen === 'teams' && <TeamsScreen />}
+          {currentScreen === 'reading' && <ReadingScreen />}
           
           <BottomNav />
         </div>
