@@ -31,48 +31,201 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=SF+Pro+Display:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --goodnotes-primary: #007AFF;
+      --goodnotes-secondary: #34C759;
+      --goodnotes-orange: #FF9500;
+      --goodnotes-red: #FF3B30;
+      --goodnotes-purple: #AF52DE;
+      --goodnotes-pink: #FF2D92;
+      --goodnotes-gray-1: #F2F2F7;
+      --goodnotes-gray-2: #E5E5EA;
+      --goodnotes-gray-3: #D1D1D6;
+      --goodnotes-gray-4: #C7C7CC;
+      --goodnotes-gray-5: #AEAEB2;
+      --goodnotes-gray-6: #8E8E93;
+      --goodnotes-text-primary: #1C1C1E;
+      --goodnotes-text-secondary: #3A3A3C;
+      --goodnotes-background: #FFFFFF;
+      --goodnotes-paper: #FEFEFE;
+      --goodnotes-shadow: rgba(0, 0, 0, 0.06);
+      --goodnotes-shadow-medium: rgba(0, 0, 0, 0.1);
+      --goodnotes-shadow-strong: rgba(0, 0, 0, 0.15);
+    }
+    
     body {
-      font-family: 'Fredoka', 'Comic Sans MS', cursive, sans-serif;
+      font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+      color: var(--goodnotes-text-primary);
+      line-height: 1.5;
     }
-    .card-glow {
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-      animation: glow 2s infinite alternate;
+    
+    .goodnotes-card {
+      background: var(--goodnotes-paper);
+      border-radius: 16px;
+      box-shadow: 0 2px 20px var(--goodnotes-shadow);
+      border: 1px solid var(--goodnotes-gray-2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    @keyframes glow {
-      from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
-      to { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
+    
+    .goodnotes-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--goodnotes-shadow-medium);
     }
-    .fairy-animation {
-      animation: float 3s ease-in-out infinite;
+    
+    .goodnotes-button {
+      background: var(--goodnotes-primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
+    
+    .goodnotes-button:hover {
+      background: #0056CC;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
     }
-    .quest-glow {
-      animation: questPulse 3s ease-in-out infinite;
+    
+    .goodnotes-button-secondary {
+      background: var(--goodnotes-gray-1);
+      color: var(--goodnotes-text-primary);
+      border: 1px solid var(--goodnotes-gray-3);
     }
-    @keyframes questPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-      50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+    
+    .goodnotes-button-secondary:hover {
+      background: var(--goodnotes-gray-2);
+      color: var(--goodnotes-text-primary);
+      transform: translateY(-1px);
     }
-    .avatar-customize {
-      transition: all 0.3s ease;
+    
+    .paper-texture {
+      background-image: 
+        linear-gradient(90deg, transparent 79px, var(--goodnotes-gray-2) 79px, var(--goodnotes-gray-2) 80px, transparent 80px),
+        linear-gradient(var(--goodnotes-paper) 0%, var(--goodnotes-paper) 100%);
+      background-size: 100% 24px;
     }
-    .avatar-customize:hover {
-      transform: scale(1.1);
+    
+    .notebook-line {
+      background-image: repeating-linear-gradient(
+        transparent,
+        transparent 23px,
+        var(--goodnotes-gray-2) 23px,
+        var(--goodnotes-gray-2) 24px
+      );
     }
+    
+    .goodnotes-input {
+      background: var(--goodnotes-background);
+      border: 2px solid var(--goodnotes-gray-3);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--goodnotes-text-primary);
+      transition: border-color 0.2s ease;
+    }
+    
+    .goodnotes-input:focus {
+      outline: none;
+      border-color: var(--goodnotes-primary);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    }
+    
+    .avatar-float {
+      animation: gentleFloat 4s ease-in-out infinite;
+    }
+    
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(1deg); }
+    }
+    
+    .card-collect {
+      animation: cardCollect 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    @keyframes cardCollect {
+      0% { transform: scale(0) rotate(180deg); opacity: 0; }
+      50% { transform: scale(1.1) rotate(0deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    
+    .quest-highlight {
+      animation: questGlow 3s ease-in-out infinite;
+    }
+    
+    @keyframes questGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 149, 0, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(255, 149, 0, 0.1); }
+    }
+    
     .dyslexia-font {
-      font-family: 'Comic Sans MS', 'OpenDyslexic', cursive !important;
+      font-family: 'OpenDyslexic', 'Comic Sans MS', cursive !important;
     }
+    
     .high-contrast {
-      filter: contrast(1.5);
+      --goodnotes-background: #000000;
+      --goodnotes-paper: #1C1C1E;
+      --goodnotes-text-primary: #FFFFFF;
+      --goodnotes-text-secondary: #E5E5EA;
     }
+    
     .reduced-motion * {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+      transition-duration: 0.1s !important;
+    }
+    
+    .sidebar-tab {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      background: var(--goodnotes-primary);
+      color: white;
+      border-radius: 0 12px 12px 0;
+      padding: 16px 8px;
+      margin: 4px 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    .sidebar-tab:hover {
+      background: #0056CC;
+      transform: translateX(4px);
+    }
+    
+    .tooltip {
+      position: relative;
+    }
+    
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--goodnotes-text-primary);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    
+    .tooltip:hover::after {
+      opacity: 1;
     }
   </style>
 </head>
@@ -87,25 +240,132 @@
   <script type="text/babel">
     const { useState, useEffect, useCallback, useRef } = React;
 
-    // Enhanced Game Data with Quests and Storylines
+    // Simple SVG Icon Component (GoodNotes 6 style)
+    const Icon = ({ name, size = 24, color = "currentColor", className = "" }) => {
+      const icons = {
+        // Navigation & Interface
+        'settings': <path strokeLinecap="round" strokeLinejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />,
+        'swords': <g><path strokeLinecap="round" strokeLinejoin="round" d="M3 3l18 18M9 9l6 6m-6-6L3 3m6 6v6a2 2 0 002 2h2a2 2 0 002-2v-6m-6-6h6l6-6"/></g>,
+        'gem': <path strokeLinecap="round" strokeLinejoin="round" d="M5 12l5-8 5 8-5 8-5-8z M5 12h14 M10 4l2 8 2-8"/>,
+        'layers': <g><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></g>,
+        'flame': <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z"/>,
+        'graduation-cap': <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/>,
+        
+        // Subject Icons
+        'calculator': <g><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h2M14 14h2M8 18h8"/></g>,
+        'flask-conical': <path strokeLinecap="round" strokeLinejoin="round" d="M9 3h6v6l4 8H5l4-8V3z"/>,
+        'book-open': <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25A8.966 8.966 0 0118 3.75c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>,
+        
+        // Avatar Icons
+        'sparkles': <g><path d="M9.937 15.5A2 2 0 008.5 14.063l-6.135-1.582a.5.5 0 010-.962L8.5 9.936A2 2 0 009.937 8.5l1.582-6.135a.5.5 0 01.962 0L14.063 8.5A2 2 0 0015.5 9.937l6.135 1.582a.5.5 0 010 .962L15.5 14.063a2 2 0 00-1.437 1.437l-1.582 6.135a.5.5 0 01-.962 0L9.937 15.5z"/></g>,
+        'bot': <g><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></g>,
+        'zap': <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>,
+        
+        // Action Icons
+        'trophy': <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.228V2.721m-2.48 5.228a6.726 6.726 0 01-2.748 1.35m0 0A6.772 6.772 0 0112 10.5c-.665 0-1.312-.098-1.922-.272m0 0A6.772 6.772 0 007.228 8.47m0 0A6.547 6.547 0 006 5.227m0 0a6.721 6.721 0 016-2.477c2.247 0 4.312.857 5.86 2.263m0 0A6.547 6.547 0 0118 5.227"/>,
+        'mic': <path strokeLinecap="round" strokeLinejoin="round" d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3zM19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/>,
+        'keyboard': <rect x="2" y="4" width="20" height="16" rx="2"/>,
+        'lightbulb': <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0zm-4 5.5V20a2 2 0 01-4 0v-2.5"/>,
+        'send': <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/>,
+        'check-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>,
+        'x-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>,
+        'arrow-left': <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>,
+        
+        // Card/Rarity Icons
+        'circle': <circle cx="12" cy="12" r="10"/>,
+        'diamond': <path d="M6 3h12l4 6-10 12L2 9l4-6z"/>,
+        'star': <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>,
+        'crown': <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4-8 3 8 3-8 4 8-7 6-7-6z"/>,
+        
+        // Mood Icons
+        'smile': <g><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></g>,
+        'heart': <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.5c0-2.485-2.239-4.5-5-4.5-1.664 0-3.122.765-4 1.977C11.122 4.765 9.664 4 8 4 5.239 4 3 6.015 3 8.5s2.239 4.5 5 4.5c1.664 0 3.122-.765 4-1.977.878 1.212 2.336 1.977 4 1.977 2.761 0 5-2.015 5-4.5z"/>,
+        'eye': <g><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></g>,
+        'palette': <g><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></g>,
+        
+        // Additional icons
+        'rocket': <g><path d="M4.5 16.5c-1.5 1.5-1.5 4 0 5.5s4 1.5 5.5 0L12 20l-3-3m0 0l-3-3 1.5-1.5L10 15"/><path d="M15 7a5 5 0 010 7 5 5 0 010-7z"/><path d="M13 6.5L15.5 9l-6 6-2.5-2.5 6-6z"/></g>,
+        'waves': <g><path d="M2 12c.5-2 2.5-4 5-4s4.5 2 5 4 2.5 4 5 4 4.5-2 5-4"/><path d="M2 20c.5-2 2.5-4 5-4s4.5 2 5 4 2.5 4 5 4 4.5-2 5-4"/></g>,
+        'book-text': <g><path d="M4 6v15a1 1 0 001 1h14a1 1 0 001-1V6"/><path d="M4 6l16-2v2L4 8V6z"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/></g>,
+        'telescope': <g><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6"/><path d="M17.6 6.4L14.83 9.17m-5.66 5.66L6.4 17.6"/><path d="M6.4 6.4l2.77 2.77m5.66 5.66l2.77 2.77"/></g>,
+        'wand-2': <path d="M15 4V2m0 14v-2M8 9h2m10 0h2M2.586 16.414L5.5 13.5M18.5 13.5l2.914 2.914M13.5 5.5L16.414 2.586M5.5 18.5L2.586 15.586"/>,
+        'wand': <path d="M15 4V2m0 14v-2M8 9h2m10 0h2M2.586 16.414L5.5 13.5M18.5 13.5l2.914 2.914M13.5 5.5L16.414 2.586M5.5 18.5L2.586 15.586"/>,
+        'glasses': <g><circle cx="6" cy="15" r="4"/><circle cx="18" cy="15" r="4"/><path d="M14 15a2 2 0 00-4 0"/></g>,
+        'globe': <g><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></g>,
+        'trending-up': <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>,
+        'calendar-check': <g><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M9 16l2 2 4-4"/></g>
+      };
+
+      const iconPath = icons[name] || icons['circle'];
+      
+      return (
+        <svg 
+          width={size} 
+          height={size} 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke={color} 
+          strokeWidth="2" 
+          className={`inline-block ${className}`}
+          style={{ minWidth: size, minHeight: size }}
+        >
+          {iconPath}
+        </svg>
+      );
+    };
+
+    // Enhanced Game Data with clean icons
+    const CARD_SERIES = {
+      'Space Explorer': {
+        cards: ['Rocket Ship', 'Asteroid Belt', 'Mars Colony', 'Space Station', 'Nebula'],
+        theme: 'space',
+        description: 'Explore the cosmos!',
+        icon: 'rocket'
+      },
+      'Ocean Adventure': {
+        cards: ['Deep Sea Diver', 'Coral Reef', 'Whale Song', 'Treasure Chest', 'Submarine'],
+        theme: 'ocean',
+        description: 'Dive into marine mysteries!',
+        icon: 'waves'
+      },
+      'Math Masters': {
+        cards: ['Golden Ratio', 'Prime Numbers', 'Fibonacci', 'Pi Explorer', 'Infinity'],
+        theme: 'math',
+        description: 'Master mathematical concepts!',
+        icon: 'calculator'
+      },
+      'Language Legends': {
+        cards: ['Word Wizard', 'Grammar Guardian', 'Story Sage', 'Poem Pioneer', 'Script Scholar'],
+        theme: 'language',
+        description: 'Become a language master!',
+        icon: 'book-open'
+      },
+      'Science Squad': {
+        cards: ['Lab Genius', 'Element Expert', 'Physics Phenomenon', 'Biology Boss', 'Chemistry Champion'],
+        theme: 'science',
+        description: 'Discover scientific wonders!',
+        icon: 'flask-conical'
+      }
+    };
+
     const AVATAR_OPTIONS = {
-      ender: { name: 'Ender', icon: '🧚‍♂️', personality: 'curious', voice: 'enthusiastic' },
-      echo: { name: 'Echo', icon: '🤖', personality: 'logical', voice: 'calm' },
-      amber: { name: 'Amber', icon: '✨', personality: 'encouraging', voice: 'warm' },
-      sage: { name: 'Sage', icon: '🦉', personality: 'wise', voice: 'patient' }
+      ender: { name: 'Ender', icon: 'sparkles', personality: 'curious', voice: 'enthusiastic' },
+      echo: { name: 'Echo', icon: 'bot', personality: 'logical', voice: 'calm' },
+      amber: { name: 'Amber', icon: 'zap', personality: 'encouraging', voice: 'warm' },
+      sage: { name: 'Sage', icon: 'graduation-cap', personality: 'wise', voice: 'patient' }
     };
 
     const AVATAR_COSMETICS = {
       outfits: [
-        { id: 'space_suit', name: 'Space Suit', cost: 50, icon: '👨‍🚀' },
-        { id: 'wizard_robe', name: 'Wizard Robe', cost: 75, icon: '🧙‍♂️' },
-        { id: 'lab_coat', name: 'Lab Coat', cost: 60, icon: '👨‍🔬' },
-        { id: 'crown', name: 'Golden Crown', cost: 100, icon: '👑' }
+        { id: 'space_suit', name: 'Space Suit', cost: 50, icon: 'rocket' },
+        { id: 'wizard_robe', name: 'Wizard Robe', cost: 75, icon: 'wand-2' },
+        { id: 'lab_coat', name: 'Lab Coat', cost: 60, icon: 'flask-conical' },
+        { id: 'crown', name: 'Golden Crown', cost: 100, icon: 'crown' }
       ],
       accessories: [
-        { id: 'glasses', name: 'Smart Glasses', cost: 30, icon: '🤓' },
-        { id: 'hat', name: 'Thinking Cap', cost: 40, icon: '🎩' },
-        { id: 'wand', name: 'Magic Wand', cost: 80, icon: '🪄' }
+        { id: 'glasses', name: 'Smart Glasses', cost: 30, icon: 'glasses' },
+        { id: 'hat', name: 'Thinking Cap', cost: 40, icon: 'graduation-cap' },
+        { id: 'wand', name: 'Magic Wand', cost: 80, icon: 'wand' }
       ]
     };
 
@@ -113,6 +373,7 @@
       galaxy_explorer: {
         title: "Galaxy Explorer",
         description: "Help your avatar explore the cosmos by mastering space science!",
+        icon: 'telescope',
         requirements: [
           { type: 'cards', series: 'Space Explorer', count: 3 },
           { type: 'quiz_score', subject: 'science', score: 80 }
@@ -123,6 +384,7 @@
       ocean_depths: {
         title: "Ocean Depths Explorer",
         description: "Dive deep into marine biology and ocean science!",
+        icon: 'waves',
         requirements: [
           { type: 'cards', series: 'Ocean Adventure', count: 4 },
           { type: 'streak', count: 5 }
@@ -132,6 +394,7 @@
       word_wizard: {
         title: "Word Wizard",
         description: "Master the art of language and become a vocabulary champion!",
+        icon: 'book-text',
         requirements: [
           { type: 'quiz_score', subject: 'english', score: 90 },
           { type: 'teaching_sessions', count: 3 }
@@ -188,22 +451,71 @@
     };
 
     const LEADERBOARD_TYPES = {
-      gems: { title: "💎 Gem Champions", icon: "💎" },
-      cards: { title: "🃏 Card Collectors", icon: "🃏" },
-      streak: { title: "🔥 Streak Masters", icon: "🔥" },
-      improvement: { title: "📈 Most Improved", icon: "📈" },
-      consistency: { title: "📅 Consistent Learners", icon: "📅" },
-      teaching: { title: "🎓 Best Teachers", icon: "🎓" }
+      gems: { title: "Gem Champions", icon: "gem" },
+      cards: { title: "Card Collectors", icon: "layers" },
+      streak: { title: "Streak Masters", icon: "flame" },
+      improvement: { title: "Most Improved", icon: "trending-up" },
+      consistency: { title: "Consistent Learners", icon: "calendar-check" },
+      teaching: { title: "Best Teachers", icon: "graduation-cap" }
     };
 
     const LANGUAGES = {
-      en: { name: 'English', flag: '🇺🇸', voice: 'en-US' },
-      zh: { name: '中文', flag: '🇨🇳', voice: 'zh-CN' },
-      es: { name: 'Español', flag: '🇪🇸', voice: 'es-ES' },
-      fr: { name: 'Français', flag: '🇫🇷', voice: 'fr-FR' }
+      en: { name: 'English', flag: '🇺🇸', voice: 'en-US', icon: 'globe' },
+      zh: { name: '中文', flag: '🇨🇳', voice: 'zh-CN', icon: 'globe' },
+      es: { name: 'Español', flag: '🇪🇸', voice: 'es-ES', icon: 'globe' },
+      fr: { name: 'Français', flag: '🇫🇷', voice: 'fr-FR', icon: 'globe' }
     };
 
-    // Enhanced Learning Ambassador Component
+    // Quest Panel Component
+    const QuestPanel = ({ quests, onClose, onCompleteQuest }) => {
+      return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 max-w-lg w-full mx-4 max-h-96 overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">⚔️ Active Quests</h2>
+              <button onClick={onClose} className="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+
+            {quests.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="text-6xl mb-4">🗡️</div>
+                <p className="text-gray-600">No active quests yet!</p>
+                <p className="text-sm text-gray-500">Complete quizzes and collect cards to unlock quests!</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {quests.map((quest, index) => (
+                  <div key={index} className="border rounded-lg p-4 quest-glow">
+                    <h3 className="font-bold text-lg mb-2">{quest.title}</h3>
+                    <p className="text-gray-600 text-sm mb-3">{quest.description}</p>
+                    
+                    <div className="space-y-2 mb-3">
+                      <h4 className="font-semibold text-sm">Requirements:</h4>
+                      {quest.requirements.map((req, reqIndex) => (
+                        <div key={reqIndex} className="text-xs bg-gray-100 p-2 rounded">
+                          {req.type === 'cards' && `Collect ${req.count} cards from ${req.series} series`}
+                          {req.type === 'quiz_score' && `Score ${req.score}% in ${req.subject} quiz`}
+                          {req.type === 'streak' && `Achieve ${req.count} day streak`}
+                          {req.type === 'teaching_sessions' && `Complete ${req.count} teaching sessions`}
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="text-xs text-green-600">
+                      <strong>Rewards:</strong> {quest.reward.gems} gems
+                      {quest.reward.card && `, ${quest.reward.card} card`}
+                      {quest.reward.achievement && `, "${quest.reward.achievement}" achievement`}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    // Enhanced Learning Ambassador Component with GoodNotes 6 Style and Lucide Icons
     const LearningAmbassador = ({ 
       avatar, 
       isListening, 
@@ -220,84 +532,134 @@
         setTimeout(() => setIsAnimating(false), 1000);
       };
 
+      const moodIcons = {
+        excited: 'zap',
+        encouraging: 'heart',
+        proud: 'trophy',
+        thinking: 'brain',
+        happy: 'smile',
+        curious: 'eye'
+      };
+
       return (
-        <div className="fixed bottom-4 right-4 z-50">
-          <div className={`relative ${isAnimating ? 'scale-110' : ''} transition-all duration-300`}>
+        <div className="fixed bottom-6 right-6 z-50">
+          <div className={`relative ${isAnimating ? 'scale-110' : ''} transition-all duration-300 avatar-float`}>
             {/* Quest indicator */}
             {currentQuest && (
-              <div className="absolute -top-8 -left-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full font-bold quest-glow">
+              <div className="absolute -top-10 -left-4 bg-orange-500 text-white text-xs px-3 py-2 rounded-full font-semibold quest-highlight flex items-center">
+                <Icon name="swords" size={12} className="mr-1" />
                 Quest Active!
               </div>
             )}
             
             <div 
-              className="bg-gradient-to-r from-pink-400 to-purple-500 rounded-full p-4 fairy-animation cursor-pointer relative"
+              className="goodnotes-card cursor-pointer relative p-4 hover:shadow-lg"
               onClick={handleClick}
+              style={{
+                background: 'linear-gradient(135deg, var(--goodnotes-primary) 0%, var(--goodnotes-purple) 100%)',
+                width: '80px',
+                height: '80px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
             >
               <div className="text-white text-center">
-                <div className="text-2xl">{avatar.icon}</div>
-                <p className="text-xs mt-1 font-semibold">{avatar.name}</p>
-                {isListening && <div className="animate-pulse text-yellow-300">🎤</div>}
+                <div className="mb-1">
+                  <Icon name={avatar.icon} size={24} color="white" />
+                </div>
+                <div className="text-xs font-semibold">{avatar.name}</div>
+                {isListening && (
+                  <div className="animate-pulse mt-1">
+                    <Icon name="mic" size={12} color="#FCD34D" />
+                  </div>
+                )}
               </div>
               
               {/* Mood indicator */}
-              <div className="absolute -top-1 -right-1 text-sm">
-                {mood === 'excited' && '✨'}
-                {mood === 'encouraging' && '💪'}
-                {mood === 'proud' && '🎉'}
-                {mood === 'thinking' && '🤔'}
+              <div className="absolute -top-2 -right-2 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md">
+                <Icon name={moodIcons[mood] || 'smile'} size={16} color="#6B7280" />
               </div>
             </div>
             
             {/* Customize button */}
             <button
               onClick={onCustomize}
-              className="absolute -bottom-2 -left-2 bg-blue-500 text-white rounded-full w-6 h-6 text-xs hover:bg-blue-600"
+              className="absolute -bottom-3 -left-3 bg-white text-gray-600 rounded-full w-8 h-8 text-sm hover:bg-gray-50 shadow-lg goodnotes-card flex items-center justify-center tooltip"
+              data-tooltip="Customize Avatar"
             >
-              ✨
+              <Icon name="palette" size={16} />
             </button>
           </div>
         </div>
       );
     };
 
-    // Enhanced Card Component with Utility
+    // Enhanced Card Component with GoodNotes 6 Style and Lucide Icons
     const Card = ({ series, name, rarity, isNew = false, utility = null, onClick }) => {
       const rarityColors = {
-        common: 'from-gray-400 to-gray-600',
-        rare: 'from-blue-400 to-blue-600',
-        epic: 'from-purple-400 to-purple-600',
-        legendary: 'from-yellow-400 to-orange-600'
+        common: 'linear-gradient(135deg, #E5E5EA 0%, #D1D1D6 100%)',
+        rare: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
+        epic: 'linear-gradient(135deg, #AF52DE 0%, #8E44AD 100%)',
+        legendary: 'linear-gradient(135deg, #FF9500 0%, #E67E22 100%)'
       };
+
+      const rarityIcons = {
+        common: 'circle',
+        rare: 'diamond',
+        epic: 'star',
+        legendary: 'crown'
+      };
+
+      const seriesIcon = CARD_SERIES[series]?.icon || 'card';
 
       return (
         <div 
-          className={`relative w-24 h-32 rounded-lg bg-gradient-to-br ${rarityColors[rarity]} p-2 m-1 cursor-pointer transform transition-all hover:scale-105 ${isNew ? 'card-glow' : ''}`}
+          className={`relative w-28 h-36 cursor-pointer transform transition-all hover:scale-105 ${isNew ? 'card-collect' : ''}`}
           onClick={onClick}
+          style={{
+            background: rarityColors[rarity],
+            borderRadius: '12px',
+            boxShadow: isNew ? '0 8px 25px rgba(0, 122, 255, 0.3)' : '0 4px 15px var(--goodnotes-shadow)',
+            border: '2px solid rgba(255, 255, 255, 0.2)'
+          }}
         >
-          <div className="bg-white bg-opacity-90 rounded h-full flex flex-col justify-between p-1">
-            <div className="text-xs font-bold text-center">{series}</div>
+          <div className="absolute inset-2 bg-white bg-opacity-95 rounded-lg flex flex-col justify-between p-3 paper-texture">
             <div className="text-center">
-              <i className="fas fa-star text-yellow-500"></i>
-              {utility && <div className="text-xs text-blue-600">🔧</div>}
+              <div className="text-xs font-semibold text-gray-600 mb-2">{series}</div>
+              <div className="flex justify-center mb-2">
+                <Icon name={seriesIcon} size={20} color="#6B7280" />
+              </div>
             </div>
-            <div className="text-xs text-center font-semibold">{name}</div>
+            
+            <div className="text-center">
+              {utility && (
+                <div className="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full mb-2 font-semibold flex items-center justify-center">
+                  <Icon name="zap" size={12} className="mr-1" />
+                  USE
+                </div>
+              )}
+              <div className="text-xs font-semibold text-gray-800 leading-tight mb-1">{name}</div>
+              <div className="flex justify-center">
+                <Icon name={rarityIcons[rarity]} size={12} color="#9CA3AF" />
+              </div>
+            </div>
           </div>
+          
           {isNew && (
-            <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 animate-pulse">
-              NEW!
+            <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 font-bold animate-pulse flex items-center">
+              <Icon name="sparkles" size={10} className="mr-1" />
+              NEW
             </div>
           )}
-          {utility && (
-            <div className="absolute top-0 left-0 bg-blue-500 text-white text-xs rounded-br-lg px-1">
-              USE
-            </div>
-          )}
+          
+          <div className={`absolute bottom-1 right-1 w-3 h-3 rounded-full`} 
+               style={{ background: rarityColors[rarity] }}></div>
         </div>
       );
     };
 
-    // Settings Component
+    // Settings Component - GoodNotes 6 Style
     const SettingsPanel = ({ settings, onUpdateSettings, onClose }) => {
       const [localSettings, setLocalSettings] = useState(settings);
 
@@ -307,99 +669,80 @@
       };
 
       return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 max-h-96 overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">⚙️ Settings</h2>
-              <button onClick={onClose} className="text-gray-500 hover:text-gray-700">✕</button>
-            </div>
-
-            <div className="space-y-4">
-              {/* Language Selection */}
-              <div>
-                <label className="block text-sm font-semibold mb-2">🌐 Language</label>
-                <select 
-                  value={localSettings.language}
-                  onChange={(e) => setLocalSettings({...localSettings, language: e.target.value})}
-                  className="w-full p-2 border rounded-lg"
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="goodnotes-card max-w-lg w-full max-h-96 overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold text-gray-800">⚙️ Settings</h2>
+                <button 
+                  onClick={onClose} 
+                  className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"
                 >
-                  {Object.entries(LANGUAGES).map(([code, lang]) => (
-                    <option key={code} value={code}>{lang.flag} {lang.name}</option>
+                  ✕
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                {/* Language Selection */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">🌐 Language</label>
+                  <select 
+                    value={localSettings.language}
+                    onChange={(e) => setLocalSettings({...localSettings, language: e.target.value})}
+                    className="goodnotes-input w-full"
+                  >
+                    {Object.entries(LANGUAGES).map(([code, lang]) => (
+                      <option key={code} value={code}>{lang.flag} {lang.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Speech Settings */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">🗣️ Speech Rate</label>
+                  <input
+                    type="range"
+                    min="0.5"
+                    max="2"
+                    step="0.1"
+                    value={localSettings.speechRate}
+                    onChange={(e) => setLocalSettings({...localSettings, speechRate: parseFloat(e.target.value)})}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    style={{
+                      background: `linear-gradient(to right, var(--goodnotes-primary) 0%, var(--goodnotes-primary) ${(localSettings.speechRate - 0.5) / 1.5 * 100}%, var(--goodnotes-gray-2) ${(localSettings.speechRate - 0.5) / 1.5 * 100}%, var(--goodnotes-gray-2) 100%)`
+                    }}
+                  />
+                  <div className="text-xs text-gray-600 mt-1">Speed: {localSettings.speechRate}x</div>
+                </div>
+
+                {/* Accessibility Options */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-semibold text-gray-700">♿ Accessibility</h3>
+                  {[
+                    { key: 'dyslexiaFriendly', label: '📖 Dyslexia-friendly font', icon: '📖' },
+                    { key: 'highContrast', label: '🔆 High contrast mode', icon: '🔆' },
+                    { key: 'reducedMotion', label: '🎭 Reduced animations', icon: '🎭' },
+                    { key: 'privateMode', label: '� Private mode', icon: '🔒' }
+                  ].map(option => (
+                    <label key={option.key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                      <span className="text-sm font-medium text-gray-700">{option.label}</span>
+                      <input
+                        type="checkbox"
+                        checked={localSettings[option.key]}
+                        onChange={(e) => setLocalSettings({...localSettings, [option.key]: e.target.checked})}
+                        className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                    </label>
                   ))}
-                </select>
-              </div>
+                </div>
 
-              {/* Speech Settings */}
-              <div>
-                <label className="block text-sm font-semibold mb-2">🗣️ Speech Rate</label>
-                <input
-                  type="range"
-                  min="0.5"
-                  max="2"
-                  step="0.1"
-                  value={localSettings.speechRate}
-                  onChange={(e) => setLocalSettings({...localSettings, speechRate: parseFloat(e.target.value)})}
-                  className="w-full"
-                />
-                <div className="text-xs text-gray-600">Speed: {localSettings.speechRate}x</div>
+                <button
+                  onClick={handleSave}
+                  className="goodnotes-button w-full py-3"
+                >
+                  Save Settings
+                </button>
               </div>
-
-              {/* Accessibility Options */}
-              <div>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={localSettings.dyslexiaFriendly}
-                    onChange={(e) => setLocalSettings({...localSettings, dyslexiaFriendly: e.target.checked})}
-                    className="mr-2"
-                  />
-                  <span className="text-sm">📖 Dyslexia-friendly font</span>
-                </label>
-              </div>
-
-              <div>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={localSettings.highContrast}
-                    onChange={(e) => setLocalSettings({...localSettings, highContrast: e.target.checked})}
-                    className="mr-2"
-                  />
-                  <span className="text-sm">🔆 High contrast mode</span>
-                </label>
-              </div>
-
-              <div>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={localSettings.reducedMotion}
-                    onChange={(e) => setLocalSettings({...localSettings, reducedMotion: e.target.checked})}
-                    className="mr-2"
-                  />
-                  <span className="text-sm">🎭 Reduced animations</span>
-                </label>
-              </div>
-
-              {/* Privacy Settings */}
-              <div>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={localSettings.privateMode}
-                    onChange={(e) => setLocalSettings({...localSettings, privateMode: e.target.checked})}
-                    className="mr-2"
-                  />
-                  <span className="text-sm">🔒 Private progress (hide from leaderboards)</span>
-                </label>
-              </div>
-
-              <button
-                onClick={handleSave}
-                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
-              >
-                Save Settings
-              </button>
             </div>
           </div>
         </div>
@@ -732,8 +1075,107 @@
         };
       }, [difficultyLevel]);
 
-      // Continue with more game logic in the next part...
-      
+      const checkAnswer = useCallback((answer) => {
+        if (!currentQuestion) return;
+        
+        const isCorrect = answer.toLowerCase().trim() === currentQuestion.answer.toLowerCase().trim();
+        setUserAnswer(answer);
+        
+        if (isCorrect) {
+          const newGems = gems + (currentQuestion.difficulty * 10);
+          setGems(newGems);
+          setScore(score + 1);
+          setStreak(streak + 1);
+          setMaxStreak(Math.max(maxStreak, streak + 1));
+          setAvatarMood('proud');
+          
+          const newCard = generateRandomCard();
+          setCollectedCards(prev => [...prev, { ...newCard, isNew: true }]);
+          
+          setFeedback(`🎉 Correct! You earned ${currentQuestion.difficulty * 10} gems and a new card!`);
+          speak(`Amazing! That's correct! You earned ${currentQuestion.difficulty * 10} gems and found a ${newCard.rarity} ${newCard.name} card!`);
+          
+          // Update rankings
+          setRankings(prev => prev.map(player => 
+            player.name === playerName 
+              ? { ...player, gems: newGems, cards: collectedCards.length + 1, maxStreak: Math.max(maxStreak, streak + 1) }
+              : player
+          ));
+          
+          setTimeout(() => {
+            nextQuestion();
+          }, 3000);
+        } else {
+          setStreak(0);
+          setAvatarMood('encouraging');
+          setFeedback(`Not quite right. The answer is "${currentQuestion.answer}". Let's try the next one!`);
+          speak(`Not quite right. The answer is ${currentQuestion.answer}. Don't worry, let's try the next question!`);
+          
+          setTimeout(() => {
+            nextQuestion();
+          }, 4000);
+        }
+      }, [currentQuestion, gems, score, streak, maxStreak, collectedCards, playerName, generateRandomCard, speak]);
+
+      const nextQuestion = useCallback(() => {
+        const questions = ENHANCED_QUESTION_BANKS[currentSubject][difficultyLevel];
+        if (questions && questions.length > 0) {
+          const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+          setCurrentQuestion(randomQuestion);
+          setUserAnswer('');
+          setFeedback('');
+          setShowHint(false);
+          setQuestionIndex(prev => prev + 1);
+          setAvatarMood('happy');
+          
+          speak(`Question ${questionIndex + 1}: ${randomQuestion.question}`);
+        }
+      }, [currentSubject, difficultyLevel, questionIndex, speak]);
+
+      const useCard = useCallback((card) => {
+        if (card.utility) {
+          switch(card.utility.type) {
+            case 'bonus_gems':
+              setGems(prev => prev + card.utility.value);
+              speak(`You used your ${card.name} card and earned ${card.utility.value} bonus gems!`);
+              break;
+            case 'hint_reveal':
+              setShowHint(true);
+              speak("Your card revealed the hint!");
+              break;
+            case 'skip_question':
+              nextQuestion();
+              speak("Your card helped you skip this question!");
+              break;
+          }
+          
+          // Remove the card after use
+          setCollectedCards(prev => prev.filter(c => c.id !== card.id));
+        }
+      }, [speak, nextQuestion]);
+
+      const startQuiz = useCallback((subject) => {
+        setCurrentSubject(subject);
+        setCurrentView('quiz');
+        setScore(0);
+        setQuestionIndex(0);
+        const adaptedDifficulty = adaptDifficulty(score, streak);
+        setDifficultyLevel(adaptedDifficulty);
+        
+        speak(`Let's start your ${subject} adventure! I've set the difficulty to ${adaptedDifficulty} based on your progress.`);
+        
+        setTimeout(() => {
+          nextQuestion();
+        }, 2000);
+      }, [score, streak, adaptDifficulty, speak, nextQuestion]);
+
+      const startTeachingMode = useCallback(() => {
+        setCurrentView('teaching');
+        setTeachingSessions(prev => prev + 1);
+        setAvatarMood('excited');
+        speak("Great! Teaching others is one of the best ways to learn. Choose a topic you'd like to teach, and I'll be your student!");
+      }, [speak]);
+
       // Apply settings to UI
       useEffect(() => {
         document.body.className = '';
@@ -742,86 +1184,505 @@
         if (settings.reducedMotion) document.body.classList.add('reduced-motion');
       }, [settings]);
 
-      // I'll continue with the rest of the implementation...
-      // For now, let's render a basic structure
+      // Initialize first question
+      useEffect(() => {
+        if (currentView === 'quiz' && !currentQuestion) {
+          nextQuestion();
+        }
+      }, [currentView, currentQuestion, nextQuestion]);
+
+      // Update player in rankings
+      useEffect(() => {
+        setRankings(prev => prev.map(player => 
+          player.name === playerName 
+            ? { 
+                ...player, 
+                gems, 
+                cards: collectedCards.length, 
+                maxStreak,
+                teachingSessions,
+                improvement: Math.floor(Math.random() * 30), // Simulated improvement
+                consistency: Math.min(95, 60 + streak * 5) // Based on streak
+              }
+            : player
+        ));
+      }, [gems, collectedCards.length, maxStreak, teachingSessions, streak, playerName]);
+
+      // Quest system
+      const checkQuestProgress = useCallback(() => {
+        Object.entries(QUEST_SYSTEM).forEach(([questId, quest]) => {
+          if (completedQuests.includes(questId) || activeQuests.find(q => q.id === questId)) return;
+          
+          let canStart = true;
+          quest.requirements.forEach(req => {
+            switch(req.type) {
+              case 'cards':
+                const seriesCards = collectedCards.filter(card => card.series === req.series);
+                if (seriesCards.length < req.count) canStart = false;
+                break;
+              case 'quiz_score':
+                if (score < req.score) canStart = false;
+                break;
+              case 'streak':
+                if (maxStreak < req.count) canStart = false;
+                break;
+              case 'teaching_sessions':
+                if (teachingSessions < req.count) canStart = false;
+                break;
+            }
+          });
+          
+          if (canStart && !activeQuests.find(q => q.id === questId)) {
+            setActiveQuests(prev => [...prev, { id: questId, ...quest, progress: 0 }]);
+            setAvatarMood('excited');
+            speak(`New quest available: ${quest.title}! ${quest.description}`);
+          }
+        });
+      }, [collectedCards, score, maxStreak, teachingSessions, activeQuests, completedQuests, speak]);
+
+      useEffect(() => {
+        checkQuestProgress();
+      }, [checkQuestProgress]);
+
+      // Render different views
+      const renderCurrentView = () => {
+        switch(currentView) {
+          case 'quiz':
+            return (
+              <div className="goodnotes-card p-8 notebook-line">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-1 flex items-center">
+                      <Icon 
+                        name={currentSubject === 'math' ? 'calculator' : currentSubject === 'science' ? 'flask-conical' : 'book-open'} 
+                        size={24} 
+                        className="mr-2" 
+                      />
+                      {currentSubject.charAt(0).toUpperCase() + currentSubject.slice(1)} Quiz
+                    </h2>
+                    <p className="text-gray-600 text-sm">Question {questionIndex + 1} • Difficulty: {difficultyLevel}</p>
+                  </div>
+                  <div className="flex space-x-3">
+                    <div className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium flex items-center">
+                      <Icon name="trophy" size={16} className="mr-1" />
+                      Score: {score}
+                    </div>
+                    <div className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium flex items-center">
+                      <Icon name="flame" size={16} className="mr-1" />
+                      Streak: {streak}
+                    </div>
+                  </div>
+                </div>
+                
+                {currentQuestion && (
+                  <div className="space-y-6">
+                    <div className="bg-gray-50 p-6 rounded-2xl border-l-4 border-blue-500">
+                      <div className="text-lg font-medium text-gray-800 leading-relaxed">
+                        {currentQuestion.question}
+                      </div>
+                    </div>
+                    
+                    {showHint && (
+                      <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-2xl">
+                        <div className="flex items-start">
+                          <Icon name="lightbulb" size={20} color="#F59E0B" className="mr-3 mt-1" />
+                          <div className="text-yellow-800 font-medium">{currentQuestion.hint}</div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="space-y-4">
+                      {useTextInput ? (
+                        <input
+                          type="text"
+                          value={userAnswer}
+                          onChange={(e) => setUserAnswer(e.target.value)}
+                          onKeyPress={(e) => e.key === 'Enter' && checkAnswer(userAnswer)}
+                          className="goodnotes-input w-full text-lg"
+                          placeholder="Type your answer here..."
+                          autoFocus
+                        />
+                      ) : (
+                        <button
+                          onClick={listen}
+                          disabled={isListening || isSpeaking}
+                          className="goodnotes-button w-full py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                        >
+                          <Icon name="mic" size={20} className="mr-2" />
+                          {isListening ? 'Listening...' : 'Speak Your Answer'}
+                        </button>
+                      )}
+                      
+                      <div className="flex space-x-4">
+                        <button
+                          onClick={() => setUseTextInput(!useTextInput)}
+                          className="goodnotes-button-secondary flex-1 py-3 flex items-center justify-center"
+                        >
+                          <Icon name={useTextInput ? 'mic' : 'keyboard'} size={16} className="mr-2" />
+                          {useTextInput ? 'Voice' : 'Text'}
+                        </button>
+                        
+                        <button
+                          onClick={() => setShowHint(true)}
+                          className="goodnotes-button-secondary flex-1 py-3 flex items-center justify-center"
+                          disabled={showHint}
+                        >
+                          <Icon name="lightbulb" size={16} className="mr-2" />
+                          {showHint ? 'Hint Shown' : 'Show Hint'}
+                        </button>
+                      </div>
+                      
+                      {useTextInput && userAnswer && (
+                        <button
+                          onClick={() => checkAnswer(userAnswer)}
+                          className="goodnotes-button w-full py-4 text-lg flex items-center justify-center"
+                          style={{ background: 'var(--goodnotes-secondary)' }}
+                        >
+                          <Icon name="send" size={16} className="mr-2" />
+                          Submit Answer
+                        </button>
+                      )}
+                    </div>
+                    
+                    {feedback && (
+                      <div className={`p-4 rounded-2xl font-medium flex items-start ${
+                        feedback.includes('Correct') 
+                          ? 'bg-green-50 text-green-800 border border-green-200' 
+                          : 'bg-red-50 text-red-800 border border-red-200'
+                      }`}>
+                        <Icon name={feedback.includes('Correct') ? 'check-circle' : 'x-circle'} size={20} className="mr-3 mt-1" />
+                        {feedback}
+                      </div>
+                    )}
+                  </div>
+                )}
+                
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <button
+                    onClick={() => setCurrentView('dashboard')}
+                    className="goodnotes-button-secondary flex items-center"
+                  >
+                    <Icon name="arrow-left" size={16} className="mr-2" />
+                    Back to Dashboard
+                  </button>
+                </div>
+              </div>
+            );
+            
+          case 'cards':
+            return (
+              <div className="goodnotes-card p-8">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-1">🃏 Your Card Collection</h2>
+                    <p className="text-gray-600 text-sm">Total Cards: {collectedCards.length}</p>
+                  </div>
+                  <div className="flex space-x-4 text-sm">
+                    <div className="text-center">
+                      <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mb-1">○</div>
+                      <span className="text-gray-600">{collectedCards.filter(c => c.rarity === 'common').length}</span>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center mb-1">◆</div>
+                      <span className="text-blue-600">{collectedCards.filter(c => c.rarity === 'rare').length}</span>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-8 h-8 bg-purple-200 rounded-full flex items-center justify-center mb-1">★</div>
+                      <span className="text-purple-600">{collectedCards.filter(c => c.rarity === 'epic').length}</span>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-8 h-8 bg-orange-200 rounded-full flex items-center justify-center mb-1">♦</div>
+                      <span className="text-orange-600">{collectedCards.filter(c => c.rarity === 'legendary').length}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+                  {collectedCards.map((card, index) => (
+                    <Card 
+                      key={index}
+                      {...card}
+                      onClick={() => card.utility && useCard(card)}
+                    />
+                  ))}
+                </div>
+                
+                {collectedCards.length === 0 && (
+                  <div className="text-center py-16">
+                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-4xl text-gray-400">🎴</span>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-700 mb-2">No cards yet!</h3>
+                    <p className="text-gray-500 text-sm max-w-sm mx-auto">
+                      Complete quizzes to collect your first cards and start building your collection!
+                    </p>
+                  </div>
+                )}
+                
+                <div className="pt-6 border-t border-gray-200">
+                  <button
+                    onClick={() => setCurrentView('dashboard')}
+                    className="goodnotes-button-secondary"
+                  >
+                    ← Back to Dashboard
+                  </button>
+                </div>
+              </div>
+            );
+            
+          case 'ranking':
+            return (
+              <div className="space-y-6">
+                <EnhancedRanking 
+                  players={rankings}
+                  currentPlayer={playerName}
+                  leaderboardType={leaderboardType}
+                  onChangeType={setLeaderboardType}
+                />
+                <button
+                  onClick={() => setCurrentView('dashboard')}
+                  className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg"
+                >
+                  ← Back to Dashboard
+                </button>
+              </div>
+            );
+            
+          case 'teaching':
+            return (
+              <div className="bg-white rounded-2xl shadow-2xl p-6">
+                <h2 className="text-2xl font-bold mb-4">🎓 Teaching Mode</h2>
+                <p className="text-gray-600 mb-6">Choose a topic to teach your AI student!</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  {Object.keys(ENHANCED_QUESTION_BANKS).map(subject => (
+                    <button
+                      key={subject}
+                      onClick={() => {
+                        speak(`Great! Please teach me about ${subject}. Start with something basic and I'll ask questions!`);
+                        setAvatarMood('curious');
+                      }}
+                      className="bg-gradient-to-r from-green-400 to-blue-500 text-white p-4 rounded-lg hover:scale-105 transform transition-all"
+                    >
+                      <div className="text-2xl mb-2">
+                        {subject === 'math' && '🔢'}
+                        {subject === 'science' && '🔬'}
+                        {subject === 'english' && '📚'}
+                      </div>
+                      <div className="font-semibold capitalize">{subject}</div>
+                    </button>
+                  ))}
+                </div>
+                
+                <div className="bg-blue-50 p-4 rounded-lg mb-4">
+                  <h3 className="font-semibold text-blue-800 mb-2">How Teaching Mode Works:</h3>
+                  <ul className="text-blue-700 text-sm space-y-1">
+                    <li>• Choose a subject you want to teach</li>
+                    <li>• Explain concepts in your own words</li>
+                    <li>• Your AI student will ask questions</li>
+                    <li>• Answer questions to reinforce learning</li>
+                    <li>• Earn bonus gems for teaching sessions!</li>
+                  </ul>
+                </div>
+                
+                <button
+                  onClick={() => setCurrentView('dashboard')}
+                  className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg"
+                >
+                  ← Back to Dashboard
+                </button>
+              </div>
+            );
+            
+          default:
+            return (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Quiz Cards - GoodNotes Style */}
+                {Object.keys(ENHANCED_QUESTION_BANKS).map(subject => (
+                  <div 
+                    key={subject} 
+                    className="goodnotes-card p-6 cursor-pointer group" 
+                    onClick={() => startQuiz(subject)}
+                  >
+                    <div className="text-center">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center"
+                           style={{
+                             background: subject === 'math' ? 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)' :
+                                        subject === 'science' ? 'linear-gradient(135deg, #34C759 0%, #28A745 100%)' :
+                                        'linear-gradient(135deg, #AF52DE 0%, #8E44AD 100%)'
+                           }}>
+                        <Icon 
+                          name={subject === 'math' ? 'calculator' : subject === 'science' ? 'flask-conical' : 'book-open'} 
+                          size={24} 
+                          color="white" 
+                        />
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2 capitalize">{subject} Adventure</h3>
+                      <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                        Test your {subject} knowledge and collect amazing cards!
+                      </p>
+                      <div className="goodnotes-button w-full group-hover:scale-105 transition-transform">
+                        Start Quiz →
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                {/* Feature Cards - GoodNotes Style */}
+                <div className="goodnotes-card p-6 cursor-pointer group" onClick={() => setCurrentView('cards')}>
+                  <div className="text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                      <Icon name="layers" size={24} color="white" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Card Collection</h3>
+                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                      View and manage your collected cards
+                    </p>
+                    <div className="goodnotes-button w-full group-hover:scale-105 transition-transform"
+                         style={{ background: 'linear-gradient(135deg, #AF52DE 0%, #FF2D92 100%)' }}>
+                      View Cards →
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="goodnotes-card p-6 cursor-pointer group" onClick={() => setCurrentView('ranking')}>
+                  <div className="text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center">
+                      <Icon name="trophy" size={24} color="white" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Leaderboards</h3>
+                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                      See how you rank against other learners
+                    </p>
+                    <div className="goodnotes-button w-full group-hover:scale-105 transition-transform"
+                         style={{ background: 'linear-gradient(135deg, #FF9500 0%, #E67E22 100%)' }}>
+                      View Rankings →
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="goodnotes-card p-6 cursor-pointer group" onClick={startTeachingMode}>
+                  <div className="text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-400 to-teal-500 rounded-2xl flex items-center justify-center">
+                      <Icon name="graduation-cap" size={24} color="white" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Teaching Mode</h3>
+                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                      Teach others and reinforce your learning
+                    </p>
+                    <div className="goodnotes-button w-full group-hover:scale-105 transition-transform"
+                         style={{ background: 'linear-gradient(135deg, #34C759 0%, #20B2AA 100%)' }}>
+                      Start Teaching →
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+        }
+      };
       return (
-        <div className="relative min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 p-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-8">
-              <h1 className="text-5xl font-bold text-white mb-2">🎓 ANKID Advanced</h1>
-              <p className="text-xl text-white opacity-90">Your Personalized Learning Adventure!</p>
+        <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%)' }}>
+          {/* GoodNotes 6 Style Header */}
+          <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+            <div className="max-w-7xl mx-auto px-6 py-4">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-4">
+                  <h1 className="text-2xl font-bold text-gray-800">ANKID</h1>
+                  <div className="hidden md:flex space-x-6 text-sm">
+                    <button 
+                      onClick={() => setCurrentView('dashboard')}
+                      className={`font-medium transition-colors ${currentView === 'dashboard' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-800'}`}
+                    >
+                      Dashboard
+                    </button>
+                    <button 
+                      onClick={() => setCurrentView('cards')}
+                      className={`font-medium transition-colors ${currentView === 'cards' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-800'}`}
+                    >
+                      Collection
+                    </button>
+                    <button 
+                      onClick={() => setCurrentView('ranking')}
+                      className={`font-medium transition-colors ${currentView === 'ranking' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-800'}`}
+                    >
+                      Leaderboard
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => setShowQuests(true)}
+                    className="tooltip relative bg-orange-100 text-orange-600 p-2 rounded-lg hover:bg-orange-200 transition-colors"
+                    data-tooltip="Active Quests"
+                  >
+                    <Icon name="swords" size={20} />
+                    {activeQuests.length > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {activeQuests.length}
+                      </span>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setShowSettings(true)}
+                    className="tooltip bg-gray-100 text-gray-600 p-2 rounded-lg hover:bg-gray-200 transition-colors"
+                    data-tooltip="Settings"
+                  >
+                    <Icon name="settings" size={20} />
+                  </button>
+                </div>
+              </div>
             </div>
+          </div>
 
-            {/* Quick access buttons */}
-            <div className="fixed top-4 right-4 z-40 flex space-x-2">
-              <button
-                onClick={() => setShowSettings(true)}
-                className="bg-white bg-opacity-20 text-white rounded-full p-2 hover:bg-opacity-30"
-              >
-                ⚙️
-              </button>
-              <button
-                onClick={() => setShowQuests(true)}
-                className="bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600"
-              >
-                🗡️
-              </button>
-            </div>
-
-            {/* Player Stats Card */}
-            <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6">
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            {/* Player Stats Card - GoodNotes Style */}
+            <div className="goodnotes-card p-6 mb-8 paper-texture">
               <div className="flex justify-between items-center">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-800">Welcome back, {playerName}! 👋</h2>
-                  <p className="text-gray-600">Level: {Math.floor(gems / 100) + 1} | Ready for your next quest?</p>
+                  <h2 className="text-xl font-semibold text-gray-800 mb-1">Welcome back, {playerName}! 👋</h2>
+                  <p className="text-gray-600 text-sm">Level {Math.floor(gems / 100) + 1} • Keep up the great work!</p>
                   {activeQuests.length > 0 && (
-                    <p className="text-blue-600 text-sm">🗡️ {activeQuests.length} active quest(s)</p>
+                    <div className="mt-2 inline-flex items-center bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-medium">
+                      ⚔️ {activeQuests.length} active quest{activeQuests.length !== 1 ? 's' : ''}
+                    </div>
                   )}
                 </div>
-                <div className="flex space-x-6">
+                <div className="flex space-x-8">
                   <div className="text-center">
-                    <div className="text-2xl">💎</div>
-                    <div className="font-bold text-blue-600">{gems}</div>
-                    <div className="text-sm text-gray-500">Gems</div>
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                      <Icon name="gem" size={24} color="#3B82F6" />
+                    </div>
+                    <div className="font-bold text-blue-600 text-lg">{gems}</div>
+                    <div className="text-xs text-gray-500 font-medium">Gems</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl">🃏</div>
-                    <div className="font-bold text-purple-600">{collectedCards.length}</div>
-                    <div className="text-sm text-gray-500">Cards</div>
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                      <Icon name="layers" size={24} color="#8B5CF6" />
+                    </div>
+                    <div className="font-bold text-purple-600 text-lg">{collectedCards.length}</div>
+                    <div className="text-xs text-gray-500 font-medium">Cards</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl">🔥</div>
-                    <div className="font-bold text-orange-600">{streak}</div>
-                    <div className="text-sm text-gray-500">Streak</div>
+                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-2">
+                      <Icon name="flame" size={24} color="#F97316" />
+                    </div>
+                    <div className="font-bold text-orange-600 text-lg">{streak}</div>
+                    <div className="text-xs text-gray-500 font-medium">Streak</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl">🎓</div>
-                    <div className="font-bold text-green-600">{teachingSessions}</div>
-                    <div className="text-sm text-gray-500">Teaching</div>
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                      <Icon name="graduation-cap" size={24} color="#10B981" />
+                    </div>
+                    <div className="font-bold text-green-600 text-lg">{teachingSessions}</div>
+                    <div className="text-xs text-gray-500 font-medium">Teaching</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Coming soon message for now */}
-            <div className="bg-white rounded-2xl shadow-2xl p-8 text-center">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">🚀 Enhanced Features Loading...</h2>
-              <p className="text-gray-600 mb-4">
-                This is the foundation for the advanced ANKID platform with all your requested features!
-              </p>
-              <div className="text-left max-w-2xl mx-auto space-y-2 text-sm">
-                <div>✅ Enhanced Avatar System with Customization</div>
-                <div>✅ Quest System with Storylines</div>
-                <div>✅ Multi-language Support</div>
-                <div>✅ Adaptive Difficulty</div>
-                <div>✅ Multiple Leaderboard Types</div>
-                <div>✅ Accessibility Features</div>
-                <div>✅ Teaching Mode</div>
-                <div>✅ Enhanced Card Utilities</div>
-                <div>✅ Settings & Customization</div>
-                <div>🔄 Full implementation in progress...</div>
-              </div>
-            </div>
+            {/* Main Content Area */}
+            {renderCurrentView()}
           </div>
 
           {/* Enhanced Learning Ambassador */}
@@ -849,6 +1710,17 @@
               cosmetics={ownedCosmetics}
               onUpdateAvatar={setCurrentAvatar}
               onClose={() => setShowAvatarCustomizer(false)}
+            />
+          )}
+
+          {showQuests && (
+            <QuestPanel
+              quests={activeQuests}
+              onClose={() => setShowQuests(false)}
+              onCompleteQuest={(questId) => {
+                setCompletedQuests(prev => [...prev, questId]);
+                setActiveQuests(prev => prev.filter(q => q.id !== questId));
+              }}
             />
           )}
         </div>
