@@ -14,45 +14,194 @@
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // Sample data
+    // Sample data with adaptive difficulty
     const sampleQuestions = {
-      science: [
-        { q: "What process do plants use to make food?", a: "photosynthesis", type: "fillblank" },
-        { q: "How many planets are in our solar system?", a: "eight", type: "fillblank" },
-        { q: "What is the largest planet in our solar system?", a: "jupiter", type: "fillblank" }
-      ],
-      math: [
-        { q: "What is 15 × 8?", a: "120", type: "fillblank" },
-        { q: "What is the square root of 64?", a: "8", type: "fillblank" },
-        { q: "What is 144 ÷ 12?", a: "12", type: "fillblank" }
-      ],
-      english: [
-        { q: "Write a short story about a magical forest", a: "", type: "openended" },
-        { q: "Describe your favorite season in 3 sentences", a: "", type: "openended" }
-      ]
+      science: {
+        beginner: [
+          { q: "What process do plants use to make food?", a: "photosynthesis", type: "fillblank", difficulty: 1 },
+          { q: "How many planets are in our solar system?", a: "eight", type: "fillblank", difficulty: 1 },
+          { q: "What is the largest planet in our solar system?", a: "jupiter", type: "fillblank", difficulty: 1 }
+        ],
+        intermediate: [
+          { q: "What gas do plants absorb during photosynthesis?", a: "carbon dioxide", type: "fillblank", difficulty: 2 },
+          { q: "Which planet has the most moons?", a: "saturn", type: "fillblank", difficulty: 2 },
+          { q: "What causes the greenhouse effect on Venus?", a: "thick atmosphere", type: "fillblank", difficulty: 2 }
+        ],
+        advanced: [
+          { q: "Explain how chloroplasts convert light energy into chemical energy", a: "", type: "openended", difficulty: 3 },
+          { q: "Describe the orbital mechanics that keep planets in stable paths", a: "", type: "openended", difficulty: 3 }
+        ]
+      },
+      math: {
+        beginner: [
+          { q: "What is 15 × 8?", a: "120", type: "fillblank", difficulty: 1 },
+          { q: "What is the square root of 64?", a: "8", type: "fillblank", difficulty: 1 },
+          { q: "What is 144 ÷ 12?", a: "12", type: "fillblank", difficulty: 1 }
+        ],
+        intermediate: [
+          { q: "What is 3.5 × 2.8?", a: "9.8", type: "fillblank", difficulty: 2 },
+          { q: "Solve: 2x + 5 = 13", a: "x = 4", type: "fillblank", difficulty: 2 },
+          { q: "What is 25% of 160?", a: "40", type: "fillblank", difficulty: 2 }
+        ],
+        advanced: [
+          { q: "Calculate the area of a circle with radius 7cm", a: "153.94", type: "fillblank", difficulty: 3 },
+          { q: "Solve the quadratic equation: x² + 5x + 6 = 0", a: "x = -2, -3", type: "fillblank", difficulty: 3 }
+        ]
+      },
+      english: {
+        beginner: [
+          { q: "Write a short story about a magical forest", a: "", type: "openended", difficulty: 1 },
+          { q: "Describe your favorite season in 3 sentences", a: "", type: "openended", difficulty: 1 }
+        ],
+        intermediate: [
+          { q: "Write a persuasive essay about protecting the environment", a: "", type: "openended", difficulty: 2 },
+          { q: "Create a character description with dialogue", a: "", type: "openended", difficulty: 2 }
+        ],
+        advanced: [
+          { q: "Analyze the themes in a classic novel and compare them to modern issues", a: "", type: "openended", difficulty: 3 },
+          { q: "Write a formal debate argument with supporting evidence", a: "", type: "openended", difficulty: 3 }
+        ]
+      }
     };
 
     const cardSeries = {
       "Solar System": {
-        cards: ["Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
-        rarity: { common: 0.6, rare: 0.3, legendary: 0.1 }
+        cards: [
+          { name: "Sun", rarity: "legendary", unlocks: "Solar Energy Quest" },
+          { name: "Mercury", rarity: "common", unlocks: null },
+          { name: "Venus", rarity: "rare", unlocks: "Greenhouse Effect Quiz" },
+          { name: "Earth", rarity: "legendary", unlocks: "Life Sciences Pack" },
+          { name: "Mars", rarity: "rare", unlocks: "Mars Rover Adventure" },
+          { name: "Jupiter", rarity: "legendary", unlocks: "Giant Planets Quest" },
+          { name: "Saturn", rarity: "rare", unlocks: "Ring System Quiz" },
+          { name: "Uranus", rarity: "common", unlocks: null },
+          { name: "Neptune", rarity: "common", unlocks: null }
+        ],
+        questName: "Galaxy Explorer",
+        questReward: "Astronaut Avatar Outfit"
       },
       "Ocean Life": {
-        cards: ["Whale", "Dolphin", "Shark", "Octopus", "Coral", "Seahorse", "Jellyfish", "Starfish"],
-        rarity: { common: 0.6, rare: 0.3, legendary: 0.1 }
+        cards: [
+          { name: "Whale", rarity: "legendary", unlocks: "Marine Biology Quest" },
+          { name: "Dolphin", rarity: "rare", unlocks: "Communication Quiz" },
+          { name: "Shark", rarity: "rare", unlocks: "Predator Pack" },
+          { name: "Octopus", rarity: "legendary", unlocks: "Intelligence Tests" },
+          { name: "Coral", rarity: "common", unlocks: null },
+          { name: "Seahorse", rarity: "common", unlocks: null },
+          { name: "Jellyfish", rarity: "rare", unlocks: "Bioluminescence Quiz" },
+          { name: "Starfish", rarity: "common", unlocks: null }
+        ],
+        questName: "Ocean Explorer",
+        questReward: "Marine Biologist Avatar"
       },
       "Dinosaurs": {
-        cards: ["T-Rex", "Triceratops", "Stegosaurus", "Brontosaurus", "Velociraptor", "Pterodactyl"],
-        rarity: { common: 0.5, rare: 0.35, legendary: 0.15 }
+        cards: [
+          { name: "T-Rex", rarity: "legendary", unlocks: "Carnivore Quest" },
+          { name: "Triceratops", rarity: "rare", unlocks: "Herbivore Pack" },
+          { name: "Stegosaurus", rarity: "rare", unlocks: "Defense Mechanisms Quiz" },
+          { name: "Brontosaurus", rarity: "common", unlocks: null },
+          { name: "Velociraptor", rarity: "legendary", unlocks: "Pack Hunter Adventure" },
+          { name: "Pterodactyl", rarity: "rare", unlocks: "Flight Evolution Quiz" }
+        ],
+        questName: "Paleontologist",
+        questReward: "Dinosaur Expert Avatar"
       }
     };
 
+    // Avatar customization options
+    const avatarOptions = {
+      outfits: [
+        { name: "Wizard Robes", cost: 50, unlocked: false, description: "Mystical learning powers!" },
+        { name: "Astronaut Suit", cost: 100, unlocked: false, description: "Space exploration ready!" },
+        { name: "Lab Coat", cost: 75, unlocked: false, description: "Perfect for science experiments!" },
+        { name: "Adventure Gear", cost: 60, unlocked: false, description: "Ready for any quest!" }
+      ],
+      accessories: [
+        { name: "Magic Wand", cost: 30, unlocked: false, description: "Cast learning spells!" },
+        { name: "Telescope", cost: 40, unlocked: false, description: "Explore the cosmos!" },
+        { name: "Microscope", cost: 35, unlocked: false, description: "Discover tiny worlds!" },
+        { name: "Compass", cost: 25, unlocked: false, description: "Navigate knowledge!" }
+      ],
+      personalities: [
+        { name: "Enthusiastic", cost: 0, unlocked: true, description: "Super excited about learning!" },
+        { name: "Calm & Patient", cost: 20, unlocked: false, description: "Thoughtful and encouraging" },
+        { name: "Funny & Playful", cost: 25, unlocked: false, description: "Makes learning fun!" },
+        { name: "Wise Mentor", cost: 30, unlocked: false, description: "Deep wisdom and guidance" }
+      ]
+    };
+
+    // Quest system
+    const questSystem = {
+      "Solar Energy Quest": {
+        title: "Help Ender Power the Learning Station!",
+        description: "The learning station is running low on power! Complete solar energy quizzes to help Ender harness the sun's energy.",
+        requirements: ["Complete 3 science quizzes", "Score 80% or higher"],
+        reward: { gems: 100, card: "Solar Panel", achievement: "Solar Scientist" },
+        progress: { completed: 0, total: 3 }
+      },
+      "Galaxy Explorer": {
+        title: "Journey Through the Solar System",
+        description: "Join Ender on an epic space adventure! Collect all Solar System cards to unlock the galaxy.",
+        requirements: ["Collect all Solar System cards"],
+        reward: { gems: 200, outfit: "Astronaut Suit", achievement: "Galaxy Master" },
+        progress: { completed: 0, total: 9 }
+      }
+    };
+
+    // Speech settings and languages
+    const speechSettings = {
+      languages: [
+        { code: 'en-US', name: 'English (US)', voice: 'friendly' },
+        { code: 'en-GB', name: 'English (UK)', voice: 'polite' },
+        { code: 'zh-CN', name: '中文 (Mandarin)', voice: 'gentle' },
+        { code: 'zh-HK', name: '廣東話 (Cantonese)', voice: 'cheerful' },
+        { code: 'es-ES', name: 'Español', voice: 'warm' },
+        { code: 'fr-FR', name: 'Français', voice: 'elegant' }
+      ],
+      speeds: [
+        { value: 0.7, label: 'Slow', description: 'Perfect for careful listening' },
+        { value: 0.9, label: 'Normal', description: 'Standard speaking pace' },
+        { value: 1.1, label: 'Fast', description: 'Quick and energetic' }
+      ],
+      tones: [
+        { value: 0.8, label: 'Calm', description: 'Soothing and relaxed' },
+        { value: 1.0, label: 'Normal', description: 'Natural tone' },
+        { value: 1.2, label: 'Enthusiastic', description: 'Excited and motivating' }
+      ]
+    };
+
     const leaderboardData = [
-      { name: "Alex", score: 2450, cards: 89 },
-      { name: "Maya", score: 2180, cards: 76 },
-      { name: "Sam", score: 1920, cards: 82 },
-      { name: "Zoe", score: 1875, cards: 71 },
-      { name: "Riley", score: 1654, cards: 68 }
+      { name: "Alex", score: 2450, cards: 89, streak: 12, improvement: "+15%" },
+      { name: "Maya", score: 2180, cards: 76, streak: 8, improvement: "+22%" },
+      { name: "Sam", score: 1920, cards: 82, streak: 15, improvement: "+8%" },
+      { name: "Zoe", score: 1875, cards: 71, streak: 5, improvement: "+31%" },
+      { name: "Riley", score: 1654, cards: 68, streak: 9, improvement: "+18%" }
+    };
+
+    // Books for reading system
+    const bookLibrary = [
+      {
+        id: 1,
+        title: "The Magic Forest Adventure",
+        author: "Luna Starwriter",
+        chapters: [
+          { title: "Chapter 1: The Mysterious Path", content: "Once upon a time, in a forest where the trees whispered secrets...", quiz: [{ q: "What did the trees do in the forest?", a: "whisper secrets" }] },
+          { title: "Chapter 2: Meeting the Forest Guardian", content: "Deep in the forest, Maya encountered a glowing fairy...", quiz: [{ q: "Who did Maya meet in the forest?", a: "a glowing fairy" }] }
+        ],
+        difficulty: "beginner",
+        subject: "english"
+      },
+      {
+        id: 2,
+        title: "Journey to the Stars",
+        author: "Dr. Cosmos",
+        chapters: [
+          { title: "Chapter 1: Building a Rocket", content: "To reach the stars, we need to understand rocket science...", quiz: [{ q: "What do we need to understand to reach the stars?", a: "rocket science" }] },
+          { title: "Chapter 2: The Launch", content: "With a thunderous roar, the rocket lifted off...", quiz: [{ q: "How did the rocket sound when it launched?", a: "thunderous roar" }] }
+        ],
+        difficulty: "intermediate",
+        subject: "science"
+      }
     ];
 
     // Main App Component
@@ -62,9 +211,34 @@
       const [playerName, setPlayerName] = useState('Player');
       const [gems, setGems] = useState(150);
       const [totalScore, setTotalScore] = useState(1200);
-      const [collectedCards, setCollectedCards] = useState(['Sun', 'Earth', 'Mars', 'Whale', 'T-Rex']);
-      const [achievements, setAchievements] = useState([]);
+      const [collectedCards, setCollectedCards] = useState([
+        { name: 'Sun', rarity: 'legendary', series: 'Solar System' },
+        { name: 'Earth', rarity: 'legendary', series: 'Solar System' },
+        { name: 'Mars', rarity: 'rare', series: 'Solar System' },
+        { name: 'Whale', rarity: 'legendary', series: 'Ocean Life' },
+        { name: 'T-Rex', rarity: 'legendary', series: 'Dinosaurs' }
+      ]);
+      const [achievements, setAchievements] = useState(['Week Warrior', 'Card Collector']);
       const [streak, setStreak] = useState(7);
+      const [playerLevel, setPlayerLevel] = useState(5);
+      const [currentDifficulty, setCurrentDifficulty] = useState('beginner');
+      
+      // Avatar customization
+      const [currentAvatar, setCurrentAvatar] = useState({
+        outfit: 'default',
+        accessory: 'none',
+        personality: 'Enthusiastic'
+      });
+      const [unlockedItems, setUnlockedItems] = useState(['Enthusiastic']);
+      
+      // Speech settings
+      const [speechPreferences, setSpeechPreferences] = useState({
+        language: 'en-US',
+        speed: 0.9,
+        tone: 1.0,
+        enabled: true
+      });
+      const [inputMode, setInputMode] = useState('speech'); // 'speech' or 'text'
       
       // Quiz state
       const [currentQuiz, setCurrentQuiz] = useState(null);
@@ -73,29 +247,74 @@
       const [feedback, setFeedback] = useState('');
       const [isListening, setIsListening] = useState(false);
       const [quizScore, setQuizScore] = useState(0);
+      const [quizStreak, setQuizStreak] = useState(0);
+      const [performanceHistory, setPerformanceHistory] = useState({});
       
       // AI Conversation state
       const [isTeaching, setIsTeaching] = useState(false);
       const [conversationHistory, setConversationHistory] = useState([]);
       const [currentTopic, setCurrentTopic] = useState('');
+      const [teachingScore, setTeachingScore] = useState(0);
       
       // Card pack opening
       const [isOpeningPack, setIsOpeningPack] = useState(false);
       const [newCards, setNewCards] = useState([]);
+      const [pitySystеm, setPitySystem] = useState(0); // Guaranteed rare after 5 packs
       
       // Reading state
       const [currentBook, setCurrentBook] = useState(null);
       const [currentChapter, setCurrentChapter] = useState(0);
+      const [readingProgress, setReadingProgress] = useState({});
+      
+      // Quests and storyline
+      const [activeQuests, setActiveQuests] = useState([]);
+      const [completedQuests, setCompletedQuests] = useState([]);
+      const [currentStoryline, setCurrentStoryline] = useState('Galaxy Explorer');
+      
+      // Team features
+      const [playerTeam, setPlayerTeam] = useState(null);
+      const [teamChallenges, setTeamChallenges] = useState([]);
+      
+      // Settings
+      const [accessibilityMode, setAccessibilityMode] = useState(false);
+      const [dyslexiaFriendly, setDyslexiaFriendly] = useState(false);
+      const [reducedAnimations, setReducedAnimations] = useState(false);
+      const [leaderboardType, setLeaderboardType] = useState('overall'); // 'overall', 'improvement', 'streak'
 
-      // Speech functions
-      const speak = (text) => {
+      // Enhanced speech functions with multilingual support
+      const speak = (text, options = {}) => {
+        if (!speechPreferences.enabled) return;
+        
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 0.9;
-        utterance.pitch = 1.1;
+        utterance.rate = options.speed || speechPreferences.speed;
+        utterance.pitch = options.tone || speechPreferences.tone;
+        utterance.lang = options.language || speechPreferences.language;
+        
+        // Personality-based adjustments
+        if (currentAvatar.personality === 'Enthusiastic') {
+          utterance.pitch = Math.min(utterance.pitch * 1.1, 2.0);
+          utterance.rate = Math.min(utterance.rate * 1.05, 2.0);
+        } else if (currentAvatar.personality === 'Calm & Patient') {
+          utterance.pitch = Math.max(utterance.pitch * 0.9, 0.5);
+          utterance.rate = Math.max(utterance.rate * 0.85, 0.5);
+        } else if (currentAvatar.personality === 'Funny & Playful') {
+          utterance.pitch = utterance.pitch * (0.9 + Math.random() * 0.2);
+        }
+        
         window.speechSynthesis.speak(utterance);
       };
 
-      const listen = () => {
+      const getPersonalityGreeting = () => {
+        const greetings = {
+          'Enthusiastic': [`Hi ${playerName}! I'm Ender and I'm SO excited to learn with you! ✨`, "Let's have an amazing learning adventure together!"],
+          'Calm & Patient': [`Hello ${playerName}, I'm Ender. I'm here to help you learn at your own pace.`, "Take your time, I'll be here to guide you every step of the way."],
+          'Funny & Playful': [`Hey there ${playerName}! I'm Ender, your funny learning buddy! 😄`, "Ready for some fun? Learning is like a game - let's play!"],
+          'Wise Mentor': [`Greetings ${playerName}, I am Ender, your learning guide.`, "Knowledge is a treasure we'll discover together, young scholar."]
+        };
+        return greetings[currentAvatar.personality] || greetings['Enthusiastic'];
+      };
+
+      const listen = (callback = null) => {
         if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
           alert('Speech recognition not supported in this browser');
           return;
@@ -104,30 +323,73 @@
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.continuous = false;
         recognition.interimResults = false;
+        recognition.lang = speechPreferences.language;
         
         setIsListening(true);
         recognition.onresult = (event) => {
           const transcript = event.results[0][0].transcript;
+          const confidence = event.results[0][0].confidence;
+          
           setUserAnswer(transcript);
           setIsListening(false);
           
+          // Handle different contexts
           if (currentQuiz) {
-            checkAnswer(transcript);
+            checkAnswer(transcript, confidence);
+          } else if (isTeaching) {
+            handleTeachingResponse(transcript);
+          } else if (callback) {
+            callback(transcript);
           }
         };
         
-        recognition.onerror = () => {
+        recognition.onerror = (event) => {
           setIsListening(false);
+          if (event.error === 'no-speech') {
+            speak("I didn't hear anything. Could you try speaking again?");
+          } else if (event.error === 'audio-capture') {
+            speak("I'm having trouble hearing you. Please check your microphone.");
+          }
         };
         
         recognition.start();
       };
 
-      // Quiz functions
+      // Adaptive difficulty system
+      const getDifficultyLevel = (subject) => {
+        const history = performanceHistory[subject] || { attempts: 0, averageScore: 0 };
+        
+        if (history.attempts < 3) return 'beginner';
+        if (history.averageScore >= 90) return 'advanced';
+        if (history.averageScore >= 70) return 'intermediate';
+        return 'beginner';
+      };
+
+      const updatePerformanceHistory = (subject, score) => {
+        setPerformanceHistory(prev => {
+          const history = prev[subject] || { attempts: 0, totalScore: 0, averageScore: 0 };
+          const newAttempts = history.attempts + 1;
+          const newTotalScore = history.totalScore + score;
+          const newAverageScore = newTotalScore / newAttempts;
+          
+          return {
+            ...prev,
+            [subject]: {
+              attempts: newAttempts,
+              totalScore: newTotalScore,
+              averageScore: newAverageScore
+            }
+          };
+        });
+      };
+
+      // Enhanced quiz functions with adaptive difficulty
       const startQuiz = (subject) => {
-        const questions = sampleQuestions[subject] || [];
+        const difficulty = getDifficultyLevel(subject);
+        const questions = sampleQuestions[subject]?.[difficulty] || sampleQuestions[subject]?.beginner || [];
+        
         if (questions.length > 0) {
-          setCurrentQuiz({ subject, questions });
+          setCurrentQuiz({ subject, questions, difficulty });
           setCurrentQuestion(0);
           setQuizScore(0);
           setUserAnswer('');
@@ -135,28 +397,79 @@
           setCurrentScreen('quiz');
           
           setTimeout(() => {
-            speak(`Welcome to the ${subject} quiz! Let's start with question 1.`);
-            speak(questions[0].q);
+            const welcomeMsg = `Welcome to the ${subject} quiz! You're playing at ${difficulty} level.`;
+            speak(welcomeMsg);
+            setTimeout(() => {
+              speak(questions[0].q);
+            }, 2000);
           }, 500);
         }
       };
 
-      const checkAnswer = (answer) => {
+      const checkAnswer = (answer, confidence = 1.0) => {
         if (!currentQuiz) return;
         
         const question = currentQuiz.questions[currentQuestion];
-        const isCorrect = answer.toLowerCase().includes(question.a.toLowerCase());
+        let isCorrect = false;
+        let partialCredit = 0;
+        
+        if (question.type === 'fillblank') {
+          isCorrect = answer.toLowerCase().includes(question.a.toLowerCase());
+          if (!isCorrect && answer.toLowerCase().includes(question.a.toLowerCase().substring(0, 3))) {
+            partialCredit = 0.5; // Partial credit for close answers
+          }
+        } else if (question.type === 'openended') {
+          // Simple AI grading simulation
+          const wordCount = answer.split(' ').length;
+          const hasKeyTerms = question.a ? answer.toLowerCase().includes(question.a.toLowerCase()) : true;
+          
+          if (wordCount >= 10 && hasKeyTerms) {
+            isCorrect = true;
+          } else if (wordCount >= 5) {
+            partialCredit = 0.7;
+          } else {
+            partialCredit = 0.3;
+          }
+        }
+        
+        let points = 0;
+        let feedbackMsg = "";
         
         if (isCorrect) {
-          const points = 50 + Math.floor(Math.random() * 30);
+          points = 50 + Math.floor(Math.random() * 30) + (question.difficulty * 20);
+          if (confidence > 0.8) points += 10; // Bonus for clear speech
+          
           setQuizScore(prev => prev + points);
           setGems(prev => prev + Math.floor(points / 10));
-          setFeedback(`🎉 Correct! You earned ${points} points!`);
-          speak(`Excellent! You earned ${points} points. Great job!`);
+          setQuizStreak(prev => prev + 1);
+          
+          feedbackMsg = `🎉 Excellent! You earned ${points} points!`;
+          
+          if (quizStreak >= 2) {
+            feedbackMsg += ` ${quizStreak + 1} in a row - you're on fire! 🔥`;
+            points += quizStreak * 5; // Streak bonus
+          }
+          
+          const encouragement = getPersonalityEncouragement(true);
+          speak(`${encouragement} You earned ${points} points!`);
+          
+        } else if (partialCredit > 0) {
+          points = Math.floor((50 + Math.floor(Math.random() * 30)) * partialCredit);
+          setQuizScore(prev => prev + points);
+          setGems(prev => prev + Math.floor(points / 15));
+          
+          feedbackMsg = `⭐ Good effort! You got ${Math.floor(partialCredit * 100)}% credit and earned ${points} points!`;
+          speak("Good try! You're getting close. Let me help you understand better.");
+          
         } else {
-          setFeedback(`❌ Not quite right. The answer is ${question.a}. Try the next question!`);
-          speak(`Not quite right. The correct answer is ${question.a}. Don't worry, keep trying!`);
+          setQuizStreak(0);
+          feedbackMsg = `❌ Not quite right. The answer is "${question.a}". Don't give up!`;
+          
+          const encouragement = getPersonalityEncouragement(false);
+          speak(`${encouragement} The correct answer is ${question.a}. You'll get the next one!`);
         }
+        
+        setFeedback(feedbackMsg);
         
         setTimeout(() => {
           if (currentQuestion < currentQuiz.questions.length - 1) {
@@ -172,20 +485,56 @@
         }, 3000);
       };
 
+      const getPersonalityEncouragement = (isCorrect) => {
+        const personality = currentAvatar.personality;
+        const correct = {
+          'Enthusiastic': ["Amazing!", "Fantastic!", "You're incredible!", "Brilliant work!"],
+          'Calm & Patient': ["Well done.", "Excellent work.", "Very good.", "Nice job."],
+          'Funny & Playful': ["Awesome sauce!", "You rock!", "Super duper!", "Woohoo!"],
+          'Wise Mentor': ["Excellent, young scholar.", "Your wisdom grows.", "Well reasoned.", "Impressive deduction."]
+        };
+        
+        const incorrect = {
+          'Enthusiastic': ["No worries!", "It's okay!", "Keep trying!", "You've got this!"],
+          'Calm & Patient': ["That's alright.", "Take your time.", "Learning takes practice.", "Try again when ready."],
+          'Funny & Playful': ["Oopsie!", "No biggie!", "Everyone makes mistakes!", "Try again, champ!"],
+          'Wise Mentor': ["Mistakes are part of learning.", "Patience, young one.", "Consider this carefully.", "Reflect and try again."]
+        };
+        
+        const responses = isCorrect ? correct[personality] : incorrect[personality];
+        return responses[Math.floor(Math.random() * responses.length)];
+      };
+
       const completeQuiz = () => {
-        setTotalScore(prev => prev + quizScore);
-        const gemsEarned = Math.floor(quizScore / 25);
+        const subject = currentQuiz.subject;
+        const finalScore = quizScore;
+        const accuracy = (quizStreak / currentQuiz.questions.length) * 100;
+        
+        updatePerformanceHistory(subject, accuracy);
+        setTotalScore(prev => prev + finalScore);
+        
+        const gemsEarned = Math.floor(finalScore / 25);
         setGems(prev => prev + gemsEarned);
         
-        speak(`Quiz completed! You scored ${quizScore} points and earned ${gemsEarned} gems!`);
+        // Check for level up
+        if (totalScore + finalScore > playerLevel * 500) {
+          setPlayerLevel(prev => prev + 1);
+          speak(`Congratulations! You've reached level ${playerLevel + 1}!`);
+        }
+        
+        // Achievement checks
+        checkAchievements(subject, accuracy, gemsEarned);
+        
+        speak(`Quiz completed! You scored ${finalScore} points with ${Math.round(accuracy)}% accuracy and earned ${gemsEarned} gems!`);
         
         setTimeout(() => {
           setCurrentScreen('home');
           setCurrentQuiz(null);
-        }, 2000);
+          setQuizStreak(0);
+        }, 3000);
       };
 
-      // Card functions
+      // Enhanced card functions with pity system and quest integration
       const openCardPack = () => {
         if (gems < 100) {
           speak("You need at least 100 gems to open a card pack!");
@@ -196,36 +545,336 @@
         setIsOpeningPack(true);
         
         setTimeout(() => {
-          const allCards = Object.values(cardSeries).flatMap(series => series.cards);
-          const newCard = allCards[Math.floor(Math.random() * allCards.length)];
+          let newCard;
+          let rarity;
+          
+          // Pity system - guarantee rare after 5 packs without rare
+          if (pitySystеm >= 4) {
+            // Guaranteed rare or legendary
+            const rareCards = Object.values(cardSeries).flatMap(series => 
+              series.cards.filter(card => card.rarity === 'rare' || card.rarity === 'legendary')
+            );
+            newCard = rareCards[Math.floor(Math.random() * rareCards.length)];
+            rarity = newCard.rarity;
+            setPitySystem(0);
+          } else {
+            // Normal randomization
+            const random = Math.random();
+            if (random < 0.1) rarity = 'legendary';
+            else if (random < 0.4) rarity = 'rare';
+            else rarity = 'common';
+            
+            const availableCards = Object.values(cardSeries).flatMap(series => 
+              series.cards.filter(card => card.rarity === rarity)
+            );
+            newCard = availableCards[Math.floor(Math.random() * availableCards.length)];
+            
+            if (rarity === 'common') {
+              setPitySystem(prev => prev + 1);
+            } else {
+              setPitySystem(0);
+            }
+          }
+          
           setNewCards([newCard]);
           setCollectedCards(prev => [...prev, newCard]);
           setIsOpeningPack(false);
-          speak(`Congratulations! You got a ${newCard} card!`);
+          
+          const rarityEmoji = rarity === 'legendary' ? '💫' : rarity === 'rare' ? '⭐' : '✨';
+          speak(`Congratulations! You got a ${rarity} ${newCard.name} card! ${rarityEmoji}`);
+          
+          // Check for quest completion
+          checkQuestProgress(newCard);
+          
+          // Check for series completion
+          checkSeriesCompletion(newCard);
+          
         }, 2000);
       };
 
-      // AI Teaching functions
+      const checkQuestProgress = (newCard) => {
+        // Check if card unlocks special content
+        if (newCard.unlocks) {
+          speak(`Special unlock! Your ${newCard.name} card gives you access to ${newCard.unlocks}!`);
+          // Add logic to unlock special quizzes or content
+        }
+        
+        // Update quest progress for card collection quests
+        Object.entries(cardSeries).forEach(([seriesName, series]) => {
+          const collectedFromSeries = collectedCards.filter(card => card.series === seriesName).length;
+          if (collectedFromSeries === series.cards.length && !completedQuests.includes(series.questName)) {
+            completeQuest(series.questName, series.questReward);
+          }
+        });
+      };
+
+      const checkSeriesCompletion = (newCard) => {
+        const series = Object.entries(cardSeries).find(([name, data]) => 
+          data.cards.some(card => card.name === newCard.name)
+        );
+        
+        if (series) {
+          const [seriesName, seriesData] = series;
+          const collectedFromSeries = collectedCards.filter(card => 
+            seriesData.cards.some(seriesCard => seriesCard.name === card.name)
+          );
+          
+          if (collectedFromSeries.length === seriesData.cards.length) {
+            setAchievements(prev => [...prev, `${seriesName} Master`]);
+            speak(`Amazing! You've completed the ${seriesName} collection! Achievement unlocked!`);
+            
+            // Award series completion bonus
+            setGems(prev => prev + 200);
+            if (seriesData.questReward) {
+              unlockAvatarItem(seriesData.questReward);
+            }
+          }
+        }
+      };
+
+      const completeQuest = (questName, reward) => {
+        setCompletedQuests(prev => [...prev, questName]);
+        setGems(prev => prev + reward.gems);
+        
+        if (reward.card) {
+          setCollectedCards(prev => [...prev, { name: reward.card, rarity: 'legendary', series: 'Special' }]);
+        }
+        
+        if (reward.outfit) {
+          unlockAvatarItem(reward.outfit);
+        }
+        
+        if (reward.achievement) {
+          setAchievements(prev => [...prev, reward.achievement]);
+        }
+        
+        speak(`Quest completed! ${questName} finished! You earned ${reward.gems} gems!`);
+      };
+
+      const unlockAvatarItem = (itemName) => {
+        setUnlockedItems(prev => [...prev, itemName]);
+        speak(`New avatar item unlocked: ${itemName}! Check your profile to equip it.`);
+      };
+
+      const checkAchievements = (subject, accuracy, gemsEarned) => {
+        const newAchievements = [];
+        
+        // Perfect score achievement
+        if (accuracy === 100 && !achievements.includes('Perfect Scholar')) {
+          newAchievements.push('Perfect Scholar');
+        }
+        
+        // Gem collector achievements
+        if (gems > 500 && !achievements.includes('Gem Master')) {
+          newAchievements.push('Gem Master');
+        }
+        
+        // Subject mastery achievements
+        const subjectMastery = `${subject.charAt(0).toUpperCase() + subject.slice(1)} Expert`;
+        const history = performanceHistory[subject];
+        if (history && history.attempts >= 5 && history.averageScore >= 85 && !achievements.includes(subjectMastery)) {
+          newAchievements.push(subjectMastery);
+        }
+        
+        // Streak achievements
+        if (streak >= 14 && !achievements.includes('Two Week Warrior')) {
+          newAchievements.push('Two Week Warrior');
+        }
+        
+        if (newAchievements.length > 0) {
+          setAchievements(prev => [...prev, ...newAchievements]);
+          newAchievements.forEach(achievement => {
+            speak(`Achievement unlocked: ${achievement}!`);
+          });
+        }
+      };
+
+      // Enhanced AI Teaching functions with dynamic conversation
       const startTeaching = (topic) => {
         setCurrentTopic(topic);
         setIsTeaching(true);
         setConversationHistory([]);
         setCurrentScreen('teaching');
+        setTeachingScore(0);
         
-        const greetings = [
-          `Hi ${playerName}! I'm Ender, your learning fairy! 🧚‍♀️`,
-          `I don't know much about ${topic}. Can you teach me about it?`,
-          `I'm really curious to learn! Please explain it to me in your own words.`
-        ];
+        const greetings = getPersonalityGreeting();
+        greetings.push(`I don't know much about ${topic}. Can you teach me about it?`);
+        greetings.push("I'm really curious to learn! Please explain it to me in your own words.");
         
         setTimeout(() => {
           greetings.forEach((msg, index) => {
             setTimeout(() => {
               speak(msg);
-              setConversationHistory(prev => [...prev, { speaker: 'Ender', message: msg }]);
-            }, index * 2000);
+              setConversationHistory(prev => [...prev, { speaker: 'Ender', message: msg, timestamp: Date.now() }]);
+            }, index * 2500);
           });
         }, 500);
+      };
+
+      const handleTeachingResponse = (userResponse) => {
+        // Add user response to conversation
+        setConversationHistory(prev => [...prev, { 
+          speaker: playerName, 
+          message: userResponse, 
+          timestamp: Date.now() 
+        }]);
+        
+        // Simple AI response generation based on keywords and topic
+        const response = generateAIResponse(userResponse, currentTopic);
+        const points = Math.floor(userResponse.split(' ').length * 2) + Math.floor(Math.random() * 20);
+        
+        setTeachingScore(prev => prev + points);
+        setGems(prev => prev + Math.floor(points / 5));
+        
+        setTimeout(() => {
+          speak(response);
+          setConversationHistory(prev => [...prev, { 
+            speaker: 'Ender', 
+            message: response, 
+            timestamp: Date.now() 
+          }]);
+        }, 1500);
+      };
+
+      const generateAIResponse = (userInput, topic) => {
+        const personality = currentAvatar.personality;
+        const wordCount = userInput.split(' ').length;
+        
+        const responses = {
+          'Enthusiastic': {
+            good: ["That's amazing! Tell me more!", "Wow, that's so cool! What else?", "I love learning about this! Keep going!"],
+            clarify: ["That's interesting! Can you explain more about that part?", "Ooh, I want to know more about that!", "That sounds important! Can you help me understand better?"],
+            encourage: ["You're such a great teacher!", "I'm learning so much from you!", "You explain things so well!"]
+          },
+          'Calm & Patient': {
+            good: ["Thank you for explaining that.", "I see. That's very helpful.", "That makes sense. Please continue."],
+            clarify: ["Could you elaborate on that point?", "I'd like to understand that better.", "Can you provide more details?"],
+            encourage: ["You're doing well.", "Thank you for your patience.", "Your explanation is clear."]
+          },
+          'Funny & Playful': {
+            good: ["Haha, that's awesome!", "Cool beans! What's next?", "You rock at teaching!"],
+            clarify: ["Hmm, can you break that down for my tiny brain?", "I'm a bit confused - help a fairy out?", "Ooh, that sounds fancy! Explain more!"],
+            encourage: ["You're the best teacher ever!", "Learning is so fun with you!", "You make everything sound interesting!"]
+          },
+          'Wise Mentor': {
+            good: ["Your knowledge is impressive.", "A wise observation indeed.", "You demonstrate good understanding."],
+            clarify: ["Expand upon that concept, young scholar.", "Elaborate on that principle.", "What deeper meaning lies within?"],
+            encourage: ["Your teaching skills grow stronger.", "Well explained, young master.", "You show the wisdom of a true educator."]
+          }
+        };
+        
+        const personalityResponses = responses[personality] || responses['Enthusiastic'];
+        
+        // Topic-specific follow-up questions
+        const topicQuestions = {
+          'Photosynthesis': ["What do plants need for photosynthesis?", "How do plants make oxygen?", "Why are plants green?"],
+          'Solar System': ["Which planet is your favorite and why?", "How far is the sun from Earth?", "What makes planets stay in orbit?"],
+          'Water Cycle': ["What happens to water when it evaporates?", "Where do clouds come from?", "Why does it rain?"],
+          'Dinosaurs': ["What did dinosaurs eat?", "How do we know about dinosaurs?", "Why did dinosaurs become extinct?"],
+          'Fractions': ["How do you add fractions?", "What's the difference between numerator and denominator?", "Can you give me an example?"],
+          'Gravity': ["What makes things fall down?", "Does gravity work in space?", "How does gravity affect the planets?"]
+        };
+        
+        if (wordCount > 15) {
+          // Good detailed response
+          const followUp = topicQuestions[topic] ? topicQuestions[topic][Math.floor(Math.random() * topicQuestions[topic].length)] : "";
+          return `${personalityResponses.good[Math.floor(Math.random() * personalityResponses.good.length)]} ${followUp}`;
+        } else if (wordCount > 5) {
+          // Need more details
+          return personalityResponses.clarify[Math.floor(Math.random() * personalityResponses.clarify.length)];
+        } else {
+          // Encourage more explanation
+          return personalityResponses.encourage[Math.floor(Math.random() * personalityResponses.encourage.length)];
+        }
+      };
+
+      // Reading system functions
+      const startReading = (bookId) => {
+        const book = bookLibrary.find(b => b.id === bookId);
+        if (book) {
+          setCurrentBook(book);
+          setCurrentChapter(0);
+          setCurrentScreen('reading');
+          
+          setTimeout(() => {
+            speak(`Let's read "${book.title}" by ${book.author}. Chapter 1: ${book.chapters[0].title}`);
+          }, 500);
+        }
+      };
+
+      const readChapter = (chapterIndex) => {
+        if (!currentBook || !currentBook.chapters[chapterIndex]) return;
+        
+        const chapter = currentBook.chapters[chapterIndex];
+        setCurrentChapter(chapterIndex);
+        
+        // Update reading progress
+        setReadingProgress(prev => ({
+          ...prev,
+          [currentBook.id]: Math.max(prev[currentBook.id] || 0, chapterIndex + 1)
+        }));
+        
+        speak(`Chapter ${chapterIndex + 1}: ${chapter.title}`);
+        setTimeout(() => {
+          speak(chapter.content);
+        }, 2000);
+      };
+
+      const completeChapter = () => {
+        if (!currentBook) return;
+        
+        const chapter = currentBook.chapters[currentChapter];
+        if (chapter.quiz && chapter.quiz.length > 0) {
+          // Start chapter quiz
+          setCurrentQuiz({
+            subject: 'reading',
+            questions: chapter.quiz,
+            difficulty: currentBook.difficulty,
+            bookTitle: currentBook.title,
+            chapterTitle: chapter.title
+          });
+          setCurrentQuestion(0);
+          setQuizScore(0);
+          setUserAnswer('');
+          setFeedback('');
+          setCurrentScreen('quiz');
+          
+          setTimeout(() => {
+            speak("Great reading! Now let's see how well you understood the chapter.");
+            setTimeout(() => {
+              speak(chapter.quiz[0].q);
+            }, 1500);
+          }, 500);
+        } else {
+          // Award reading completion points
+          const points = 30 + Math.floor(Math.random() * 20);
+          setTotalScore(prev => prev + points);
+          setGems(prev => prev + Math.floor(points / 8));
+          
+          speak(`Great job reading! You earned ${points} points!`);
+          
+          // Check if book is completed
+          if (currentChapter === currentBook.chapters.length - 1) {
+            completeBook();
+          }
+        }
+      };
+
+      const completeBook = () => {
+        if (!currentBook) return;
+        
+        const bookPoints = 100 + (currentBook.chapters.length * 20);
+        setTotalScore(prev => prev + bookPoints);
+        setGems(prev => prev + Math.floor(bookPoints / 5));
+        
+        setAchievements(prev => [...prev, `${currentBook.title} Reader`]);
+        
+        speak(`Congratulations! You've completed "${currentBook.title}"! You earned ${bookPoints} points and a special achievement!`);
+        
+        setTimeout(() => {
+          setCurrentScreen('reading');
+          setCurrentBook(null);
+        }, 3000);
       };
 
       // Navigation Components
