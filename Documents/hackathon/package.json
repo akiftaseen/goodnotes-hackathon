@@ -1,0 +1,22 @@
+{
+  "name": "ankid-learning-platform",
+  "version": "1.0.0",
+  "description": "Gamified learning platform with speech-to-speech interaction",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "download-deps": "./download-deps-fixed.sh",
+    "build": "echo 'Building for production...' && cp ankid-robust.html dist/index.html"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [
+    "education",
+    "gamification",
+    "speech-recognition",
+    "learning",
+    "kids"
+  ],
+  "author": "ANKID Team",
+  "license": "MIT"
+}

@@ -1,0 +1,301 @@
+{
+  "cardSeries": {
+    "Space Explorer": {
+      "color": "from-purple-500 to-blue-600",
+      "theme": "Cosmic Adventures",
+      "cards": [
+        {
+          "name": "Rocket Ship",
+          "rarity": "common",
+          "description": "Launch into learning!",
+          "utility": {
+            "type": "speed_boost",
+            "effect": "Double XP for next quiz",
+            "duration": 1
+          }
+        },
+        {
+          "name": "Black Hole",
+          "rarity": "epic",
+          "description": "Absorbs all wrong answers!",
+          "utility": {
+            "type": "error_immunity",
+            "effect": "Next wrong answer doesn't break streak",
+            "duration": 1
+          }
+        },
+        {
+          "name": "Solar System",
+          "rarity": "rare",
+          "description": "Knowledge orbits around you!",
+          "utility": {
+            "type": "hint_master",
+            "effect": "Unlimited hints for 10 minutes",
+            "duration": 10
+          }
+        },
+        {
+          "name": "Astronaut",
+          "rarity": "rare",
+          "description": "Explore the frontiers of knowledge!",
+          "utility": {
+            "type": "subject_unlock",
+            "effect": "Unlock advanced space science quizzes",
+            "permanent": true
+          }
+        },
+        {
+          "name": "Alien Friend",
+          "rarity": "legendary",
+          "description": "Learn universal languages!",
+          "utility": {
+            "type": "language_boost",
+            "effect": "All answers accepted in any supported language",
+            "duration": 30
+          }
+        }
+      ]
+    },
+    "Ocean Adventure": {
+      "color": "from-blue-500 to-teal-600",
+      "theme": "Deep Sea Discovery",
+      "cards": [
+        {
+          "name": "Deep Sea Diver",
+          "rarity": "common",
+          "description": "Dive deep into knowledge!",
+          "utility": {
+            "type": "depth_bonus",
+            "effect": "+5 gems for detailed answers",
+            "duration": 5
+          }
+        },
+        {
+          "name": "Whale Song",
+          "rarity": "rare",
+          "description": "Communicate across vast distances!",
+          "utility": {
+            "type": "voice_clarity",
+            "effect": "Perfect speech recognition for 15 minutes",
+            "duration": 15
+          }
+        },
+        {
+          "name": "Coral Reef",
+          "rarity": "epic",
+          "description": "A thriving ecosystem of learning!",
+          "utility": {
+            "type": "ecosystem_bonus",
+            "effect": "Connecting related topics gives bonus gems",
+            "duration": 20
+          }
+        },
+        {
+          "name": "Treasure Chest",
+          "rarity": "legendary",
+          "description": "Hidden knowledge awaits!",
+          "utility": {
+            "type": "treasure_hunt",
+            "effect": "Random bonus card after each correct answer",
+            "duration": 3
+          }
+        },
+        {
+          "name": "Submarine",
+          "rarity": "rare",
+          "description": "Navigate the depths safely!",
+          "utility": {
+            "type": "safe_exploration",
+            "effect": "No penalty for wrong answers",
+            "duration": 10
+          }
+        }
+      ]
+    },
+    "Magic Forest": {
+      "color": "from-green-500 to-emerald-600",
+      "theme": "Enchanted Learning",
+      "cards": [
+        {
+          "name": "Wise Owl",
+          "rarity": "rare",
+          "description": "Wisdom guides your path!",
+          "utility": {
+            "type": "wisdom_bonus",
+            "effect": "See correct answer after 2 wrong attempts",
+            "permanent": true
+          }
+        },
+        {
+          "name": "Magic Tree",
+          "rarity": "epic",
+          "description": "Grows stronger with knowledge!",
+          "utility": {
+            "type": "growth_multiplier",
+            "effect": "Gem earning rate doubled",
+            "duration": 15
+          }
+        },
+        {
+          "name": "Fairy Tale",
+          "rarity": "common",
+          "description": "Every answer tells a story!",
+          "utility": {
+            "type": "story_mode",
+            "effect": "Questions become mini-stories",
+            "duration": 10
+          }
+        },
+        {
+          "name": "Rainbow Bridge",
+          "rarity": "legendary",
+          "description": "Connects all subjects together!",
+          "utility": {
+            "type": "subject_bridge",
+            "effect": "Cross-subject questions worth double gems",
+            "duration": 25
+          }
+        },
+        {
+          "name": "Crystal Cave",
+          "rarity": "epic",
+          "description": "Reveals hidden knowledge!",
+          "utility": {
+            "type": "revelation",
+            "effect": "See difficulty level of upcoming questions",
+            "duration": 20
+          }
+        }
+      ]
+    }
+  },
+  "questTemplates": {
+    "galaxy_explorer": {
+      "title": "Galaxy Explorer",
+      "description": "Journey through space to master cosmic knowledge!",
+      "chapters": [
+        {
+          "title": "Launch Preparations",
+          "story": "Your avatar needs to learn about rocket science before the big launch!",
+          "requirements": {
+            "quiz_completion": { "subject": "science", "topic": "physics", "score": 70 }
+          },
+          "reward": { "gems": 50, "story_unlock": true }
+        },
+        {
+          "title": "Into the Void",
+          "story": "Navigate through asteroid fields using your math skills!",
+          "requirements": {
+            "quiz_completion": { "subject": "math", "topic": "geometry", "score": 80 }
+          },
+          "reward": { "gems": 75, "card": "Space Explorer:Astronaut" }
+        },
+        {
+          "title": "Alien Encounter",
+          "story": "Communicate with alien civilizations using language skills!",
+          "requirements": {
+            "quiz_completion": { "subject": "english", "topic": "communication", "score": 85 }
+          },
+          "reward": { "gems": 100, "card": "Space Explorer:Alien Friend", "achievement": "Cosmic Communicator" }
+        }
+      ]
+    }
+  },
+  "achievementSystem": {
+    "learning_milestones": [
+      {
+        "id": "first_steps",
+        "title": "First Steps",
+        "description": "Complete your first quiz",
+        "icon": "👶",
+        "requirement": { "quizzes_completed": 1 },
+        "reward": { "gems": 25, "title": "Beginner" }
+      },
+      {
+        "id": "streak_master",
+        "title": "Streak Master",
+        "description": "Achieve a 10-question streak",
+        "icon": "🔥",
+        "requirement": { "max_streak": 10 },
+        "reward": { "gems": 100, "title": "Streak Master" }
+      },
+      {
+        "id": "card_collector",
+        "title": "Card Collector",
+        "description": "Collect 25 different cards",
+        "icon": "🃏",
+        "requirement": { "unique_cards": 25 },
+        "reward": { "gems": 200, "title": "Collector" }
+      },
+      {
+        "id": "teacher",
+        "title": "Master Teacher",
+        "description": "Help the AI learn 5 different topics",
+        "icon": "🎓",
+        "requirement": { "teaching_sessions": 5 },
+        "reward": { "gems": 150, "cosmetic": "crown", "title": "Teacher" }
+      },
+      {
+        "id": "polyglot",
+        "title": "Polyglot",
+        "description": "Answer questions in 3 different languages",
+        "icon": "🌍",
+        "requirement": { "languages_used": 3 },
+        "reward": { "gems": 300, "title": "Polyglot" }
+      }
+    ]
+  },
+  "difficultyProgression": {
+    "math": {
+      "beginner": {
+        "topics": ["basic_arithmetic", "counting", "shapes"],
+        "question_types": ["multiple_choice", "fill_blank"],
+        "max_difficulty": 2
+      },
+      "intermediate": {
+        "topics": ["multiplication", "division", "fractions", "geometry"],
+        "question_types": ["multiple_choice", "fill_blank", "short_answer"],
+        "max_difficulty": 4
+      },
+      "advanced": {
+        "topics": ["algebra", "trigonometry", "calculus_basics"],
+        "question_types": ["multiple_choice", "short_answer", "problem_solving"],
+        "max_difficulty": 6
+      }
+    },
+    "science": {
+      "beginner": {
+        "topics": ["animals", "plants", "weather", "body_parts"],
+        "question_types": ["multiple_choice", "image_identification"],
+        "max_difficulty": 2
+      },
+      "intermediate": {
+        "topics": ["solar_system", "life_cycles", "states_of_matter", "simple_machines"],
+        "question_types": ["multiple_choice", "fill_blank", "short_answer"],
+        "max_difficulty": 4
+      },
+      "advanced": {
+        "topics": ["chemistry", "physics", "biology", "earth_science"],
+        "question_types": ["multiple_choice", "short_answer", "experiment_design"],
+        "max_difficulty": 6
+      }
+    },
+    "english": {
+      "beginner": {
+        "topics": ["alphabet", "sight_words", "simple_sentences"],
+        "question_types": ["multiple_choice", "fill_blank"],
+        "max_difficulty": 2
+      },
+      "intermediate": {
+        "topics": ["grammar", "vocabulary", "reading_comprehension"],
+        "question_types": ["multiple_choice", "fill_blank", "short_answer"],
+        "max_difficulty": 4
+      },
+      "advanced": {
+        "topics": ["literature", "creative_writing", "advanced_grammar"],
+        "question_types": ["short_answer", "essay", "analysis"],
+        "max_difficulty": 6
+      }
+    }
+  }
+}

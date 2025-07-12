@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANKID - Gamified Learning Adventure</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .header h1 {
+      font-size: 4rem;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      font-size: 1.5rem;
+      color: rgba(255,255,255,0.9);
+    }
+    
+    .stats-card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .player-info h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .subjects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .subject-card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .subject-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    
+    .subject-icon {
+      font-size: 4rem;
+      margin-bottom: 15px;
+    }
+    
+    .subject-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .quiz-container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .question {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    
+    .answer-input {
+      width: 100%;
+      max-width: 400px;
+      padding: 15px;
+      font-size: 1.2rem;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .btn {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px;
+    }
+    
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(45deg, #2196F3, #1976D2);
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(45deg, #FF9800, #F57C00);
+    }
+    
+    .btn-danger {
+      background: linear-gradient(45deg, #f44336, #d32f2f);
+    }
+    
+    .feedback {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .feedback.correct {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .feedback.incorrect {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .card {
+      background: linear-gradient(45deg, #9C27B0, #673AB7);
+      border-radius: 10px;
+      padding: 15px;
+      color: white;
+      text-align: center;
+      position: relative;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .card.common { background: linear-gradient(45deg, #9E9E9E, #757575); }
+    .card.rare { background: linear-gradient(45deg, #2196F3, #1976D2); }
+    .card.epic { background: linear-gradient(45deg, #9C27B0, #673AB7); }
+    .card.legendary { background: linear-gradient(45deg, #FF9800, #F57C00); }
+    
+    .card-new {
+      animation: glow 2s infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+      to { box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+    }
+    
+    .fairy {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(45deg, #E91E63, #9C27B0);
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 2rem;
+      animation: float 3s ease-in-out infinite;
+      z-index: 1000;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .ranking {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+    }
+    
+    .ranking-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .ranking-item.current {
+      background: #fff3cd;
+      border-radius: 5px;
+    }
+    
+    .back-btn {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 { font-size: 2.5rem; }
+      .header p { font-size: 1.2rem; }
+      .stats { justify-content: center; }
+      .subjects { grid-template-columns: 1fr; }
+      .question { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Dashboard View -->
+    <div id="dashboard">
+      <div class="header">
+        <h1>🎓 ANKID</h1>
+        <p>Your Magical Learning Adventure!</p>
+      </div>
+
+      <div class="stats-card">
+        <div class="stats-row">
+          <div class="player-info">
+            <h2>Welcome back, Explorer! 👋</h2>
+            <p>Ready for another learning adventure?</p>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-icon">💎</div>
+              <div class="stat-value" id="gemsCount">0</div>
+              <div class="stat-label">Gems</div>
+            </div>
+            <div class="stat">
+              <div class="stat-icon">🃏</div>
+              <div class="stat-value" id="cardsCount">0</div>
+              <div class="stat-label">Cards</div>
+            </div>
+            <div class="stat">
+              <div class="stat-icon">🔥</div>
+              <div class="stat-value" id="streakCount">0</div>
+              <div class="stat-label">Streak</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subjects">
+        <div class="subject-card" onclick="startQuiz('math')">
+          <div class="subject-icon">🔢</div>
+          <div class="subject-title">Math</div>
+          <p>Test your math knowledge!</p>
+        </div>
+        <div class="subject-card" onclick="startQuiz('science')">
+          <div class="subject-icon">🔬</div>
+          <div class="subject-title">Science</div>
+          <p>Explore the wonders of science!</p>
+        </div>
+        <div class="subject-card" onclick="startQuiz('english')">
+          <div class="subject-icon">📚</div>
+          <div class="subject-title">English</div>
+          <p>Master your language skills!</p>
+        </div>
+      </div>
+
+      <div class="subjects">
+        <div class="subject-card" onclick="showCards()">
+          <div class="subject-icon">🎴</div>
+          <div class="subject-title">My Collection</div>
+          <p>View your magical cards!</p>
+        </div>
+        <div class="subject-card" onclick="showRanking()">
+          <div class="subject-icon">🏆</div>
+          <div class="subject-title">Leaderboard</div>
+          <p>See top learners!</p>
+        </div>
+        <div class="subject-card" onclick="showMarket()">
+          <div class="subject-icon">🏪</div>
+          <div class="subject-title">Card Market</div>
+          <p>Trade and buy cards!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz View -->
+    <div id="quiz" class="hidden">
+      <button class="back-btn" onclick="showDashboard()">← Back to Dashboard</button>
+      <div class="quiz-container">
+        <h2 id="quizTitle">Math Quiz</h2>
+        <div class="question" id="question">Loading question...</div>
+        <input type="text" class="answer-input" id="answerInput" placeholder="Type your answer here...">
+        <br>
+        <button class="btn btn-primary" onclick="submitAnswer()">Submit Answer</button>
+        <button class="btn btn-secondary" onclick="useVoice()">🎤 Use Voice</button>
+        <button class="btn" onclick="nextQuestion()">Next Question</button>
+        <div id="feedback" class="feedback hidden"></div>
+      </div>
+    </div>
+
+    <!-- Cards View -->
+    <div id="cards" class="hidden">
+      <button class="back-btn" onclick="showDashboard()">← Back to Dashboard</button>
+      <div class="stats-card">
+        <h2>My Card Collection</h2>
+        <div id="cardsContainer" class="cards-grid">
+          <p>Complete quizzes to earn your first cards!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ranking View -->
+    <div id="ranking" class="hidden">
+      <button class="back-btn" onclick="showDashboard()">← Back to Dashboard</button>
+      <div class="ranking">
+        <h2>🏆 Top Learners</h2>
+        <div id="rankingList"></div>
+      </div>
+    </div>
+
+    <!-- Market View -->
+    <div id="market" class="hidden">
+      <button class="back-btn" onclick="showDashboard()">← Back to Dashboard</button>
+      <div class="stats-card">
+        <div style="text-align: center;">
+          <div style="font-size: 4rem; margin-bottom: 20px;">🏪</div>
+          <h2>Card Market</h2>
+          <p>Coming Soon! Trade cards with friends and buy special edition cards with your gems!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Fairy -->
+  <div class="fairy" onclick="fairySpeak()">✨</div>
+
+  <script>
+    // Game State
+    let gameState = {
+      gems: 0,
+      cards: [],
+      streak: 0,
+      currentSubject: 'math',
+      currentQuestionIndex: 0,
+      score: 0
+    };
+
+    // Question Banks
+    const questionBanks = {
+      math: [
+        { question: "What is 7 + 5?", answer: "12", difficulty: 1 },
+        { question: "What is 15 - 8?", answer: "7", difficulty: 1 },
+        { question: "What is 6 × 4?", answer: "24", difficulty: 2 },
+        { question: "What is 36 ÷ 9?", answer: "4", difficulty: 2 },
+        { question: "What is the square root of 16?", answer: "4", difficulty: 3 }
+      ],
+      science: [
+        { question: "What planet is closest to the Sun?", answer: "mercury", difficulty: 1 },
+        { question: "What gas do plants absorb from the air?", answer: "carbon dioxide", difficulty: 2 },
+        { question: "How many bones are in an adult human body?", answer: "206", difficulty: 3 }
+      ],
+      english: [
+        { question: "Complete: The cat ___ on the mat", answer: "sat", difficulty: 1 },
+        { question: "What is the past tense of 'run'?", answer: "ran", difficulty: 2 },
+        { question: "Complete: She ___ to the store yesterday", answer: "went", difficulty: 2 }
+      ]
+    };
+
+    const cardSeries = {
+      'Space Explorer': ['Rocket Ship', 'Black Hole', 'Solar System', 'Astronaut', 'Alien Friend'],
+      'Ocean Adventure': ['Deep Sea Diver', 'Whale Song', 'Coral Reef', 'Treasure Chest', 'Submarine'],
+      'Magic Forest': ['Wise Owl', 'Magic Tree', 'Fairy Tale', 'Rainbow Bridge', 'Crystal Cave']
+    };
+
+    const rankings = [
+      { name: 'Sarah', gems: 1250, cards: 45 },
+      { name: 'Alex', gems: 1100, cards: 38 },
+      { name: 'Emma', gems: 950, cards: 42 },
+      { name: 'Explorer', gems: 0, cards: 0 },
+      { name: 'Jack', gems: 800, cards: 25 },
+      { name: 'Luna', gems: 750, cards: 30 }
+    ];
+
+    // Speech Functions
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.pitch = 1.1;
+        speechSynthesis.speak(utterance);
+      }
+    }
+
+    function useVoice() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert('Speech recognition not supported in this browser. Please type your answer.');
+        return;
+      }
+
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      const btn = event.target;
+      btn.innerHTML = '🎤 Listening...';
+      btn.style.background = 'linear-gradient(45deg, #f44336, #d32f2f)';
+
+      recognition.onresult = function(event) {
+        const spokenText = event.results[0][0].transcript;
+        document.getElementById('answerInput').value = spokenText;
+        btn.innerHTML = '🎤 Use Voice';
+        btn.style.background = 'linear-gradient(45deg, #FF9800, #F57C00)';
+      };
+
+      recognition.onerror = function(event) {
+        console.error('Speech recognition error:', event.error);
+        btn.innerHTML = '🎤 Use Voice';
+        btn.style.background = 'linear-gradient(45deg, #FF9800, #F57C00)';
+      };
+
+      recognition.onend = function() {
+        btn.innerHTML = '🎤 Use Voice';
+        btn.style.background = 'linear-gradient(45deg, #FF9800, #F57C00)';
+      };
+
+      recognition.start();
+    }
+
+    // Game Functions
+    function updateDisplay() {
+      document.getElementById('gemsCount').textContent = gameState.gems;
+      document.getElementById('cardsCount').textContent = gameState.cards.length;
+      document.getElementById('streakCount').textContent = gameState.streak;
+    }
+
+    function generateRandomCard() {
+      const seriesNames = Object.keys(cardSeries);
+      const randomSeries = seriesNames[Math.floor(Math.random() * seriesNames.length)];
+      const cards = cardSeries[randomSeries];
+      const randomCard = cards[Math.floor(Math.random() * cards.length)];
+      
+      const rarities = ['common', 'rare', 'epic', 'legendary'];
+      const rarityWeights = [50, 30, 15, 5];
+      let random = Math.random() * 100;
+      let rarity = 'common';
+      
+      for (let i = 0; i < rarities.length; i++) {
+        if (random < rarityWeights[i]) {
+          rarity = rarities[i];
+          break;
+        }
+        random -= rarityWeights[i];
+      }
+
+      return { series: randomSeries, name: randomCard, rarity, id: Date.now() + Math.random() };
+    }
+
+    function startQuiz(subject) {
+      gameState.currentSubject = subject;
+      gameState.currentQuestionIndex = 0;
+      showView('quiz');
+      
+      document.getElementById('quizTitle').textContent = subject.charAt(0).toUpperCase() + subject.slice(1) + ' Quiz';
+      loadQuestion();
+      speak(`Let's start your ${subject} quiz! Here's your first question.`);
+    }
+
+    function loadQuestion() {
+      const questions = questionBanks[gameState.currentSubject];
+      const question = questions[gameState.currentQuestionIndex];
+      
+      document.getElementById('question').textContent = question.question;
+      document.getElementById('answerInput').value = '';
+      document.getElementById('feedback').className = 'feedback hidden';
+      
+      setTimeout(() => speak(question.question), 500);
+    }
+
+    function submitAnswer() {
+      const answer = document.getElementById('answerInput').value.toLowerCase().trim();
+      const questions = questionBanks[gameState.currentSubject];
+      const currentQuestion = questions[gameState.currentQuestionIndex];
+      
+      const isCorrect = answer === currentQuestion.answer.toLowerCase().trim();
+      const points = isCorrect ? currentQuestion.difficulty * 10 : 0;
+      
+      const feedbackEl = document.getElementById('feedback');
+      
+      if (isCorrect) {
+        gameState.gems += points;
+        gameState.streak += 1;
+        
+        // Award card chance
+        if (Math.random() < 0.3) {
+          const newCard = generateRandomCard();
+          gameState.cards.push(newCard);
+          feedbackEl.textContent = `🎉 Correct! +${points} gems. You found a ${newCard.rarity} ${newCard.name} card!`;
+          speak(`Amazing! You earned ${points} gems and found a ${newCard.rarity} ${newCard.name} card!`);
+        } else {
+          feedbackEl.textContent = `✅ Correct! +${points} gems`;
+          speak(`Excellent work! You earned ${points} gems!`);
+        }
+        feedbackEl.className = 'feedback correct';
+      } else {
+        gameState.streak = 0;
+        feedbackEl.textContent = `❌ Not quite right. The answer is ${currentQuestion.answer}.`;
+        feedbackEl.className = 'feedback incorrect';
+        speak(`Oops! The correct answer is ${currentQuestion.answer}. Keep trying!`);
+      }
+      
+      updateDisplay();
+    }
+
+    function nextQuestion() {
+      const questions = questionBanks[gameState.currentSubject];
+      gameState.currentQuestionIndex = (gameState.currentQuestionIndex + 1) % questions.length;
+      loadQuestion();
+    }
+
+    function showCards() {
+      showView('cards');
+      const container = document.getElementById('cardsContainer');
+      
+      if (gameState.cards.length === 0) {
+        container.innerHTML = '<p>Complete quizzes to earn your first cards!</p>';
+      } else {
+        container.innerHTML = gameState.cards.map(card => `
+          <div class="card ${card.rarity}">
+            <div style="font-size: 0.8rem; font-weight: bold;">${card.series}</div>
+            <div style="font-size: 1.5rem;">⭐</div>
+            <div style="font-size: 0.9rem; font-weight: bold;">${card.name}</div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function showRanking() {
+      showView('ranking');
+      
+      // Update current player stats
+      const updatedRankings = rankings.map(player => 
+        player.name === 'Explorer' 
+          ? { ...player, gems: gameState.gems, cards: gameState.cards.length }
+          : player
+      ).sort((a, b) => b.gems - a.gems);
+      
+      const list = document.getElementById('rankingList');
+      list.innerHTML = updatedRankings.slice(0, 10).map((player, index) => {
+        const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+        const isCurrentPlayer = player.name === 'Explorer';
+        
+        return `
+          <div class="ranking-item ${isCurrentPlayer ? 'current' : ''}">
+            <div>
+              <span style="margin-right: 10px;">${medal}</span>
+              <strong>${player.name}</strong>
+            </div>
+            <div>
+              <span style="margin-right: 15px;">💎 ${player.gems}</span>
+              <span>🃏 ${player.cards}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showMarket() {
+      showView('market');
+    }
+
+    function showDashboard() {
+      showView('dashboard');
+    }
+
+    function showView(viewName) {
+      const views = ['dashboard', 'quiz', 'cards', 'ranking', 'market'];
+      views.forEach(view => {
+        document.getElementById(view).className = view === viewName ? '' : 'hidden';
+      });
+    }
+
+    function fairySpeak() {
+      speak("Hi there! I'm Amber, your learning companion! Click on any subject to start earning gems and collecting magical cards!");
+    }
+
+    // Keyboard support
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !document.getElementById('quiz').classList.contains('hidden')) {
+        submitAnswer();
+      }
+    });
+
+    // Initialize
+    updateDisplay();
+    speak("Welcome to ANKID! Your magical learning adventure begins now!");
+  </script>
+</body>
+</html>

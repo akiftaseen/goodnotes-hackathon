@@ -4,16 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ANKID - Gamified Learning Adventure</title>
-  <!-- Local Dependencies -->
-  <script src="./lib/react.development.js"></script>
-  <script src="./lib/react-dom.development.js"></script>
-  <script src="./lib/babel.min.js"></script>
-  <link href="./lib/tailwind.min.css" rel="stylesheet">
-  <link href="./lib/fontawesome.min.css" rel="stylesheet">
+  
+  <!-- Multiple CDN fallbacks -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script>
+    if (typeof React === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"><\/script>');
+    }
+  </script>
+  
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script>
+    if (typeof ReactDOM === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"><\/script>');
+    }
+  </script>
+  
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script>
+    if (typeof Babel === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/babel-standalone@6/babel.min.js"><\/script>');
+    }
+  </script>
+  
+  <!-- Tailwind CSS with fallback -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Fallback for Tailwind
+    if (!document.querySelector('script[src*="tailwind"]')) {
+      const link = document.createElement('link');
+      link.href = 'https://unpkg.com/tailwindcss@^3/dist/tailwind.min.css';
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    }
+  </script>
+  
+  <!-- Font Awesome with fallback -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/css/all.min.css';">
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
     body {
-      font-family: 'Fredoka', sans-serif;
+      font-family: 'Fredoka', 'Comic Sans MS', cursive, sans-serif;
     }
     .card-glow {
       box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
@@ -30,12 +62,58 @@
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
     }
+    /* Fallback styles if Tailwind doesn't load */
+    .fallback-styles {
+      display: none;
+    }
+    .no-tailwind .fallback-styles {
+      display: block;
+    }
+    .no-tailwind .min-h-screen {
+      min-height: 100vh;
+    }
+    .no-tailwind .bg-gradient-to-br {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+    }
+    .no-tailwind .text-white {
+      color: white;
+    }
+    .no-tailwind .p-4 {
+      padding: 1rem;
+    }
+    .no-tailwind .text-center {
+      text-align: center;
+    }
+    .no-tailwind .mb-8 {
+      margin-bottom: 2rem;
+    }
+    /* Add more fallback styles as needed */
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div style="text-align: center; padding: 20px; font-family: Arial, sans-serif;">
+      <h1>Loading ANKID...</h1>
+      <p>If this message persists, there may be an issue loading dependencies.</p>
+    </div>
+  </div>
+  
   <script type="text/babel">
     const { useState, useEffect, useCallback } = React;
+
+    // Check if Tailwind loaded
+    setTimeout(() => {
+      const testElement = document.createElement('div');
+      testElement.className = 'hidden';
+      document.body.appendChild(testElement);
+      const isHidden = window.getComputedStyle(testElement).display === 'none';
+      document.body.removeChild(testElement);
+      
+      if (!isHidden) {
+        document.body.classList.add('no-tailwind');
+        console.warn('Tailwind CSS did not load properly - using fallback styles');
+      }
+    }, 1000);
 
     // Game Data
     const CARD_SERIES = {
@@ -590,9 +668,18 @@
   </script>
   <script>
     // Error handling - check if React loaded properly
-    if (typeof React === 'undefined') {
-      document.getElementById("root").innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Error: React failed to load. Please check your internet connection.</div>';
-    }
+    setTimeout(() => {
+      if (typeof React === 'undefined') {
+        document.getElementById("root").innerHTML = `
+          <div style="padding: 20px; text-align: center; color: red; font-family: Arial, sans-serif;">
+            <h2>Error: React failed to load</h2>
+            <p>Please check your internet connection or try the simple version: 
+            <a href="ankid-simple.html" style="color: blue;">ankid-simple.html</a></p>
+            <p>Alternatively, download the dependencies locally using the download script.</p>
+          </div>
+        `;
+      }
+    }, 3000);
   </script>
 </body>
 </html>
