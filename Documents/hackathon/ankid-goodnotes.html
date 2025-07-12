@@ -12,8 +12,30 @@
     @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap');
     
     :root {
-      /* Material Design Color Palette */
-      --md-primary: #43bfdb;
+      /* Material 3 (Material You) Color Palette */
+      --md3-primary: #45bfdb;
+      --md3-on-primary: #ffffff;
+      --md3-primary-container: rgba(69, 191, 219, 0.12);
+      --md3-on-primary-container: #001f24;
+      
+      --md3-secondary: #f5dd59;
+      --md3-on-secondary: #0e0e0e;
+      --md3-secondary-container: rgba(245, 221, 89, 0.12);
+      --md3-on-secondary-container: #2a1f00;
+      
+      --md3-surface: #ffffff;
+      --md3-on-surface: #0e0e0e;
+      --md3-surface-variant: #f4f9fa;
+      --md3-on-surface-variant: rgba(14, 14, 14, 0.6);
+      
+      --md3-background: #fefefe;
+      --md3-on-background: #0e0e0e;
+      
+      --md3-outline: rgba(69, 191, 219, 0.2);
+      --md3-outline-variant: rgba(14, 14, 14, 0.08);
+      
+      /* Legacy variables for compatibility */
+      --md-primary: #45bfdb;
       --md-secondary: #f5dd59;
       --md-surface: #ffffff;
       --md-background: #ffffff;
@@ -23,21 +45,21 @@
       --md-on-background: #0e0e0e;
       
       /* Primary Colors */
-      --gn-primary: #43bfdb;
+      --gn-primary: #45bfdb;
       --gn-secondary: #f5dd59;
-      --gn-orange: #43bfdb;
-      --gn-red: #43bfdb;
-      --gn-purple: #43bfdb;
-      --gn-pink: #43bfdb;
+      --gn-orange: #45bfdb;
+      --gn-red: #45bfdb;
+      --gn-purple: #45bfdb;
+      --gn-pink: #45bfdb;
       --gn-yellow: #f5dd59;
-      --gn-teal: #43bfdb;
-      --gn-green: #43bfdb;
+      --gn-teal: #45bfdb;
+      --gn-green: #45bfdb;
       
-      /* Grayscale using the specified colors */
+      /* Grayscale using Material 3 approach */
       --gn-gray-1: #ffffff;
-      --gn-gray-2: rgba(67, 191, 219, 0.1);
-      --gn-gray-3: rgba(67, 191, 219, 0.2);
-      --gn-gray-4: rgba(67, 191, 219, 0.3);
+      --gn-gray-2: rgba(69, 191, 219, 0.05);
+      --gn-gray-3: rgba(69, 191, 219, 0.08);
+      --gn-gray-4: rgba(69, 191, 219, 0.12);
       --gn-gray-5: rgba(14, 14, 14, 0.4);
       --gn-gray-6: rgba(14, 14, 14, 0.6);
       
@@ -47,18 +69,18 @@
       --gn-text-tertiary: rgba(14, 14, 14, 0.5);
       
       /* Surface Colors */
-      --gn-background: #ffffff;
+      --gn-background: #fefefe;
       --gn-surface: #ffffff;
       --gn-paper: #ffffff;
       
-      /* Shadows using black */
-      --gn-shadow-light: rgba(14, 14, 14, 0.04);
-      --gn-shadow-medium: rgba(14, 14, 14, 0.08);
-      --gn-shadow-strong: rgba(14, 14, 14, 0.12);
+      /* Shadows using Material 3 elevation */
+      --gn-shadow-light: rgba(14, 14, 14, 0.02);
+      --gn-shadow-medium: rgba(14, 14, 14, 0.04);
+      --gn-shadow-strong: rgba(14, 14, 14, 0.06);
       
       /* Borders */
-      --gn-border-light: rgba(14, 14, 14, 0.08);
-      --gn-border-medium: rgba(14, 14, 14, 0.12);
+      --gn-border-light: rgba(14, 14, 14, 0.05);
+      --gn-border-medium: rgba(14, 14, 14, 0.08);
     }
     
     * {
@@ -102,12 +124,12 @@
     }
     
     .gn-paper {
-      background: var(--md-surface);
-      border-radius: 8px;
-      border: 1px solid var(--gn-border-light);
+      background: var(--md3-surface);
+      border-radius: 24px;
+      border: 1px solid var(--md3-outline-variant);
       box-shadow: 
-        0 2px 4px var(--gn-shadow-light),
-        0 4px 8px var(--gn-shadow-medium);
+        0 1px 2px var(--gn-shadow-light),
+        0 2px 4px var(--gn-shadow-medium);
       position: relative;
       overflow: hidden;
     }
@@ -120,165 +142,165 @@
       right: 0;
       bottom: 0;
       background-image: 
-        linear-gradient(90deg, transparent 79px, rgba(67, 191, 219, 0.1) 79px, rgba(67, 191, 219, 0.1) 80px, transparent 80px),
-        repeating-linear-gradient(transparent, transparent 27px, rgba(67, 191, 219, 0.05) 27px, rgba(67, 191, 219, 0.05) 28px);
+        linear-gradient(90deg, transparent 79px, rgba(69, 191, 219, 0.03) 79px, rgba(69, 191, 219, 0.03) 80px, transparent 80px),
+        repeating-linear-gradient(transparent, transparent 27px, rgba(69, 191, 219, 0.02) 27px, rgba(69, 191, 219, 0.02) 28px);
       pointer-events: none;
-      opacity: 0.7;
+      opacity: 0.8;
       z-index: 1;
     }
     
     .gn-paper-content {
       position: relative;
       z-index: 2;
-      background: var(--md-surface);
+      background: var(--md3-surface);
     }
     
     .gn-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 12px 24px;
-      background: var(--md-primary);
-      color: var(--md-on-primary);
+      padding: 16px 24px;
+      background: var(--md3-primary);
+      color: var(--md3-on-primary);
       border: none;
-      border-radius: 8px;
+      border-radius: 20px;
       font-family: 'SF Pro Text', system-ui, sans-serif;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      text-transform: none;
+      letter-spacing: 0.1px;
       text-decoration: none;
-      min-height: 48px;
+      min-height: 40px;
       box-shadow: 
-        0 2px 4px rgba(67, 191, 219, 0.2),
-        0 4px 8px rgba(67, 191, 219, 0.1);
+        0 1px 3px rgba(69, 191, 219, 0.12),
+        0 1px 2px rgba(69, 191, 219, 0.24);
     }
     
     .gn-button:hover {
-      background: rgba(67, 191, 219, 0.9);
-      transform: translateY(-2px);
+      background: rgba(69, 191, 219, 0.92);
+      transform: translateY(-1px);
       box-shadow: 
-        0 4px 8px rgba(67, 191, 219, 0.25),
-        0 8px 16px rgba(67, 191, 219, 0.15);
+        0 2px 6px rgba(69, 191, 219, 0.16),
+        0 3px 6px rgba(69, 191, 219, 0.23);
     }
     
     .gn-button:active {
       transform: translateY(0);
       box-shadow: 
-        0 2px 4px rgba(67, 191, 219, 0.2),
-        0 4px 8px rgba(67, 191, 219, 0.1);
+        0 1px 3px rgba(69, 191, 219, 0.12),
+        0 1px 2px rgba(69, 191, 219, 0.24);
     }
     
     .gn-button-secondary {
-      background: var(--md-secondary);
-      color: var(--md-on-secondary);
-      border: 1px solid var(--gn-border-light);
+      background: var(--md3-secondary-container);
+      color: var(--md3-on-secondary-container);
+      border: 1px solid var(--md3-outline);
       box-shadow: 
-        0 2px 4px var(--gn-shadow-light);
+        0 1px 2px var(--gn-shadow-light);
     }
     
     .gn-button-secondary:hover {
-      background: rgba(245, 221, 89, 0.9);
-      transform: translateY(-2px);
+      background: rgba(245, 221, 89, 0.16);
+      transform: translateY(-1px);
       box-shadow: 
-        0 4px 8px rgba(245, 221, 89, 0.2),
-        0 8px 16px rgba(245, 221, 89, 0.1);
+        0 2px 4px rgba(245, 221, 89, 0.16),
+        0 3px 6px rgba(245, 221, 89, 0.12);
     }
     
     .gn-nav-tab {
       padding: 12px 20px;
-      border-radius: 8px;
+      border-radius: 16px;
       font-weight: 500;
       font-size: 14px;
       text-decoration: none;
-      color: var(--gn-text-secondary);
+      color: var(--md3-on-surface-variant);
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       background: none;
       border: none;
       cursor: pointer;
       position: relative;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      text-transform: none;
+      letter-spacing: 0.1px;
     }
     
     .gn-nav-tab.active {
-      color: var(--md-primary);
-      background: rgba(67, 191, 219, 0.1);
-      box-shadow: 0 0 0 1px rgba(67, 191, 219, 0.2) inset;
+      color: var(--md3-on-primary-container);
+      background: var(--md3-primary-container);
+      box-shadow: 0 0 0 1px var(--md3-outline) inset;
     }
     
     .gn-nav-tab:hover {
-      color: var(--gn-text-primary);
-      background: var(--gn-gray-2);
+      color: var(--md3-on-surface);
+      background: var(--md3-surface-variant);
     }
     
     .gn-card {
-      background: var(--md-surface);
-      border-radius: 8px;
-      border: 1px solid var(--gn-border-light);
+      background: var(--md3-surface);
+      border-radius: 16px;
+      border: 1px solid var(--md3-outline-variant);
       box-shadow: 
-        0 2px 4px var(--gn-shadow-light),
-        0 4px 8px var(--gn-shadow-medium);
+        0 1px 2px var(--gn-shadow-light),
+        0 1px 3px var(--gn-shadow-medium);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: hidden;
     }
     
     .gn-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-2px);
       box-shadow: 
-        0 4px 8px var(--gn-shadow-medium),
-        0 8px 16px var(--gn-shadow-strong);
-      border-color: var(--md-primary);
+        0 2px 4px var(--gn-shadow-medium),
+        0 4px 12px var(--gn-shadow-strong);
+      border-color: var(--md3-outline);
     }
     
     .gn-icon-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 8px;
-      background: var(--md-surface);
-      border: 1px solid var(--gn-border-light);
-      color: var(--gn-text-secondary);
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background: var(--md3-surface-variant);
+      border: 1px solid var(--md3-outline-variant);
+      color: var(--md3-on-surface-variant);
       cursor: pointer;
       transition: all 0.15s ease;
     }
     
     .gn-icon-button:hover {
-      background: var(--gn-gray-2);
-      color: var(--md-primary);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px var(--gn-shadow-medium);
+      background: var(--md3-primary-container);
+      color: var(--md3-on-primary-container);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px var(--gn-shadow-medium);
     }
     
     .gn-stats-circle {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+      border-radius: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 16px;
       position: relative;
       box-shadow: 
-        0 4px 8px var(--gn-shadow-medium),
-        0 8px 16px var(--gn-shadow-light);
+        0 2px 4px var(--gn-shadow-medium),
+        0 4px 8px var(--gn-shadow-light);
     }
     
     .gn-badge {
       display: inline-flex;
       align-items: center;
-      padding: 6px 16px;
-      background: var(--md-secondary);
-      color: var(--md-on-secondary);
-      border-radius: 16px;
+      padding: 4px 12px;
+      background: var(--md3-secondary-container);
+      color: var(--md3-on-secondary-container);
+      border-radius: 12px;
       font-size: 12px;
       font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      text-transform: none;
+      letter-spacing: 0.1px;
     }
     
     .gn-section-title {
@@ -394,19 +416,20 @@
     .gn-input {
       width: 100%;
       padding: 16px 20px;
-      background: var(--md-surface);
-      border: 1px solid var(--gn-border-medium);
-      border-radius: 8px;
+      background: var(--md3-surface-variant);
+      border: 1px solid var(--md3-outline-variant);
+      border-radius: 16px;
       font-family: 'SF Pro Text', system-ui, sans-serif;
       font-size: 16px;
-      color: var(--gn-text-primary);
+      color: var(--md3-on-surface);
       transition: all 0.15s ease;
     }
     
     .gn-input:focus {
       outline: none;
-      border-color: var(--md-primary);
-      box-shadow: 0 0 0 2px rgba(67, 191, 219, 0.2);
+      border-color: var(--md3-primary);
+      background: var(--md3-surface);
+      box-shadow: 0 0 0 2px var(--md3-primary-container);
     }
     .grid { display: grid; }
     .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -775,21 +798,21 @@
                 {/* Stats Overview */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
                   <div className="text-center">
-                    <div className="gn-stats-circle" style={{background: 'var(--md-primary)'}}>
+                    <div className="gn-stats-circle" style={{background: 'var(--md3-primary)'}}>
                       <span className="text-white text-xl font-bold">{userStats.level}</span>
                     </div>
                     <p className="text-sm font-medium text-gray-600">Level</p>
                   </div>
                   
                   <div className="text-center">
-                    <div className="gn-stats-circle" style={{background: 'var(--md-secondary)'}}>
+                    <div className="gn-stats-circle" style={{background: 'var(--md3-secondary)'}}>
                       <Icon name="flame" size={28} color="black" />
                     </div>
                     <p className="text-sm font-medium text-gray-600">{userStats.streak} Day Streak</p>
                   </div>
                   
                   <div className="text-center">
-                    <div className="gn-stats-circle" style={{background: 'var(--md-primary)'}}>
+                    <div className="gn-stats-circle" style={{background: 'var(--md3-primary)'}}>
                       <Icon name="gem" size={28} color="white" />
                     </div>
                     <p className="text-sm font-medium text-gray-600">{userStats.gems} Gems</p>
@@ -814,7 +837,7 @@
                       className="h-3 rounded-full transition-all duration-500"
                       style={{
                         width: `${((500 - userStats.xpToNext) / 500) * 100}%`,
-                        background: 'var(--md-primary)'
+                        background: 'var(--md3-primary)'
                       }}
                     ></div>
                   </div>
@@ -1242,9 +1265,9 @@
                       
                       <div className="flex justify-between items-center">
                         <div className="gn-badge" style={{
-                          backgroundColor: listing.difficulty === 'Easy' ? 'var(--md-secondary)' :
-                                         listing.difficulty === 'Medium' ? 'var(--md-primary)' : 'var(--md-primary)',
-                          color: listing.difficulty === 'Easy' ? 'var(--md-on-secondary)' : 'var(--md-on-primary)'
+                          backgroundColor: listing.difficulty === 'Easy' ? 'var(--md3-secondary-container)' :
+                                         listing.difficulty === 'Medium' ? 'var(--md3-primary-container)' : 'var(--md3-primary-container)',
+                          color: listing.difficulty === 'Easy' ? 'var(--md3-on-secondary-container)' : 'var(--md3-on-primary-container)'
                         }}>
                           {listing.difficulty}
                         </div>
@@ -1680,7 +1703,7 @@
                   <h1 style={{fontSize: '28px', fontWeight: '700', color: 'var(--gn-text-primary)', margin: '0'}}>
                     ANKID
                   </h1>
-                  <div className="gn-badge" style={{background: 'var(--md-secondary)', color: 'var(--md-on-secondary)'}}>
+                  <div className="gn-badge" style={{background: 'var(--md3-secondary-container)', color: 'var(--md3-on-secondary-container)'}}>
                     Gamified Learning Adventure
                   </div>
                 </div>
@@ -1691,7 +1714,7 @@
                       <Icon name="gem" size={16} className="mr-1" />
                       {userStats.gems}
                     </div>
-                    <div className="gn-badge" style={{background: 'var(--gn-yellow)', color: 'var(--gn-text-primary)'}}>
+                    <div className="gn-badge" style={{background: 'var(--md3-secondary-container)', color: 'var(--md3-on-secondary-container)'}}>
                       🪙 {userStats.coins}
                     </div>
                   </div>
