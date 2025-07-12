@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANKID - Gamified Learning Adventure</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap');
+    
+    :root {
+      --gn-primary: #007AFF;
+      --gn-secondary: #34C759;
+      --gn-orange: #FF9500;
+      --gn-red: #FF3B30;
+      --gn-purple: #AF52DE;
+      --gn-pink: #FF2D92;
+      --gn-yellow: #FFCC02;
+      --gn-teal: #32D74B;
+      
+      --gn-gray-1: #F2F2F7;
+      --gn-gray-2: #E5E5EA;
+      --gn-gray-3: #D1D1D6;
+      --gn-gray-4: #C7C7CC;
+      --gn-gray-5: #AEAEB2;
+      --gn-gray-6: #8E8E93;
+      
+      --gn-text-primary: #1D1D1F;
+      --gn-text-secondary: #86868B;
+      --gn-text-tertiary: #AEAEB2;
+      
+      --gn-background: #FAFAFA;
+      --gn-surface: #FFFFFF;
+      --gn-paper: #FEFEFE;
+      
+      --gn-shadow-light: rgba(0, 0, 0, 0.04);
+      --gn-shadow-medium: rgba(0, 0, 0, 0.08);
+      --gn-shadow-strong: rgba(0, 0, 0, 0.12);
+      
+      --gn-border-light: rgba(0, 0, 0, 0.05);
+      --gn-border-medium: rgba(0, 0, 0, 0.08);
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--gn-background);
+      color: var(--gn-text-primary);
+      line-height: 1.47;
+      font-size: 17px;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-weight: 600;
+      line-height: 1.2;
+      margin: 0;
+    }
+    
+    .gn-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .gn-header {
+      background: rgba(250, 250, 250, 0.85);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.8) inset;
+    }
+    
+    .gn-paper {
+      background: linear-gradient(135deg, #FEFEFE 0%, #FDFDFD 100%);
+      border-radius: 16px;
+      border: 0.5px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.02),
+        0 4px 12px rgba(0, 0, 0, 0.04),
+        0 0 0 0.5px rgba(255, 255, 255, 0.9) inset;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .gn-paper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(90deg, transparent 79px, rgba(255, 182, 193, 0.3) 79px, rgba(255, 182, 193, 0.3) 80px, transparent 80px),
+        repeating-linear-gradient(transparent, transparent 27px, rgba(0, 122, 255, 0.08) 27px, rgba(0, 122, 255, 0.08) 28px);
+      pointer-events: none;
+      opacity: 0.7;
+      z-index: 1;
+    }
+    
+    .gn-paper-content {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.95);
+    }
+    
+    .gn-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-family: 'SF Pro Text', system-ui, sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      min-height: 48px;
+      box-shadow: 
+        0 1px 3px rgba(0, 122, 255, 0.2),
+        0 4px 12px rgba(0, 122, 255, 0.15);
+    }
+    
+    .gn-button:hover {
+      background: linear-gradient(135deg, #0056CC 0%, #003D9F 100%);
+      transform: translateY(-1px);
+      box-shadow: 
+        0 2px 8px rgba(0, 122, 255, 0.25),
+        0 8px 24px rgba(0, 122, 255, 0.2);
+    }
+    
+    .gn-button:active {
+      transform: translateY(0);
+      box-shadow: 
+        0 1px 3px rgba(0, 122, 255, 0.2),
+        0 2px 8px rgba(0, 122, 255, 0.15);
+    }
+    
+    .gn-button-secondary {
+      background: linear-gradient(135deg, #F2F2F7 0%, #E5E5EA 100%);
+      color: var(--gn-text-primary);
+      border: 0.5px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.02),
+        0 0 0 0.5px rgba(255, 255, 255, 0.8) inset;
+    }
+    
+    .gn-button-secondary:hover {
+      background: linear-gradient(135deg, #E5E5EA 0%, #D1D1D6 100%);
+      transform: translateY(-1px);
+      box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.06),
+        0 0 0 0.5px rgba(255, 255, 255, 0.8) inset;
+    }
+    
+    .gn-nav-tab {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 15px;
+      text-decoration: none;
+      color: var(--gn-text-secondary);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .gn-nav-tab.active {
+      color: var(--gn-primary);
+      background: rgba(0, 122, 255, 0.08);
+      box-shadow: 0 0 0 0.5px rgba(0, 122, 255, 0.2) inset;
+    }
+    
+    .gn-nav-tab:hover {
+      color: var(--gn-text-primary);
+      background: rgba(0, 0, 0, 0.03);
+    }
+    
+    .gn-card {
+      background: linear-gradient(135deg, #FFFFFF 0%, #FDFDFD 100%);
+      border-radius: 20px;
+      border: 0.5px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 
+        0 2px 10px rgba(0, 0, 0, 0.02),
+        0 8px 32px rgba(0, 0, 0, 0.04),
+        0 0 0 0.5px rgba(255, 255, 255, 0.9) inset;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .gn-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.06),
+        0 16px 48px rgba(0, 0, 0, 0.08),
+        0 0 0 0.5px rgba(255, 255, 255, 0.9) inset;
+      border-color: rgba(0, 122, 255, 0.1);
+    }
+    
+    .gn-icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--gn-gray-1);
+      border: 1px solid var(--gn-border-light);
+      color: var(--gn-text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .gn-icon-button:hover {
+      background: var(--gn-gray-2);
+      color: var(--gn-text-primary);
+      transform: translateY(-1px);
+    }
+    
+    .gn-stats-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      position: relative;
+      box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+    }
+    
+    .gn-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      background: var(--gn-gray-1);
+      color: var(--gn-text-secondary);
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    
+    .gn-section-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--gn-text-primary);
+      margin-bottom: 8px;
+    }
+    
+    .gn-section-subtitle {
+      font-size: 15px;
+      color: var(--gn-text-secondary);
+      margin-bottom: 24px;
+    }
+    
+    /* Utility Classes */
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .space-x-2 > * + * { margin-left: 8px; }
+    .space-x-3 > * + * { margin-left: 12px; }
+    .space-x-4 > * + * { margin-left: 16px; }
+    .space-x-6 > * + * { margin-left: 24px; }
+    .space-y-6 > * + * { margin-top: 24px; }
+    .space-y-8 > * + * { margin-top: 32px; }
+    .py-4 { padding-top: 16px; padding-bottom: 16px; }
+    .py-8 { padding-top: 32px; padding-bottom: 32px; }
+    .py-12 { padding-top: 48px; padding-bottom: 48px; }
+    .pb-4 { padding-bottom: 16px; }
+    .p-4 { padding: 16px; }
+    .p-6 { padding: 24px; }
+    .p-8 { padding: 32px; }
+    .mt-4 { margin-top: 16px; }
+    .mt-6 { margin-top: 24px; }
+    .mt-8 { margin-top: 32px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-4 { margin-bottom: 16px; }
+    .w-full { width: 100%; }
+    .w-12 { width: 48px; }
+    .h-12 { height: 48px; }
+    .h-1 { height: 4px; }
+    .h-3 { height: 12px; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .text-center { text-align: center; }
+    .text-sm { font-size: 14px; }
+    .text-xl { font-size: 20px; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .rounded-xl { border-radius: 12px; }
+    .rounded-full { border-radius: 50%; }
+    .bg-blue-50 { background-color: rgba(0, 122, 255, 0.05); }
+    .bg-blue-100 { background-color: rgba(0, 122, 255, 0.1); }
+    .bg-blue-500 { background-color: #007AFF; }
+    .bg-green-50 { background-color: rgba(52, 199, 89, 0.05); }
+    .bg-green-100 { background-color: rgba(52, 199, 89, 0.1); }
+    .bg-green-500 { background-color: #34C759; }
+    .bg-purple-50 { background-color: rgba(175, 82, 222, 0.05); }
+    .bg-purple-100 { background-color: rgba(175, 82, 222, 0.1); }
+    .bg-purple-500 { background-color: #AF52DE; }
+    .bg-orange-50 { background-color: rgba(255, 149, 0, 0.05); }
+    .bg-orange-100 { background-color: rgba(255, 149, 0, 0.1); }
+    .bg-orange-500 { background-color: #FF9500; }
+    .bg-gray-200 { background-color: var(--gn-gray-2); }
+    .text-white { color: white; }
+    .text-gray-600 { color: var(--gn-text-secondary); }
+    .text-gray-900 { color: var(--gn-text-primary); }
+    .grid { display: grid; }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .gap-4 { gap: 16px; }
+    .gap-6 { gap: 24px; }
+    .flex-1 { flex: 1 1 0%; }
+    .min-h-screen { min-height: 100vh; }
+    
+    @media (min-width: 768px) {
+      .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    
+    .avatar-float {
+      animation: gentleFloat 4s ease-in-out infinite;
+    }
+    
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+    
+    .card-appear {
+      animation: cardAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    @keyframes cardAppear {
+      0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    
+    .progress-shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .stat-pulse {
+      animation: statPulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes statPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .glow-effect {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .glow-effect::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0, 122, 255, 0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // Icon Component
+    const Icon = ({ name, size = 24, color = "currentColor" }) => {
+      const icons = {
+        'settings': <path strokeLinecap="round" strokeLinejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />,
+        'mic': <path strokeLinecap="round" strokeLinejoin="round" d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3zM19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/>,
+        'book-open': <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25A8.966 8.966 0 0118 3.75c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>,
+        'plus': <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m-7-7h14"/>,
+        'flame': <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/>,
+        'gem': <path strokeLinecap="round" strokeLinejoin="round" d="M6 3h12l4 6-10 12L2 9l4-6z"/>,
+        'layers': <g><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></g>,
+        'trophy': <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.228V2.721m-2.48 5.228a6.726 6.726 0 01-2.748 1.35m0 0A6.772 6.772 0 0112 10.5c-.665 0-1.312-.098-1.922-.272m0 0A6.772 6.772 0 007.228 8.47m0 0A6.547 6.547 0 006 5.227m0 0a6.721 6.721 0 016-2.477c2.247 0 4.312.857 5.86 2.263m0 0A6.547 6.547 0 0118 5.227"/>,
+        'sparkles': <g><path d="M9.937 15.5A2 2 0 008.5 14.063l-6.135-1.582a.5.5 0 010-.962L8.5 9.936A2 2 0 009.937 8.5l1.582-6.135a.5.5 0 01.962 0L14.063 8.5A2 2 0 0015.5 9.937l6.135 1.582a.5.5 0 010 .962L15.5 14.063a2 2 0 00-1.437 1.437l-1.582 6.135a.5.5 0 01-.962 0L9.937 15.5z"/></g>,
+        'zap': <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+      };
+      
+      return (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke={color}
+          strokeWidth="2"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {icons[name]}
+        </svg>
+      );
+    };
+
+    // Main App Component
+    const ANKIDApp = () => {
+      const [currentSection, setCurrentSection] = useState('dashboard');
+      const [userStats, setUserStats] = useState({
+        level: 1,
+        xp: 350,
+        xpToNext: 150,
+        streak: 5,
+        totalCards: 12,
+        masteredCards: 8,
+        gems: 35
+      });
+
+      const showSection = (section) => {
+        setCurrentSection(section);
+      };
+
+      const renderDashboard = () => (
+        <div className="space-y-8">
+          {/* Welcome Section */}
+          <div className="gn-paper">
+            <div className="gn-paper-content p-8">
+              <div className="text-center">
+                <h2 className="gn-section-title">Welcome back, Scholar!</h2>
+                <p className="gn-section-subtitle">Ready to continue your learning adventure?</p>
+                
+                {/* Stats Overview */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
+                  <div className="text-center">
+                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-primary) 0%, var(--gn-purple) 100%)'}}>
+                      <span className="text-white text-xl font-bold">{userStats.level}</span>
+                    </div>
+                    <p className="text-sm font-medium text-gray-600">Level</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-orange) 0%, var(--gn-pink) 100%)'}}>
+                      <Icon name="flame" size={28} color="white" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-600">{userStats.streak} Day Streak</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-secondary) 0%, var(--gn-teal) 100())'}}>
+                      <Icon name="gem" size={28} color="white" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-600">{userStats.gems} Gems</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-purple) 0%, var(--gn-pink) 100())'}}>
+                      <Icon name="layers" size={28} color="white" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-600">{userStats.totalCards} Cards</p>
+                  </div>
+                </div>
+                
+                {/* Progress Bar */}
+                <div className="mt-8">
+                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>Level {userStats.level}</span>
+                    <span>{userStats.xpToNext} XP to next level</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div 
+                      className="h-3 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${((500 - userStats.xpToNext) / 500) * 100}%`,
+                        background: 'linear-gradient(90deg, var(--gn-primary) 0%, var(--gn-purple) 100%)'
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="gn-card">
+              <div className="p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                    <Icon name="book-open" size={24} color="var(--gn-primary)" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900">Continue Studying</h3>
+                    <p className="text-sm text-gray-600">Pick up where you left off</p>
+                  </div>
+                </div>
+                <button onClick={() => showSection('study')} className="gn-button w-full mt-4">
+                  Start Session
+                </button>
+              </div>
+            </div>
+            
+            <div className="gn-card">
+              <div className="p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                    <Icon name="plus" size={24} color="var(--gn-secondary)" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900">Create Cards</h3>
+                    <p className="text-sm text-gray-600">Add new knowledge to your collection</p>
+                  </div>
+                </div>
+                <button onClick={() => showSection('collection')} className="gn-button-secondary w-full mt-4">
+                  Create New
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Today's Achievements */}
+          <div className="gn-paper">
+            <div className="gn-paper-content p-8">
+              <h3 className="gn-section-title">Today's Progress</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                <div className="text-center p-4 rounded-xl" style={{background: 'linear-gradient(135deg, rgba(0, 122, 255, 0.05) 0%, rgba(0, 122, 255, 0.02) 100%)', border: '0.5px solid rgba(0, 122, 255, 0.1)'}}>
+                  <Icon name="zap" size={32} color="var(--gn-primary)" className="mx-auto mb-2" />
+                  <p className="text-sm font-medium">15 Cards Studied</p>
+                  <div className="w-full bg-blue-100 rounded-full h-1 mt-2">
+                    <div className="bg-blue-500 h-1 rounded-full" style={{width: '75%'}}></div>
+                  </div>
+                </div>
+                <div className="text-center p-4 rounded-xl" style={{background: 'linear-gradient(135deg, rgba(52, 199, 89, 0.05) 0%, rgba(52, 199, 89, 0.02) 100%)', border: '0.5px solid rgba(52, 199, 89, 0.1)'}}>
+                  <Icon name="trophy" size={32} color="var(--gn-secondary)" className="mx-auto mb-2" />
+                  <p className="text-sm font-medium">2 Quests Complete</p>
+                  <div className="w-full bg-green-100 rounded-full h-1 mt-2">
+                    <div className="bg-green-500 h-1 rounded-full" style={{width: '100%'}}></div>
+                  </div>
+                </div>
+                <div className="text-center p-4 rounded-xl" style={{background: 'linear-gradient(135deg, rgba(175, 82, 222, 0.05) 0%, rgba(175, 82, 222, 0.02) 100%)', border: '0.5px solid rgba(175, 82, 222, 0.1)'}}>
+                  <Icon name="sparkles" size={32} color="var(--gn-purple)" className="mx-auto mb-2" />
+                  <p className="text-sm font-medium">150 XP Earned</p>
+                  <div className="w-full bg-purple-100 rounded-full h-1 mt-2">
+                    <div className="bg-purple-500 h-1 rounded-full" style={{width: '60%'}}></div>
+                  </div>
+                </div>
+                <div className="text-center p-4 rounded-xl" style={{background: 'linear-gradient(135deg, rgba(255, 149, 0, 0.05) 0%, rgba(255, 149, 0, 0.02) 100%)', border: '0.5px solid rgba(255, 149, 0, 0.1)'}}>
+                  <Icon name="flame" size={32} color="var(--gn-orange)" className="mx-auto mb-2" />
+                  <p className="text-sm font-medium">Streak Maintained</p>
+                  <div className="w-full bg-orange-100 rounded-full h-1 mt-2">
+                    <div className="bg-orange-500 h-1 rounded-full" style={{width: '100%'}}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderCurrentSection = () => {
+        switch(currentSection) {
+          case 'dashboard':
+            return renderDashboard();
+          case 'study':
+            return (
+              <div className="gn-paper">
+                <div className="gn-paper-content p-8">
+                  <h2 className="gn-section-title">Study Session</h2>
+                  <p className="gn-section-subtitle">Select a deck to begin your learning journey</p>
+                  <div className="text-center py-12">
+                    <Icon name="book-open" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
+                    <p className="text-gray-600">Study features coming soon with GoodNotes 6 design!</p>
+                  </div>
+                </div>
+              </div>
+            );
+          case 'collection':
+            return (
+              <div className="gn-paper">
+                <div className="gn-paper-content p-8">
+                  <h2 className="gn-section-title">Card Collection</h2>
+                  <p className="gn-section-subtitle">Manage your flashcard library</p>
+                  <div className="text-center py-12">
+                    <Icon name="layers" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
+                    <p className="text-gray-600">Collection features coming soon with GoodNotes 6 design!</p>
+                  </div>
+                </div>
+              </div>
+            );
+          case 'quests':
+            return (
+              <div className="gn-paper">
+                <div className="gn-paper-content p-8">
+                  <h2 className="gn-section-title">Daily Quests</h2>
+                  <p className="gn-section-subtitle">Complete challenges to earn rewards</p>
+                  <div className="text-center py-12">
+                    <Icon name="trophy" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
+                    <p className="text-gray-600">Quest features coming soon with GoodNotes 6 design!</p>
+                  </div>
+                </div>
+              </div>
+            );
+          case 'leaderboard':
+            return (
+              <div className="gn-paper">
+                <div className="gn-paper-content p-8">
+                  <h2 className="gn-section-title">Leaderboard</h2>
+                  <p className="gn-section-subtitle">See how you rank among other learners</p>
+                  <div className="text-center py-12">
+                    <Icon name="trophy" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
+                    <p className="text-gray-600">Leaderboard features coming soon with GoodNotes 6 design!</p>
+                  </div>
+                </div>
+              </div>
+            );
+          case 'avatar':
+            return (
+              <div className="gn-paper">
+                <div className="gn-paper-content p-8">
+                  <h2 className="gn-section-title">Avatar Customization</h2>
+                  <p className="gn-section-subtitle">Personalize your learning companion</p>
+                  <div className="text-center py-12">
+                    <Icon name="sparkles" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
+                    <p className="text-gray-600">Avatar features coming soon with GoodNotes 6 design!</p>
+                  </div>
+                </div>
+              </div>
+            );
+          default:
+            return renderDashboard();
+        }
+      };
+
+      return (
+        <div className="min-h-screen" style={{background: 'var(--gn-background)'}}>
+          {/* Header */}
+          <div className="gn-header">
+            <div className="gn-container">
+              <div className="flex items-center justify-between py-4">
+                <div className="flex items-center space-x-6">
+                  <h1 style={{fontSize: '28px', fontWeight: '700', color: 'var(--gn-text-primary)', margin: '0'}}>
+                    ANKID
+                  </h1>
+                  <div className="gn-badge" style={{background: 'linear-gradient(135deg, var(--gn-orange) 0%, var(--gn-pink) 100%)', color: 'white'}}>
+                    Gamified Learning Adventure
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3">
+                  <button className="gn-icon-button">
+                    <Icon name="mic" />
+                  </button>
+                  <button className="gn-icon-button">
+                    <Icon name="settings" />
+                  </button>
+                </div>
+              </div>
+              
+              {/* Navigation */}
+              <div className="flex space-x-2 pb-4">
+                <button onClick={() => showSection('dashboard')} className={`gn-nav-tab ${currentSection === 'dashboard' ? 'active' : ''}`}>
+                  Dashboard
+                </button>
+                <button onClick={() => showSection('study')} className={`gn-nav-tab ${currentSection === 'study' ? 'active' : ''}`}>
+                  Study
+                </button>
+                <button onClick={() => showSection('collection')} className={`gn-nav-tab ${currentSection === 'collection' ? 'active' : ''}`}>
+                  Collection
+                </button>
+                <button onClick={() => showSection('quests')} className={`gn-nav-tab ${currentSection === 'quests' ? 'active' : ''}`}>
+                  Quests
+                </button>
+                <button onClick={() => showSection('leaderboard')} className={`gn-nav-tab ${currentSection === 'leaderboard' ? 'active' : ''}`}>
+                  Leaderboard
+                </button>
+                <button onClick={() => showSection('avatar')} className={`gn-nav-tab ${currentSection === 'avatar' ? 'active' : ''}`}>
+                  Avatar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="gn-container py-8">
+            {renderCurrentSection()}
+          </div>
+        </div>
+      );
+    };
+
+    // Render the app
+    ReactDOM.render(<ANKIDApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>

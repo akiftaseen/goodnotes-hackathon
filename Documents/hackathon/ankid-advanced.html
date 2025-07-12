@@ -31,112 +31,325 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=SF+Pro+Display:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap');
     
     :root {
-      --goodnotes-primary: #007AFF;
-      --goodnotes-secondary: #34C759;
-      --goodnotes-orange: #FF9500;
-      --goodnotes-red: #FF3B30;
-      --goodnotes-purple: #AF52DE;
-      --goodnotes-pink: #FF2D92;
-      --goodnotes-gray-1: #F2F2F7;
-      --goodnotes-gray-2: #E5E5EA;
-      --goodnotes-gray-3: #D1D1D6;
-      --goodnotes-gray-4: #C7C7CC;
-      --goodnotes-gray-5: #AEAEB2;
-      --goodnotes-gray-6: #8E8E93;
-      --goodnotes-text-primary: #1C1C1E;
-      --goodnotes-text-secondary: #3A3A3C;
-      --goodnotes-background: #FFFFFF;
-      --goodnotes-paper: #FEFEFE;
-      --goodnotes-shadow: rgba(0, 0, 0, 0.06);
-      --goodnotes-shadow-medium: rgba(0, 0, 0, 0.1);
-      --goodnotes-shadow-strong: rgba(0, 0, 0, 0.15);
+      --gn-primary: #007AFF;
+      --gn-secondary: #34C759;
+      --gn-orange: #FF9500;
+      --gn-red: #FF3B30;
+      --gn-purple: #AF52DE;
+      --gn-pink: #FF2D92;
+      --gn-yellow: #FFCC02;
+      --gn-teal: #32D74B;
+      
+      --gn-gray-1: #F2F2F7;
+      --gn-gray-2: #E5E5EA;
+      --gn-gray-3: #D1D1D6;
+      --gn-gray-4: #C7C7CC;
+      --gn-gray-5: #AEAEB2;
+      --gn-gray-6: #8E8E93;
+      
+      --gn-text-primary: #1D1D1F;
+      --gn-text-secondary: #86868B;
+      --gn-text-tertiary: #AEAEB2;
+      
+      --gn-background: #FAFAFA;
+      --gn-surface: #FFFFFF;
+      --gn-paper: #FEFEFE;
+      
+      --gn-shadow-light: rgba(0, 0, 0, 0.04);
+      --gn-shadow-medium: rgba(0, 0, 0, 0.08);
+      --gn-shadow-strong: rgba(0, 0, 0, 0.12);
+      
+      --gn-border-light: rgba(0, 0, 0, 0.05);
+      --gn-border-medium: rgba(0, 0, 0, 0.08);
+    }
+    
+    * {
+      box-sizing: border-box;
     }
     
     body {
-      font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
-      color: var(--goodnotes-text-primary);
-      line-height: 1.5;
+      font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--gn-background);
+      color: var(--gn-text-primary);
+      line-height: 1.47;
+      font-size: 17px;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     
-    .goodnotes-card {
-      background: var(--goodnotes-paper);
-      border-radius: 16px;
-      box-shadow: 0 2px 20px var(--goodnotes-shadow);
-      border: 1px solid var(--goodnotes-gray-2);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-weight: 600;
+      line-height: 1.2;
+      margin: 0;
     }
     
-    .goodnotes-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px var(--goodnotes-shadow-medium);
+    .gn-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
     }
     
-    .goodnotes-button {
-      background: var(--goodnotes-primary);
+    .gn-header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--gn-border-light);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .gn-paper {
+      background: var(--gn-surface);
+      border-radius: 12px;
+      border: 1px solid var(--gn-border-light);
+      box-shadow: 
+        0 1px 3px var(--gn-shadow-light),
+        0 4px 12px var(--gn-shadow-medium);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .gn-paper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(90deg, transparent 31px, var(--gn-border-light) 31px, var(--gn-border-light) 32px, transparent 32px),
+        repeating-linear-gradient(transparent, transparent 23px, var(--gn-border-light) 23px, var(--gn-border-light) 24px);
+      pointer-events: none;
+      opacity: 0.6;
+      z-index: 1;
+    }
+    
+    .gn-paper-content {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.95);
+    }
+    
+    .gn-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      background: var(--gn-primary);
       color: white;
       border: none;
-      border-radius: 12px;
-      padding: 12px 24px;
-      font-weight: 600;
-      font-size: 16px;
+      border-radius: 8px;
+      font-family: 'SF Pro Text', system-ui, sans-serif;
+      font-size: 17px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+      transition: all 0.15s ease;
+      text-decoration: none;
+      min-height: 44px;
     }
     
-    .goodnotes-button:hover {
+    .gn-button:hover {
       background: #0056CC;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25);
     }
     
-    .goodnotes-button-secondary {
-      background: var(--goodnotes-gray-1);
-      color: var(--goodnotes-text-primary);
-      border: 1px solid var(--goodnotes-gray-3);
+    .gn-button:active {
+      transform: translateY(0);
     }
     
-    .goodnotes-button-secondary:hover {
-      background: var(--goodnotes-gray-2);
-      color: var(--goodnotes-text-primary);
+    .gn-button-secondary {
+      background: var(--gn-gray-1);
+      color: var(--gn-text-primary);
+      border: 1px solid var(--gn-border-medium);
+    }
+    
+    .gn-button-secondary:hover {
+      background: var(--gn-gray-2);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px var(--gn-shadow-medium);
+    }
+    
+    .gn-input {
+      width: 100%;
+      padding: 16px 20px;
+      background: var(--gn-surface);
+      border: 1px solid var(--gn-border-medium);
+      border-radius: 10px;
+      font-family: 'SF Pro Text', system-ui, sans-serif;
+      font-size: 17px;
+      color: var(--gn-text-primary);
+      transition: all 0.15s ease;
+    }
+    
+    .gn-input:focus {
+      outline: none;
+      border-color: var(--gn-primary);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    }
+    
+    .gn-nav-tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 15px;
+      text-decoration: none;
+      color: var(--gn-text-secondary);
+      transition: all 0.15s ease;
+    }
+    
+    .gn-nav-tab.active {
+      color: var(--gn-primary);
+      background: rgba(0, 122, 255, 0.1);
+    }
+    
+    .gn-nav-tab:hover {
+      color: var(--gn-text-primary);
+      background: var(--gn-gray-1);
+    }
+    
+    .gn-card {
+      background: var(--gn-surface);
+      border-radius: 16px;
+      border: 1px solid var(--gn-border-light);
+      box-shadow: 0 2px 10px var(--gn-shadow-light);
+      transition: all 0.2s ease;
+      overflow: hidden;
+    }
+    
+    .gn-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--gn-shadow-medium);
+      border-color: var(--gn-border-medium);
+    }
+    
+    .gn-icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--gn-gray-1);
+      border: 1px solid var(--gn-border-light);
+      color: var(--gn-text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .gn-icon-button:hover {
+      background: var(--gn-gray-2);
+      color: var(--gn-text-primary);
       transform: translateY(-1px);
     }
     
-    .paper-texture {
-      background-image: 
-        linear-gradient(90deg, transparent 79px, var(--goodnotes-gray-2) 79px, var(--goodnotes-gray-2) 80px, transparent 80px),
-        linear-gradient(var(--goodnotes-paper) 0%, var(--goodnotes-paper) 100%);
-      background-size: 100% 24px;
+    .gn-stats-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      position: relative;
     }
     
-    .notebook-line {
-      background-image: repeating-linear-gradient(
-        transparent,
-        transparent 23px,
-        var(--goodnotes-gray-2) 23px,
-        var(--goodnotes-gray-2) 24px
-      );
-    }
-    
-    .goodnotes-input {
-      background: var(--goodnotes-background);
-      border: 2px solid var(--goodnotes-gray-3);
+    .gn-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      background: var(--gn-gray-1);
+      color: var(--gn-text-secondary);
       border-radius: 12px;
-      padding: 16px;
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--goodnotes-text-primary);
-      transition: border-color 0.2s ease;
+      font-size: 13px;
+      font-weight: 500;
     }
     
-    .goodnotes-input:focus {
-      outline: none;
-      border-color: var(--goodnotes-primary);
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    .gn-floating-panel {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--gn-surface);
+      border-radius: 20px;
+      border: 1px solid var(--gn-border-light);
+      box-shadow: 
+        0 4px 20px var(--gn-shadow-medium),
+        0 10px 40px var(--gn-shadow-strong);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      overflow: hidden;
+      z-index: 200;
+    }
+    
+    .gn-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .gn-modal {
+      background: var(--gn-surface);
+      border-radius: 16px;
+      border: 1px solid var(--gn-border-light);
+      box-shadow: 0 20px 60px var(--gn-shadow-strong);
+      max-width: 500px;
+      width: 100%;
+      max-height: 80vh;
+      overflow: hidden;
+    }
+    
+    .gn-section-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--gn-text-primary);
+      margin-bottom: 8px;
+    }
+    
+    .gn-section-subtitle {
+      font-size: 15px;
+      color: var(--gn-text-secondary);
+      margin-bottom: 24px;
+    }
+    
+    .gn-divider {
+      height: 1px;
+      background: var(--gn-border-light);
+      margin: 24px 0;
+    }
+    
+    .gn-question-bubble {
+      background: var(--gn-gray-1);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px 0;
+      border-left: 4px solid var(--gn-primary);
+      position: relative;
+    }
+    
+    .gn-feedback-success {
+      background: rgba(52, 199, 89, 0.1);
+      border-color: var(--gn-secondary);
+      color: #1F8B4C;
+    }
+    
+    .gn-feedback-error {
+      background: rgba(255, 59, 48, 0.1);
+      border-color: var(--gn-red);
+      color: #C4314B;
     }
     
     .avatar-float {
@@ -144,27 +357,23 @@
     }
     
     @keyframes gentleFloat {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-6px) rotate(1deg); }
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
     }
     
-    .card-collect {
-      animation: cardCollect 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    .card-appear {
+      animation: cardAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     
-    @keyframes cardCollect {
-      0% { transform: scale(0) rotate(180deg); opacity: 0; }
-      50% { transform: scale(1.1) rotate(0deg); opacity: 1; }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    }
-    
-    .quest-highlight {
-      animation: questGlow 3s ease-in-out infinite;
-    }
-    
-    @keyframes questGlow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 149, 0, 0.4); }
-      50% { box-shadow: 0 0 0 8px rgba(255, 149, 0, 0.1); }
+    @keyframes cardAppear {
+      0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
     
     .dyslexia-font {
@@ -172,10 +381,10 @@
     }
     
     .high-contrast {
-      --goodnotes-background: #000000;
-      --goodnotes-paper: #1C1C1E;
-      --goodnotes-text-primary: #FFFFFF;
-      --goodnotes-text-secondary: #E5E5EA;
+      --gn-background: #000000;
+      --gn-surface: #1C1C1E;
+      --gn-text-primary: #FFFFFF;
+      --gn-text-secondary: #E5E5EA;
     }
     
     .reduced-motion * {
@@ -184,56 +393,67 @@
       transition-duration: 0.1s !important;
     }
     
-    .sidebar-tab {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      background: var(--goodnotes-primary);
-      color: white;
-      border-radius: 0 12px 12px 0;
-      padding: 16px 8px;
-      margin: 4px 0;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 600;
-      font-size: 14px;
-    }
-    
-    .sidebar-tab:hover {
-      background: #0056CC;
-      transform: translateX(4px);
-    }
-    
-    .tooltip {
-      position: relative;
-    }
-    
-    .tooltip::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--goodnotes-text-primary);
-      color: white;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-    
-    .tooltip:hover::after {
-      opacity: 1;
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .gn-container {
+        padding: 0 16px;
+      }
+      
+      .gn-stats-circle {
+        width: 48px;
+        height: 48px;
+      }
+      
+      .gn-floating-panel {
+        bottom: 16px;
+        right: 16px;
+      }
     }
   </style>
 </head>
 <body>
   <div id="root">
-    <div style="text-align: center; padding: 20px; font-family: Arial, sans-serif;">
-      <h1>🚀 Loading ANKID Advanced...</h1>
-      <p>Preparing your personalized learning adventure!</p>
+    <!-- GoodNotes 6 Style App -->
+    <div class="min-h-screen bg-gray-50">
+      <!-- Header -->
+      <div class="gn-header">
+        <div class="gn-container">
+          <div class="flex items-center justify-between py-4">
+            <div class="flex items-center space-x-6">
+              <h1 style="font-size: 28px; font-weight: 700; color: var(--gn-text-primary); margin: 0;">
+                ANKID
+              </h1>
+              <div class="gn-badge" style="background: linear-gradient(135deg, var(--gn-orange) 0%, var(--gn-pink) 100%); color: white;">
+                Gamified Learning Adventure
+              </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+              <button onclick="toggleSpeech()" class="gn-icon-button">
+                <Icon name="mic" />
+              </button>
+              <button onclick="showSettings()" class="gn-icon-button">
+                <Icon name="settings" />
+              </button>
+            </div>
+          </div>
+          
+          <!-- Navigation -->
+          <div className="flex space-x-2 pb-4">
+            <button onClick={() => showSection('dashboard')} className={`gn-nav-tab ${currentSection === 'dashboard' ? 'active' : ''}`}>Dashboard</button>
+            <button onClick={() => showSection('study')} className={`gn-nav-tab ${currentSection === 'study' ? 'active' : ''}`}>Study</button>
+            <button onClick={() => showSection('collection')} className={`gn-nav-tab ${currentSection === 'collection' ? 'active' : ''}`}>Collection</button>
+            <button onClick={() => showSection('quests')} className={`gn-nav-tab ${currentSection === 'quests' ? 'active' : ''}`}>Quests</button>
+            <button onClick={() => showSection('leaderboard')} className={`gn-nav-tab ${currentSection === 'leaderboard' ? 'active' : ''}`}>Leaderboard</button>
+            <button onClick={() => showSection('avatar')} className={`gn-nav-tab ${currentSection === 'avatar' ? 'active' : ''}`}>Avatar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div className="gn-container py-8">
+        {renderCurrentSection()}
+      </div>
     </div>
   </div>
   
@@ -266,6 +486,261 @@
         'mic': <path strokeLinecap="round" strokeLinejoin="round" d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3zM19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/>,
         'keyboard': <rect x="2" y="4" width="20" height="16" rx="2"/>,
         'lightbulb': <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0zm-4 5.5V20a2 2 0 01-4 0v-2.5"/>,
+        'send': <path strokeLinecap="round" strokeLinejoin="round" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>,
+        'check-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>,
+        'x-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>,
+        'arrow-left': <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m7 7l-7-7 7-7"/>,
+        'play': <path strokeLinecap="round" strokeLinejoin="round" d="M5 3l14 9-14 9V3z"/>,
+        'star': <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>,
+        'heart': <path strokeLinecap="round" strokeLinejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>,
+        'plus': <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m-7-7h14"/>,
+        'edit': <path strokeLinecap="round" strokeLinejoin="round" d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7m-8-2l4-4m0 0l3-3m-3 3l-3 3"/>,
+        'trash': <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>,
+        'refresh': <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>,
+        'home': <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>,
+        'gift': <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4C7.689 4 4.39 4.588 2.25 5.688m16.5-.717C16.402 4.402 14.205 4 12 4c-1.618 0-3.203.202-4.75.571m16.5.396c.538 2.197.538 4.507 0 6.704m0 0c-.348 1.423-.873 2.783-1.563 4.063C21.295 17.037 18.977 18.75 16.313 19.688"/>,
+        'users': <path strokeLinecap="round" strokeLinejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+      };
+      
+      const iconPath = icons[name];
+      if (!iconPath) return null;
+      
+      return (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke={color}
+          strokeWidth="2"
+          className={`gn-icon ${className}`}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {iconPath}
+        </svg>
+      );
+    };
+
+    // Main ANKID App Component
+    const ANKIDApp = () => {
+      const [currentSection, setCurrentSection] = useState('dashboard');
+      const [userStats, setUserStats] = useState({
+        level: 1,
+        xp: 0,
+        xpToNext: 100,
+        streak: 0,
+        totalCards: 0,
+        masteredCards: 0,
+        gems: 0
+      });
+      
+      const [flashcards, setFlashcards] = useState([]);
+      const [isStudying, setIsStudying] = useState(false);
+      const [currentCard, setCurrentCard] = useState(null);
+      const [showAnswer, setShowAnswer] = useState(false);
+      const [userAvatar, setUserAvatar] = useState({
+        head: 'human',
+        body: 'casual',
+        accessory: 'none',
+        background: 'forest'
+      });
+      
+      const [quests, setQuests] = useState([
+        { id: 1, title: 'First Steps', description: 'Create your first flashcard', reward: 50, completed: false, type: 'create' },
+        { id: 2, title: 'Knowledge Seeker', description: 'Study 5 flashcards', reward: 100, completed: false, type: 'study', progress: 0, target: 5 },
+        { id: 3, title: 'Streak Master', description: 'Maintain a 3-day study streak', reward: 200, completed: false, type: 'streak', progress: 0, target: 3 }
+      ]);
+      
+      const [leaderboard, setLeaderboard] = useState([
+        { rank: 1, name: 'Scholar Supreme', xp: 2500, level: 12, streak: 15 },
+        { rank: 2, name: 'Study Ninja', xp: 2200, level: 11, streak: 12 },
+        { rank: 3, name: 'Memory Master', xp: 1800, level: 9, streak: 8 },
+        { rank: 4, name: 'You', xp: userStats.xp, level: userStats.level, streak: userStats.streak }
+      ]);
+
+      const showSection = (section) => {
+        setCurrentSection(section);
+      };
+
+      const addXP = (amount) => {
+        setUserStats(prev => {
+          const newXP = prev.xp + amount;
+          const newLevel = Math.floor(newXP / 100) + 1;
+          const xpToNext = (newLevel * 100) - newXP;
+          
+          return {
+            ...prev,
+            xp: newXP,
+            level: newLevel,
+            xpToNext: xpToNext > 0 ? xpToNext : 100,
+            gems: prev.gems + Math.floor(amount / 10)
+          };
+        });
+      };
+
+      const renderDashboard = () => (
+        <div className="space-y-8">
+          {/* Welcome Section */}
+          <div className="gn-paper">
+            <div className="gn-paper-content p-8">
+              <div className="text-center">
+                <h2 className="gn-section-title">Welcome back, Scholar!</h2>
+                <p className="gn-section-subtitle">Ready to continue your learning adventure?</p>
+                
+                {/* Stats Overview */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
+                  <div className="text-center">
+                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-primary) 0%, var(--gn-purple) 100%)'}}>
+                      <span className="text-white text-xl font-bold">{userStats.level}</span>
+                    </div>
+                    <p className="text-sm font-medium text-gray-600">Level</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-orange) 0%, var(--gn-pink) 100%)'}}>
+                      <Icon name="flame" size={28} color="white" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-600">{userStats.streak} Day Streak</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-secondary) 0%, var(--gn-teal) 100%)'}}>
+                      <Icon name="gem" size={28} color="white" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-600">{userStats.gems} Gems</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-purple) 0%, var(--gn-pink) 100())'}}>
+                      <Icon name="layers" size={28} color="white" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-600">{userStats.totalCards} Cards</p>
+                  </div>
+                </div>
+                
+                {/* Progress Bar */}
+                <div className="mt-8">
+                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>Level {userStats.level}</span>
+                    <span>{userStats.xpToNext} XP to next level</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div 
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
+                      style={{width: `${((100 - userStats.xpToNext) / 100) * 100}%`}}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="gn-card">
+              <div className="p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                    <Icon name="book-open" size={24} color="var(--gn-primary)" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900">Continue Studying</h3>
+                    <p className="text-sm text-gray-600">Pick up where you left off</p>
+                  </div>
+                </div>
+                <button onClick={() => showSection('study')} className="gn-button w-full mt-4">
+                  Start Session
+                </button>
+              </div>
+            </div>
+            
+            <div className="gn-card">
+              <div className="p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                    <Icon name="plus" size={24} color="var(--gn-secondary)" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900">Create Cards</h3>
+                    <p className="text-sm text-gray-600">Add new knowledge to your collection</p>
+                  </div>
+                </div>
+                <button onClick={() => showSection('collection')} className="gn-button-secondary w-full mt-4">
+                  Create New
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderCurrentSection = () => {
+        switch(currentSection) {
+          case 'dashboard':
+            return renderDashboard();
+          case 'study':
+            return <div className="gn-paper"><div className="gn-paper-content p-8"><p>Study section - coming soon with GoodNotes 6 design!</p></div></div>;
+          case 'collection':
+            return <div className="gn-paper"><div className="gn-paper-content p-8"><p>Collection section - coming soon with GoodNotes 6 design!</p></div></div>;
+          case 'quests':
+            return <div className="gn-paper"><div className="gn-paper-content p-8"><p>Quests section - coming soon with GoodNotes 6 design!</p></div></div>;
+          case 'leaderboard':
+            return <div className="gn-paper"><div className="gn-paper-content p-8"><p>Leaderboard section - coming soon with GoodNotes 6 design!</p></div></div>;
+          case 'avatar':
+            return <div className="gn-paper"><div className="gn-paper-content p-8"><p>Avatar section - coming soon with GoodNotes 6 design!</p></div></div>;
+          default:
+            return renderDashboard();
+        }
+      };
+
+      return (
+        <div className="min-h-screen" style={{background: 'var(--gn-background)'}}>
+          {/* Header */}
+          <div className="gn-header">
+            <div className="gn-container">
+              <div className="flex items-center justify-between py-4">
+                <div className="flex items-center space-x-6">
+                  <h1 style={{fontSize: '28px', fontWeight: '700', color: 'var(--gn-text-primary)', margin: '0'}}>
+                    ANKID
+                  </h1>
+                  <div className="gn-badge" style={{background: 'linear-gradient(135deg, var(--gn-orange) 0%, var(--gn-pink) 100%)', color: 'white'}}>
+                    Gamified Learning Adventure
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3">
+                  <button className="gn-icon-button">
+                    <Icon name="mic" />
+                  </button>
+                  <button className="gn-icon-button">
+                    <Icon name="settings" />
+                  </button>
+                </div>
+              </div>
+              
+              {/* Navigation */}
+              <div className="flex space-x-2 pb-4">
+                <button onClick={() => showSection('dashboard')} className={`gn-nav-tab ${currentSection === 'dashboard' ? 'active' : ''}`}>Dashboard</button>
+                <button onClick={() => showSection('study')} className={`gn-nav-tab ${currentSection === 'study' ? 'active' : ''}`}>Study</button>
+                <button onClick={() => showSection('collection')} className={`gn-nav-tab ${currentSection === 'collection' ? 'active' : ''}`}>Collection</button>
+                <button onClick={() => showSection('quests')} className={`gn-nav-tab ${currentSection === 'quests' ? 'active' : ''}`}>Quests</button>
+                <button onClick={() => showSection('leaderboard')} className={`gn-nav-tab ${currentSection === 'leaderboard' ? 'active' : ''}`}>Leaderboard</button>
+                <button onClick={() => showSection('avatar')} className={`gn-nav-tab ${currentSection === 'avatar' ? 'active' : ''}`}>Avatar</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="gn-container py-8">
+            {renderCurrentSection()}
+          </div>
+        </div>
+      );
+    };
+
+    // Render the app
+    ReactDOM.render(<ANKIDApp />, document.getElementById('root'));
+  </script>
         'send': <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/>,
         'check-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>,
         'x-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>,
