@@ -326,9 +326,69 @@
     .bg-orange-100 { background-color: rgba(255, 149, 0, 0.1); }
     .bg-orange-500 { background-color: #FF9500; }
     .bg-gray-200 { background-color: var(--gn-gray-2); }
-    .text-white { color: white; }
-    .text-gray-600 { color: var(--gn-text-secondary); }
-    .text-gray-900 { color: var(--gn-text-primary); }
+    .text-gray-700 { color: #374151; }
+    .text-blue-600 { color: #2563eb; }
+    .text-blue-700 { color: #1d4ed8; }
+    .text-blue-800 { color: #1e40af; }
+    .text-blue-900 { color: #1e3a8a; }
+    .text-green-600 { color: #16a34a; }
+    .text-green-700 { color: #15803d; }
+    .text-green-800 { color: #166534; }
+    .text-green-900 { color: #14532d; }
+    .text-purple-600 { color: #9333ea; }
+    .text-purple-700 { color: #7c3aed; }
+    .text-purple-800 { color: #6b21a8; }
+    .text-purple-900 { color: #581c87; }
+    .text-orange-600 { color: #ea580c; }
+    .text-orange-700 { color: #c2410c; }
+    .text-orange-800 { color: #9a3412; }
+    .text-orange-900 { color: #7c2d12; }
+    .text-yellow-800 { color: #92400e; }
+    .bg-yellow-100 { background-color: #fef3c7; }
+    .border-yellow-200 { border-color: #fde68a; }
+    .border-blue-200 { border-color: #bfdbfe; }
+    .border-green-200 { border-color: #bbf7d0; }
+    .border-purple-200 { border-color: #e9d5ff; }
+    .border-orange-200 { border-color: #fed7aa; }
+    .line-clamp-2 { 
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .mr-2 { margin-right: 8px; }
+    .border { border-width: 1px; }
+    .border-2 { border-width: 2px; }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .top-1 { top: 4px; }
+    .right-1 { right: 4px; }
+    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+    .overflow-hidden { overflow: hidden; }
+    .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .duration-500 { transition-duration: 500ms; }
+    .duration-1000 { transition-duration: 1000ms; }
+    .ease-out { transition-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+    .capitalize { text-transform: capitalize; }
+    .opacity-75 { opacity: 0.75; }
+    
+    .gn-input {
+      width: 100%;
+      padding: 16px 20px;
+      background: var(--gn-surface);
+      border: 1px solid var(--gn-border-medium);
+      border-radius: 10px;
+      font-family: 'SF Pro Text', system-ui, sans-serif;
+      font-size: 17px;
+      color: var(--gn-text-primary);
+      transition: all 0.15s ease;
+    }
+    
+    .gn-input:focus {
+      outline: none;
+      border-color: var(--gn-primary);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    }
     .grid { display: grid; }
     .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -426,7 +486,13 @@
         'layers': <g><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></g>,
         'trophy': <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.228V2.721m-2.48 5.228a6.726 6.726 0 01-2.748 1.35m0 0A6.772 6.772 0 0112 10.5c-.665 0-1.312-.098-1.922-.272m0 0A6.772 6.772 0 007.228 8.47m0 0A6.547 6.547 0 006 5.227m0 0a6.721 6.721 0 016-2.477c2.247 0 4.312.857 5.86 2.263m0 0A6.547 6.547 0 0118 5.227"/>,
         'sparkles': <g><path d="M9.937 15.5A2 2 0 008.5 14.063l-6.135-1.582a.5.5 0 010-.962L8.5 9.936A2 2 0 009.937 8.5l1.582-6.135a.5.5 0 01.962 0L14.063 8.5A2 2 0 0015.5 9.937l6.135 1.582a.5.5 0 010 .962L15.5 14.063a2 2 0 00-1.437 1.437l-1.582 6.135a.5.5 0 01-.962 0L9.937 15.5z"/></g>,
-        'zap': <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        'zap': <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>,
+        'check-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>,
+        'x-circle': <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>,
+        'arrow-left': <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m7 7l-7-7 7-7"/>,
+        'edit': <path strokeLinecap="round" strokeLinejoin="round" d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7m-8-2l4-4m0 0l3-3m-3 3l-3 3"/>,
+        'trash': <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>,
+        'lightbulb': <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0zm-4 5.5V20a2 2 0 01-4 0v-2.5"/>
       };
       
       return (
@@ -457,8 +523,133 @@
         gems: 35
       });
 
+      const [flashcards, setFlashcards] = useState([
+        { id: 1, front: 'What is photosynthesis?', back: 'The process by which plants convert sunlight into energy', subject: 'Biology', difficulty: 'Easy', mastered: true },
+        { id: 2, front: 'What is the capital of France?', back: 'Paris', subject: 'Geography', difficulty: 'Easy', mastered: true },
+        { id: 3, front: 'What is 15 × 7?', back: '105', subject: 'Math', difficulty: 'Medium', mastered: false },
+        { id: 4, front: 'Who wrote Romeo and Juliet?', back: 'William Shakespeare', subject: 'Literature', difficulty: 'Medium', mastered: false },
+        { id: 5, front: 'What is the chemical symbol for gold?', back: 'Au', subject: 'Chemistry', difficulty: 'Hard', mastered: false }
+      ]);
+
+      const [currentCard, setCurrentCard] = useState(null);
+      const [showAnswer, setShowAnswer] = useState(false);
+      const [isStudying, setIsStudying] = useState(false);
+      
+      const [newCard, setNewCard] = useState({ front: '', back: '', subject: '', difficulty: 'Easy' });
+      const [showCreateCard, setShowCreateCard] = useState(false);
+
+      const [userAvatar, setUserAvatar] = useState({
+        head: 'wizard',
+        body: 'robes',
+        accessory: 'hat',
+        background: 'library',
+        name: 'Study Sage'
+      });
+
+      const [quests, setQuests] = useState([
+        { id: 1, title: 'First Steps', description: 'Create your first flashcard', reward: 50, completed: false, type: 'create', progress: 0, target: 1 },
+        { id: 2, title: 'Knowledge Seeker', description: 'Study 5 flashcards', reward: 100, completed: false, type: 'study', progress: 0, target: 5 },
+        { id: 3, title: 'Streak Master', description: 'Maintain a 3-day study streak', reward: 200, completed: false, type: 'streak', progress: 2, target: 3 },
+        { id: 4, title: 'Card Collector', description: 'Create 10 flashcards', reward: 150, completed: false, type: 'create', progress: 5, target: 10 },
+        { id: 5, title: 'Master Scholar', description: 'Master 20 cards', reward: 300, completed: false, type: 'master', progress: 8, target: 20 }
+      ]);
+      
+      const [leaderboard, setLeaderboard] = useState([
+        { rank: 1, name: 'Scholar Supreme', xp: 2500, level: 12, streak: 15 },
+        { rank: 2, name: 'Study Ninja', xp: 2200, level: 11, streak: 12 },
+        { rank: 3, name: 'Memory Master', xp: 1800, level: 9, streak: 8 },
+        { rank: 4, name: 'You', xp: 350, level: 1, streak: 5 }
+      ]);
+
+      const [speechEnabled, setSpeechEnabled] = useState(false);
+
       const showSection = (section) => {
+        console.log('Switching to section:', section);
         setCurrentSection(section);
+      };
+
+      const addXP = (amount) => {
+        setUserStats(prev => {
+          const newXP = prev.xp + amount;
+          const newLevel = Math.floor(newXP / 500) + 1;
+          const xpToNext = (newLevel * 500) - newXP;
+          
+          return {
+            ...prev,
+            xp: newXP,
+            level: newLevel,
+            xpToNext: xpToNext > 0 ? xpToNext : 500,
+            gems: prev.gems + Math.floor(amount / 10)
+          };
+        });
+      };
+
+      const startStudySession = () => {
+        const unstudiedCards = flashcards.filter(card => !card.mastered);
+        if (unstudiedCards.length > 0) {
+          setCurrentCard(unstudiedCards[0]);
+          setIsStudying(true);
+          setShowAnswer(false);
+        }
+      };
+
+      const answerCard = (correct) => {
+        if (correct) {
+          addXP(25);
+          // Update quest progress
+          setQuests(prev => prev.map(quest => 
+            quest.type === 'study' ? { ...quest, progress: quest.progress + 1 } : quest
+          ));
+        }
+        
+        // Move to next card
+        const currentIndex = flashcards.findIndex(card => card.id === currentCard.id);
+        const nextCard = flashcards[currentIndex + 1];
+        
+        if (nextCard) {
+          setCurrentCard(nextCard);
+          setShowAnswer(false);
+        } else {
+          setIsStudying(false);
+          setCurrentCard(null);
+        }
+      };
+
+      const createCard = () => {
+        if (newCard.front && newCard.back && newCard.subject) {
+          const card = {
+            id: Date.now(),
+            ...newCard,
+            mastered: false
+          };
+          
+          setFlashcards(prev => [...prev, card]);
+          setUserStats(prev => ({ ...prev, totalCards: prev.totalCards + 1 }));
+          addXP(20);
+          
+          // Update quest progress
+          setQuests(prev => prev.map(quest => 
+            quest.type === 'create' ? { ...quest, progress: quest.progress + 1 } : quest
+          ));
+          
+          setNewCard({ front: '', back: '', subject: '', difficulty: 'Easy' });
+          setShowCreateCard(false);
+        }
+      };
+
+      const toggleSpeech = () => {
+        setSpeechEnabled(!speechEnabled);
+        if (!speechEnabled && 'speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance('Speech enabled! I can now read cards aloud.');
+          speechSynthesis.speak(utterance);
+        }
+      };
+
+      const speakText = (text) => {
+        if (speechEnabled && 'speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          speechSynthesis.speak(utterance);
+        }
       };
 
       const renderDashboard = () => (
@@ -598,78 +789,594 @@
       );
 
       const renderCurrentSection = () => {
+        console.log('Current section:', currentSection);
         switch(currentSection) {
           case 'dashboard':
             return renderDashboard();
           case 'study':
-            return (
-              <div className="gn-paper">
-                <div className="gn-paper-content p-8">
-                  <h2 className="gn-section-title">Study Session</h2>
-                  <p className="gn-section-subtitle">Select a deck to begin your learning journey</p>
-                  <div className="text-center py-12">
-                    <Icon name="book-open" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
-                    <p className="text-gray-600">Study features coming soon with GoodNotes 6 design!</p>
-                  </div>
-                </div>
-              </div>
-            );
+            return renderStudy();
           case 'collection':
-            return (
-              <div className="gn-paper">
-                <div className="gn-paper-content p-8">
-                  <h2 className="gn-section-title">Card Collection</h2>
-                  <p className="gn-section-subtitle">Manage your flashcard library</p>
-                  <div className="text-center py-12">
-                    <Icon name="layers" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
-                    <p className="text-gray-600">Collection features coming soon with GoodNotes 6 design!</p>
-                  </div>
-                </div>
-              </div>
-            );
+            return renderCollection();
           case 'quests':
-            return (
-              <div className="gn-paper">
-                <div className="gn-paper-content p-8">
-                  <h2 className="gn-section-title">Daily Quests</h2>
-                  <p className="gn-section-subtitle">Complete challenges to earn rewards</p>
-                  <div className="text-center py-12">
-                    <Icon name="trophy" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
-                    <p className="text-gray-600">Quest features coming soon with GoodNotes 6 design!</p>
-                  </div>
-                </div>
-              </div>
-            );
+            return renderQuests();
           case 'leaderboard':
-            return (
-              <div className="gn-paper">
-                <div className="gn-paper-content p-8">
-                  <h2 className="gn-section-title">Leaderboard</h2>
-                  <p className="gn-section-subtitle">See how you rank among other learners</p>
-                  <div className="text-center py-12">
-                    <Icon name="trophy" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
-                    <p className="text-gray-600">Leaderboard features coming soon with GoodNotes 6 design!</p>
-                  </div>
-                </div>
-              </div>
-            );
+            return renderLeaderboard();
           case 'avatar':
-            return (
-              <div className="gn-paper">
-                <div className="gn-paper-content p-8">
-                  <h2 className="gn-section-title">Avatar Customization</h2>
-                  <p className="gn-section-subtitle">Personalize your learning companion</p>
-                  <div className="text-center py-12">
-                    <Icon name="sparkles" size={64} color="var(--gn-text-secondary)" className="mx-auto mb-4" />
-                    <p className="text-gray-600">Avatar features coming soon with GoodNotes 6 design!</p>
-                  </div>
-                </div>
-              </div>
-            );
+            return renderAvatar();
           default:
             return renderDashboard();
         }
       };
+
+      const renderStudy = () => {
+        if (isStudying && currentCard) {
+          return (
+            <div className="space-y-8">
+              <div className="gn-paper">
+                <div className="gn-paper-content p-8">
+                  <div className="text-center mb-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <button onClick={() => setIsStudying(false)} className="gn-button-secondary">
+                        <Icon name="arrow-left" size={20} className="mr-2" />
+                        Back to Study
+                      </button>
+                      <div className="gn-badge">
+                        {currentCard.subject} • {currentCard.difficulty}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="max-w-2xl mx-auto">
+                    <div className="gn-card p-8 text-center card-appear">
+                      <h3 className="text-xl font-semibold mb-6">{showAnswer ? 'Answer' : 'Question'}</h3>
+                      <p className="text-lg mb-8" onClick={() => speakText(showAnswer ? currentCard.back : currentCard.front)}>
+                        {showAnswer ? currentCard.back : currentCard.front}
+                      </p>
+                      
+                      {!showAnswer ? (
+                        <button onClick={() => setShowAnswer(true)} className="gn-button">
+                          Show Answer
+                        </button>
+                      ) : (
+                        <div className="space-x-4">
+                          <button onClick={() => answerCard(false)} className="gn-button-secondary">
+                            <Icon name="x-circle" size={20} className="mr-2" />
+                            Incorrect
+                          </button>
+                          <button onClick={() => answerCard(true)} className="gn-button">
+                            <Icon name="check-circle" size={20} className="mr-2" />
+                            Correct
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        return (
+          <div className="space-y-8">
+            <div className="gn-paper">
+              <div className="gn-paper-content p-8">
+                <h2 className="gn-section-title">Study Session</h2>
+                <p className="gn-section-subtitle">Choose your study method</p>
+                
+                <div className="grid md:grid-cols-2 gap-6 mt-8">
+                  <div className="gn-card">
+                    <div className="p-6">
+                      <div className="flex items-center space-x-4 mb-4">
+                        <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                          <Icon name="zap" size={24} color="var(--gn-primary)" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900">Quick Review</h3>
+                          <p className="text-sm text-gray-600">Review all unmastered cards</p>
+                        </div>
+                      </div>
+                      <button onClick={startStudySession} className="gn-button w-full">
+                        Start Quick Review
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="gn-card">
+                    <div className="p-6">
+                      <div className="flex items-center space-x-4 mb-4">
+                        <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+                          <Icon name="sparkles" size={24} color="var(--gn-purple)" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900">Spaced Practice</h3>
+                          <p className="text-sm text-gray-600">Optimized learning intervals</p>
+                        </div>
+                      </div>
+                      <button onClick={startStudySession} className="gn-button-secondary w-full">
+                        Coming Soon
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Study Statistics */}
+                <div className="mt-8 grid grid-cols-3 gap-4">
+                  <div className="text-center p-4 bg-blue-50 rounded-xl">
+                    <p className="text-2xl font-bold text-blue-600">{userStats.totalCards}</p>
+                    <p className="text-sm text-gray-600">Total Cards</p>
+                  </div>
+                  <div className="text-center p-4 bg-green-50 rounded-xl">
+                    <p className="text-2xl font-bold text-green-600">{userStats.masteredCards}</p>
+                    <p className="text-sm text-gray-600">Mastered</p>
+                  </div>
+                  <div className="text-center p-4 bg-orange-50 rounded-xl">
+                    <p className="text-2xl font-bold text-orange-600">{userStats.totalCards - userStats.masteredCards}</p>
+                    <p className="text-sm text-gray-600">To Study</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+      const renderCollection = () => {
+        if (showCreateCard) {
+          return (
+            <div className="space-y-8">
+              <div className="gn-paper">
+                <div className="gn-paper-content p-8">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="gn-section-title">Create New Card</h2>
+                    <button onClick={() => setShowCreateCard(false)} className="gn-button-secondary">
+                      <Icon name="x-circle" size={20} />
+                    </button>
+                  </div>
+                  
+                  <div className="max-w-2xl mx-auto space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Question (Front)</label>
+                      <textarea
+                        value={newCard.front}
+                        onChange={(e) => setNewCard({...newCard, front: e.target.value})}
+                        className="gn-input"
+                        rows="3"
+                        placeholder="Enter your question here..."
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Answer (Back)</label>
+                      <textarea
+                        value={newCard.back}
+                        onChange={(e) => setNewCard({...newCard, back: e.target.value})}
+                        className="gn-input"
+                        rows="3"
+                        placeholder="Enter the answer here..."
+                      />
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                        <select
+                          value={newCard.subject}
+                          onChange={(e) => setNewCard({...newCard, subject: e.target.value})}
+                          className="gn-input"
+                        >
+                          <option value="">Select subject...</option>
+                          <option value="Math">Math</option>
+                          <option value="Science">Science</option>
+                          <option value="History">History</option>
+                          <option value="Literature">Literature</option>
+                          <option value="Geography">Geography</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Difficulty</label>
+                        <select
+                          value={newCard.difficulty}
+                          onChange={(e) => setNewCard({...newCard, difficulty: e.target.value})}
+                          className="gn-input"
+                        >
+                          <option value="Easy">Easy</option>
+                          <option value="Medium">Medium</option>
+                          <option value="Hard">Hard</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <button onClick={createCard} className="gn-button w-full">
+                      <Icon name="plus" size={20} className="mr-2" />
+                      Create Card
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        return (
+          <div className="space-y-8">
+            <div className="gn-paper">
+              <div className="gn-paper-content p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="gn-section-title">Card Collection</h2>
+                    <p className="gn-section-subtitle">Manage your flashcard library</p>
+                  </div>
+                  <button onClick={() => setShowCreateCard(true)} className="gn-button">
+                    <Icon name="plus" size={20} className="mr-2" />
+                    New Card
+                  </button>
+                </div>
+                
+                {/* Subject Filter */}
+                <div className="flex space-x-2 mb-6">
+                  <button className="gn-nav-tab active">All</button>
+                  <button className="gn-nav-tab">Math</button>
+                  <button className="gn-nav-tab">Science</button>
+                  <button className="gn-nav-tab">Literature</button>
+                  <button className="gn-nav-tab">Geography</button>
+                </div>
+                
+                {/* Cards Grid */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {flashcards.map(card => (
+                    <div key={card.id} className="gn-card card-appear">
+                      <div className="p-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="gn-badge">{card.subject}</span>
+                          <span className={`text-xs px-2 py-1 rounded-full ${
+                            card.mastered ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                          }`}>
+                            {card.mastered ? 'Mastered' : card.difficulty}
+                          </span>
+                        </div>
+                        
+                        <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2">{card.front}</h4>
+                        <p className="text-sm text-gray-600 line-clamp-2">{card.back}</p>
+                        
+                        <div className="flex space-x-2 mt-4">
+                          <button onClick={() => speakText(card.front)} className="gn-icon-button flex-1">
+                            <Icon name="mic" size={16} />
+                          </button>
+                          <button className="gn-icon-button flex-1">
+                            <Icon name="edit" size={16} />
+                          </button>
+                          <button className="gn-icon-button flex-1">
+                            <Icon name="trash" size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+      const renderQuests = () => (
+        <div className="space-y-8">
+          <div className="gn-paper">
+            <div className="gn-paper-content p-8">
+              <h2 className="gn-section-title">Daily Quests</h2>
+              <p className="gn-section-subtitle">Complete challenges to earn rewards</p>
+              
+              <div className="space-y-4 mt-8">
+                {quests.map(quest => (
+                  <div key={quest.id} className={`gn-card p-6 ${quest.completed ? 'opacity-75' : ''}`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                          quest.completed ? 'bg-green-100' : 'bg-blue-100'
+                        }`}>
+                          <Icon 
+                            name={quest.completed ? "check-circle" : "trophy"} 
+                            size={24} 
+                            color={quest.completed ? "var(--gn-secondary)" : "var(--gn-primary)"} 
+                          />
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900">{quest.title}</h3>
+                          <p className="text-sm text-gray-600">{quest.description}</p>
+                          
+                          {/* Progress Bar */}
+                          <div className="mt-2">
+                            <div className="flex justify-between text-xs text-gray-500 mb-1">
+                              <span>{quest.progress}/{quest.target}</span>
+                              <span>{Math.round((quest.progress / quest.target) * 100)}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div 
+                                className={`h-2 rounded-full transition-all duration-500 ${
+                                  quest.completed ? 'bg-green-500' : 'bg-blue-500'
+                                }`}
+                                style={{width: `${Math.min((quest.progress / quest.target) * 100, 100)}%`}}
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="text-right">
+                        <div className="flex items-center space-x-2">
+                          <Icon name="gem" size={16} color="var(--gn-orange)" />
+                          <span className="font-semibold text-orange-600">{quest.reward}</span>
+                        </div>
+                        {quest.completed && (
+                          <span className="text-xs text-green-600 font-medium">Completed!</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Weekly Challenges */}
+              <div className="mt-12">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">Weekly Challenges</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="gn-card p-6 border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <Icon name="zap" size={24} color="var(--gn-purple)" />
+                      <h4 className="font-semibold text-purple-900">Speed Learner</h4>
+                    </div>
+                    <p className="text-sm text-purple-700 mb-2">Study 50 cards this week</p>
+                    <div className="w-full bg-purple-200 rounded-full h-2 mb-2">
+                      <div className="bg-purple-500 h-2 rounded-full" style={{width: '60%'}}></div>
+                    </div>
+                    <div className="flex justify-between text-xs text-purple-600">
+                      <span>30/50 cards</span>
+                      <span>🏆 500 XP</span>
+                    </div>
+                  </div>
+                  
+                  <div className="gn-card p-6 border-2 border-orange-200 bg-gradient-to-r from-orange-50 to-yellow-50">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <Icon name="flame" size={24} color="var(--gn-orange)" />
+                      <h4 className="font-semibold text-orange-900">Streak Champion</h4>
+                    </div>
+                    <p className="text-sm text-orange-700 mb-2">Maintain 7-day streak</p>
+                    <div className="w-full bg-orange-200 rounded-full h-2 mb-2">
+                      <div className="bg-orange-500 h-2 rounded-full" style={{width: '71%'}}></div>
+                    </div>
+                    <div className="flex justify-between text-xs text-orange-600">
+                      <span>5/7 days</span>
+                      <span>💎 100 Gems</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+      const renderLeaderboard = () => (
+        <div className="space-y-8">
+          <div className="gn-paper">
+            <div className="gn-paper-content p-8">
+              <h2 className="gn-section-title">Leaderboard</h2>
+              <p className="gn-section-subtitle">See how you rank among other learners</p>
+              
+              {/* Time Period Selector */}
+              <div className="flex space-x-2 mt-6 mb-8">
+                <button className="gn-nav-tab active">Weekly</button>
+                <button className="gn-nav-tab">Monthly</button>
+                <button className="gn-nav-tab">All Time</button>
+              </div>
+              
+              {/* Leaderboard List */}
+              <div className="space-y-3">
+                {leaderboard.map((player, index) => (
+                  <div key={index} className={`gn-card p-6 ${player.name === 'You' ? 'border-2 border-blue-200 bg-blue-50' : ''}`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        {/* Rank Badge */}
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white ${
+                          player.rank === 1 ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' :
+                          player.rank === 2 ? 'bg-gradient-to-r from-gray-300 to-gray-500' :
+                          player.rank === 3 ? 'bg-gradient-to-r from-yellow-600 to-yellow-800' :
+                          'bg-gradient-to-r from-blue-400 to-blue-600'
+                        }`}>
+                          {player.rank <= 3 ? (
+                            <Icon name={player.rank === 1 ? 'trophy' : 'trophy'} size={20} />
+                          ) : (
+                            player.rank
+                          )}
+                        </div>
+                        
+                        {/* Player Info */}
+                        <div>
+                          <h3 className={`font-semibold ${player.name === 'You' ? 'text-blue-900' : 'text-gray-900'}`}>
+                            {player.name}
+                          </h3>
+                          <p className="text-sm text-gray-600">Level {player.level}</p>
+                        </div>
+                      </div>
+                      
+                      {/* Stats */}
+                      <div className="flex items-center space-x-6 text-sm">
+                        <div className="text-center">
+                          <p className="font-semibold text-gray-900">{player.xp.toLocaleString()}</p>
+                          <p className="text-gray-600">XP</p>
+                        </div>
+                        
+                        <div className="flex items-center space-x-1">
+                          <Icon name="flame" size={16} color="var(--gn-orange)" />
+                          <span className="font-semibold text-orange-600">{player.streak}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Your Stats Summary */}
+              <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
+                <h3 className="font-semibold text-blue-900 mb-4">Your Performance This Week</h3>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-blue-600">150</p>
+                    <p className="text-sm text-blue-700">XP Gained</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-purple-600">15</p>
+                    <p className="text-sm text-purple-700">Cards Studied</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-green-600">5</p>
+                    <p className="text-sm text-green-700">Day Streak</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Achievement Badges */}
+              <div className="mt-8">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Achievements</h3>
+                <div className="flex space-x-3">
+                  <div className="gn-badge bg-yellow-100 text-yellow-800 border border-yellow-200">
+                    🏆 First Win
+                  </div>
+                  <div className="gn-badge bg-blue-100 text-blue-800 border border-blue-200">
+                    🔥 5 Day Streak
+                  </div>
+                  <div className="gn-badge bg-purple-100 text-purple-800 border border-purple-200">
+                    📚 Study Master
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+      const renderAvatar = () => (
+        <div className="space-y-8">
+          <div className="gn-paper">
+            <div className="gn-paper-content p-8">
+              <h2 className="gn-section-title">Avatar Customization</h2>
+              <p className="gn-section-subtitle">Personalize your learning companion</p>
+              
+              <div className="grid lg:grid-cols-2 gap-8 mt-8">
+                {/* Avatar Preview */}
+                <div className="text-center">
+                  <div className="gn-card p-8 mb-6">
+                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center avatar-float">
+                      <Icon name="sparkles" size={48} color="white" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{userAvatar.name}</h3>
+                    <p className="text-gray-600">Your Learning Companion</p>
+                    
+                    <button onClick={() => speakText(`Hello! I'm ${userAvatar.name}, your magical learning companion!`)} className="gn-button mt-4">
+                      <Icon name="mic" size={16} className="mr-2" />
+                      Say Hello
+                    </button>
+                  </div>
+                  
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="gn-card p-4">
+                      <p className="text-2xl font-bold text-blue-600">{userStats.level}</p>
+                      <p className="text-sm text-gray-600">Avatar Level</p>
+                    </div>
+                    <div className="gn-card p-4">
+                      <p className="text-2xl font-bold text-purple-600">{userStats.gems}</p>
+                      <p className="text-sm text-gray-600">Gems Earned</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Customization Options */}
+                <div className="space-y-6">
+                  {/* Avatar Type */}
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Avatar Style</h4>
+                    <div className="grid grid-cols-3 gap-3">
+                      {['wizard', 'scholar', 'ninja', 'robot', 'fairy', 'dragon'].map(type => (
+                        <button 
+                          key={type}
+                          onClick={() => setUserAvatar({...userAvatar, head: type, name: `Study ${type.charAt(0).toUpperCase() + type.slice(1)}`})}
+                          className={`gn-card p-4 text-center transition-all ${userAvatar.head === type ? 'border-2 border-blue-500 bg-blue-50' : ''}`}
+                        >
+                          <Icon name="sparkles" size={24} className="mx-auto mb-2" />
+                          <p className="text-sm font-medium capitalize">{type}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Background */}
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Environment</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {['library', 'space', 'forest', 'castle'].map(bg => (
+                        <button 
+                          key={bg}
+                          onClick={() => setUserAvatar({...userAvatar, background: bg})}
+                          className={`gn-card p-4 text-center transition-all ${userAvatar.background === bg ? 'border-2 border-green-500 bg-green-50' : ''}`}
+                        >
+                          <Icon name="layers" size={20} className="mx-auto mb-2" />
+                          <p className="text-sm font-medium capitalize">{bg}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Accessories (Premium) */}
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Accessories</h4>
+                    <div className="grid grid-cols-3 gap-3">
+                      {['hat', 'glasses', 'crown', 'cape', 'wand', 'book'].map(accessory => (
+                        <button 
+                          key={accessory}
+                          onClick={() => setUserAvatar({...userAvatar, accessory})}
+                          className={`gn-card p-3 text-center transition-all relative ${userAvatar.accessory === accessory ? 'border-2 border-purple-500 bg-purple-50' : ''}`}
+                        >
+                          <Icon name="gem" size={16} className="mx-auto mb-1" />
+                          <p className="text-xs font-medium capitalize">{accessory}</p>
+                          <div className="absolute top-1 right-1 bg-orange-500 text-white text-xs px-1 rounded">
+                            {Math.floor(Math.random() * 50) + 10}💎
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">💡 Unlock accessories by completing quests and earning gems!</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Avatar Abilities */}
+              <div className="mt-8">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Avatar Abilities</h3>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="gn-card p-4 border-2 border-blue-200 bg-blue-50">
+                    <Icon name="mic" size={24} color="var(--gn-blue)" className="mb-2" />
+                    <h5 className="font-semibold text-blue-900">Voice Assistant</h5>
+                    <p className="text-sm text-blue-700">Reads cards aloud and provides encouragement</p>
+                  </div>
+                  
+                  <div className="gn-card p-4 border-2 border-green-200 bg-green-50">
+                    <Icon name="lightbulb" size={24} color="var(--gn-secondary)" className="mb-2" />
+                    <h5 className="font-semibold text-green-900">Smart Hints</h5>
+                    <p className="text-sm text-green-700">Provides helpful hints when you're stuck</p>
+                  </div>
+                  
+                  <div className="gn-card p-4 border-2 border-purple-200 bg-purple-50">
+                    <Icon name="trophy" size={24} color="var(--gn-purple)" className="mb-2" />
+                    <h5 className="font-semibold text-purple-900">Progress Tracking</h5>
+                    <p className="text-sm text-purple-700">Celebrates your achievements and milestones</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
 
       return (
         <div className="min-h-screen" style={{background: 'var(--gn-background)'}}>
