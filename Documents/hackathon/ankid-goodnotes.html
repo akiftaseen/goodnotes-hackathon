@@ -12,36 +12,53 @@
     @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap');
     
     :root {
-      --gn-primary: #007AFF;
-      --gn-secondary: #34C759;
-      --gn-orange: #FF9500;
-      --gn-red: #FF3B30;
-      --gn-purple: #AF52DE;
-      --gn-pink: #FF2D92;
-      --gn-yellow: #FFCC02;
-      --gn-teal: #32D74B;
+      /* Material Design Color Palette */
+      --md-primary: #43bfdb;
+      --md-secondary: #f5dd59;
+      --md-surface: #ffffff;
+      --md-background: #ffffff;
+      --md-on-primary: #ffffff;
+      --md-on-secondary: #0e0e0e;
+      --md-on-surface: #0e0e0e;
+      --md-on-background: #0e0e0e;
       
-      --gn-gray-1: #F2F2F7;
-      --gn-gray-2: #E5E5EA;
-      --gn-gray-3: #D1D1D6;
-      --gn-gray-4: #C7C7CC;
-      --gn-gray-5: #AEAEB2;
-      --gn-gray-6: #8E8E93;
+      /* Primary Colors */
+      --gn-primary: #43bfdb;
+      --gn-secondary: #f5dd59;
+      --gn-orange: #43bfdb;
+      --gn-red: #43bfdb;
+      --gn-purple: #43bfdb;
+      --gn-pink: #43bfdb;
+      --gn-yellow: #f5dd59;
+      --gn-teal: #43bfdb;
+      --gn-green: #43bfdb;
       
-      --gn-text-primary: #1D1D1F;
-      --gn-text-secondary: #86868B;
-      --gn-text-tertiary: #AEAEB2;
+      /* Grayscale using the specified colors */
+      --gn-gray-1: #ffffff;
+      --gn-gray-2: rgba(67, 191, 219, 0.1);
+      --gn-gray-3: rgba(67, 191, 219, 0.2);
+      --gn-gray-4: rgba(67, 191, 219, 0.3);
+      --gn-gray-5: rgba(14, 14, 14, 0.4);
+      --gn-gray-6: rgba(14, 14, 14, 0.6);
       
-      --gn-background: #FAFAFA;
-      --gn-surface: #FFFFFF;
-      --gn-paper: #FEFEFE;
+      /* Text Colors */
+      --gn-text-primary: #0e0e0e;
+      --gn-text-secondary: rgba(14, 14, 14, 0.7);
+      --gn-text-tertiary: rgba(14, 14, 14, 0.5);
       
-      --gn-shadow-light: rgba(0, 0, 0, 0.04);
-      --gn-shadow-medium: rgba(0, 0, 0, 0.08);
-      --gn-shadow-strong: rgba(0, 0, 0, 0.12);
+      /* Surface Colors */
+      --gn-background: #ffffff;
+      --gn-surface: #ffffff;
+      --gn-paper: #ffffff;
       
-      --gn-border-light: rgba(0, 0, 0, 0.05);
-      --gn-border-medium: rgba(0, 0, 0, 0.08);
+      /* Shadows using black */
+      --gn-shadow-light: rgba(14, 14, 14, 0.04);
+      --gn-shadow-medium: rgba(14, 14, 14, 0.08);
+      --gn-shadow-strong: rgba(14, 14, 14, 0.12);
+      
+      /* Borders */
+      --gn-border-light: rgba(14, 14, 14, 0.08);
+      --gn-border-medium: rgba(14, 14, 14, 0.12);
     }
     
     * {
@@ -85,13 +102,12 @@
     }
     
     .gn-paper {
-      background: linear-gradient(135deg, #FEFEFE 0%, #FDFDFD 100%);
-      border-radius: 16px;
-      border: 0.5px solid rgba(0, 0, 0, 0.06);
+      background: var(--md-surface);
+      border-radius: 8px;
+      border: 1px solid var(--gn-border-light);
       box-shadow: 
-        0 1px 3px rgba(0, 0, 0, 0.02),
-        0 4px 12px rgba(0, 0, 0, 0.04),
-        0 0 0 0.5px rgba(255, 255, 255, 0.9) inset;
+        0 2px 4px var(--gn-shadow-light),
+        0 4px 8px var(--gn-shadow-medium);
       position: relative;
       overflow: hidden;
     }
@@ -104,8 +120,8 @@
       right: 0;
       bottom: 0;
       background-image: 
-        linear-gradient(90deg, transparent 79px, rgba(255, 182, 193, 0.3) 79px, rgba(255, 182, 193, 0.3) 80px, transparent 80px),
-        repeating-linear-gradient(transparent, transparent 27px, rgba(0, 122, 255, 0.08) 27px, rgba(0, 122, 255, 0.08) 28px);
+        linear-gradient(90deg, transparent 79px, rgba(67, 191, 219, 0.1) 79px, rgba(67, 191, 219, 0.1) 80px, transparent 80px),
+        repeating-linear-gradient(transparent, transparent 27px, rgba(67, 191, 219, 0.05) 27px, rgba(67, 191, 219, 0.05) 28px);
       pointer-events: none;
       opacity: 0.7;
       z-index: 1;
@@ -114,7 +130,7 @@
     .gn-paper-content {
       position: relative;
       z-index: 2;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--md-surface);
     }
     
     .gn-button {
@@ -122,59 +138,60 @@
       align-items: center;
       justify-content: center;
       padding: 12px 24px;
-      background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
-      color: white;
+      background: var(--md-primary);
+      color: var(--md-on-primary);
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
       font-family: 'SF Pro Text', system-ui, sans-serif;
-      font-size: 17px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       text-decoration: none;
       min-height: 48px;
       box-shadow: 
-        0 1px 3px rgba(0, 122, 255, 0.2),
-        0 4px 12px rgba(0, 122, 255, 0.15);
+        0 2px 4px rgba(67, 191, 219, 0.2),
+        0 4px 8px rgba(67, 191, 219, 0.1);
     }
     
     .gn-button:hover {
-      background: linear-gradient(135deg, #0056CC 0%, #003D9F 100%);
-      transform: translateY(-1px);
+      background: rgba(67, 191, 219, 0.9);
+      transform: translateY(-2px);
       box-shadow: 
-        0 2px 8px rgba(0, 122, 255, 0.25),
-        0 8px 24px rgba(0, 122, 255, 0.2);
+        0 4px 8px rgba(67, 191, 219, 0.25),
+        0 8px 16px rgba(67, 191, 219, 0.15);
     }
     
     .gn-button:active {
       transform: translateY(0);
       box-shadow: 
-        0 1px 3px rgba(0, 122, 255, 0.2),
-        0 2px 8px rgba(0, 122, 255, 0.15);
+        0 2px 4px rgba(67, 191, 219, 0.2),
+        0 4px 8px rgba(67, 191, 219, 0.1);
     }
     
     .gn-button-secondary {
-      background: linear-gradient(135deg, #F2F2F7 0%, #E5E5EA 100%);
-      color: var(--gn-text-primary);
-      border: 0.5px solid rgba(0, 0, 0, 0.08);
+      background: var(--md-secondary);
+      color: var(--md-on-secondary);
+      border: 1px solid var(--gn-border-light);
       box-shadow: 
-        0 1px 3px rgba(0, 0, 0, 0.02),
-        0 0 0 0.5px rgba(255, 255, 255, 0.8) inset;
+        0 2px 4px var(--gn-shadow-light);
     }
     
     .gn-button-secondary:hover {
-      background: linear-gradient(135deg, #E5E5EA 0%, #D1D1D6 100%);
-      transform: translateY(-1px);
+      background: rgba(245, 221, 89, 0.9);
+      transform: translateY(-2px);
       box-shadow: 
-        0 2px 8px rgba(0, 0, 0, 0.06),
-        0 0 0 0.5px rgba(255, 255, 255, 0.8) inset;
+        0 4px 8px rgba(245, 221, 89, 0.2),
+        0 8px 16px rgba(245, 221, 89, 0.1);
     }
     
     .gn-nav-tab {
-      padding: 10px 18px;
+      padding: 12px 20px;
       border-radius: 8px;
       font-weight: 500;
-      font-size: 15px;
+      font-size: 14px;
       text-decoration: none;
       color: var(--gn-text-secondary);
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -182,50 +199,48 @@
       border: none;
       cursor: pointer;
       position: relative;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     .gn-nav-tab.active {
-      color: var(--gn-primary);
-      background: rgba(0, 122, 255, 0.08);
-      box-shadow: 0 0 0 0.5px rgba(0, 122, 255, 0.2) inset;
+      color: var(--md-primary);
+      background: rgba(67, 191, 219, 0.1);
+      box-shadow: 0 0 0 1px rgba(67, 191, 219, 0.2) inset;
     }
     
     .gn-nav-tab:hover {
       color: var(--gn-text-primary);
-      background: rgba(0, 0, 0, 0.03);
+      background: var(--gn-gray-2);
     }
     
     .gn-card {
-      background: linear-gradient(135deg, #FFFFFF 0%, #FDFDFD 100%);
-      border-radius: 20px;
-      border: 0.5px solid rgba(0, 0, 0, 0.04);
+      background: var(--md-surface);
+      border-radius: 8px;
+      border: 1px solid var(--gn-border-light);
       box-shadow: 
-        0 2px 10px rgba(0, 0, 0, 0.02),
-        0 8px 32px rgba(0, 0, 0, 0.04),
-        0 0 0 0.5px rgba(255, 255, 255, 0.9) inset;
+        0 2px 4px var(--gn-shadow-light),
+        0 4px 8px var(--gn-shadow-medium);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: hidden;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
     }
     
     .gn-card:hover {
-      transform: translateY(-4px) scale(1.01);
+      transform: translateY(-4px);
       box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.06),
-        0 16px 48px rgba(0, 0, 0, 0.08),
-        0 0 0 0.5px rgba(255, 255, 255, 0.9) inset;
-      border-color: rgba(0, 122, 255, 0.1);
+        0 4px 8px var(--gn-shadow-medium),
+        0 8px 16px var(--gn-shadow-strong);
+      border-color: var(--md-primary);
     }
     
     .gn-icon-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: var(--gn-gray-1);
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: var(--md-surface);
       border: 1px solid var(--gn-border-light);
       color: var(--gn-text-secondary);
       cursor: pointer;
@@ -234,13 +249,14 @@
     
     .gn-icon-button:hover {
       background: var(--gn-gray-2);
-      color: var(--gn-text-primary);
-      transform: translateY(-1px);
+      color: var(--md-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px var(--gn-shadow-medium);
     }
     
     .gn-stats-circle {
-      width: 68px;
-      height: 68px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -248,19 +264,21 @@
       margin: 0 auto 16px;
       position: relative;
       box-shadow: 
-        0 4px 12px rgba(0, 0, 0, 0.15),
-        0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+        0 4px 8px var(--gn-shadow-medium),
+        0 8px 16px var(--gn-shadow-light);
     }
     
     .gn-badge {
       display: inline-flex;
       align-items: center;
-      padding: 4px 12px;
-      background: var(--gn-gray-1);
-      color: var(--gn-text-secondary);
-      border-radius: 12px;
-      font-size: 13px;
+      padding: 6px 16px;
+      background: var(--md-secondary);
+      color: var(--md-on-secondary);
+      border-radius: 16px;
+      font-size: 12px;
       font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     .gn-section-title {
@@ -353,6 +371,7 @@
     .line-clamp-2 { 
       display: -webkit-box;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -375,19 +394,19 @@
     .gn-input {
       width: 100%;
       padding: 16px 20px;
-      background: var(--gn-surface);
+      background: var(--md-surface);
       border: 1px solid var(--gn-border-medium);
-      border-radius: 10px;
+      border-radius: 8px;
       font-family: 'SF Pro Text', system-ui, sans-serif;
-      font-size: 17px;
+      font-size: 16px;
       color: var(--gn-text-primary);
       transition: all 0.15s ease;
     }
     
     .gn-input:focus {
       outline: none;
-      border-color: var(--gn-primary);
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+      border-color: var(--md-primary);
+      box-shadow: 0 0 0 2px rgba(67, 191, 219, 0.2);
     }
     .grid { display: grid; }
     .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -520,7 +539,8 @@
         streak: 5,
         totalCards: 12,
         masteredCards: 8,
-        gems: 35
+        gems: 35,
+        coins: 250
       });
 
       const [flashcards, setFlashcards] = useState([
@@ -562,6 +582,25 @@
       ]);
 
       const [speechEnabled, setSpeechEnabled] = useState(false);
+
+      // Marketplace state
+      const [marketplaceListings, setMarketplaceListings] = useState([
+        { id: 1, cardId: 6, seller: 'CardMaster', price: 25, type: 'sale', front: 'What is DNA?', back: 'Deoxyribonucleic acid', subject: 'Biology', difficulty: 'Medium' },
+        { id: 2, cardId: 7, seller: 'StudyPro', price: 35, type: 'sale', front: 'Capital of Japan?', back: 'Tokyo', subject: 'Geography', difficulty: 'Easy' },
+        { id: 3, cardId: 8, seller: 'MathWiz', price: 45, type: 'sale', front: 'What is 8² + 6²?', back: '100', subject: 'Math', difficulty: 'Hard' },
+        { id: 4, cardId: 9, seller: 'BookLover', price: 30, type: 'sale', front: 'Who wrote 1984?', back: 'George Orwell', subject: 'Literature', difficulty: 'Medium' }
+      ]);
+      
+      const [userListings, setUserListings] = useState([]);
+      const [tradeOffers, setTradeOffers] = useState([
+        { id: 1, from: 'StudyBuddy', cardOffered: 'Pythagorean Theorem', cardWanted: 'Chemical Bonds', status: 'pending' },
+        { id: 2, from: 'QuizKing', cardOffered: 'World War II', cardWanted: 'Cell Division', status: 'pending' }
+      ]);
+      
+      const [selectedCard, setSelectedCard] = useState(null);
+      const [showSellModal, setShowSellModal] = useState(false);
+      const [sellPrice, setSellPrice] = useState('');
+      const [marketplaceFilter, setMarketplaceFilter] = useState('all');
 
       const showSection = (section) => {
         console.log('Switching to section:', section);
@@ -652,6 +691,78 @@
         }
       };
 
+      // Marketplace functions
+      const buyCard = (listing) => {
+        if (userStats.coins >= listing.price) {
+          const newCard = {
+            id: Date.now(),
+            front: listing.front,
+            back: listing.back,
+            subject: listing.subject,
+            difficulty: listing.difficulty,
+            mastered: false
+          };
+          
+          setFlashcards(prev => [...prev, newCard]);
+          setUserStats(prev => ({ 
+            ...prev, 
+            coins: prev.coins - listing.price,
+            totalCards: prev.totalCards + 1
+          }));
+          setMarketplaceListings(prev => prev.filter(l => l.id !== listing.id));
+          addXP(15);
+          
+          alert(`Successfully purchased "${listing.front}" for ${listing.price} coins!`);
+        } else {
+          alert('Not enough coins to purchase this card!');
+        }
+      };
+
+      const sellCard = () => {
+        if (selectedCard && sellPrice && parseInt(sellPrice) > 0) {
+          const listing = {
+            id: Date.now(),
+            cardId: selectedCard.id,
+            seller: 'You',
+            price: parseInt(sellPrice),
+            type: 'sale',
+            front: selectedCard.front,
+            back: selectedCard.back,
+            subject: selectedCard.subject,
+            difficulty: selectedCard.difficulty
+          };
+          
+          setUserListings(prev => [...prev, listing]);
+          setFlashcards(prev => prev.filter(card => card.id !== selectedCard.id));
+          setUserStats(prev => ({ 
+            ...prev,
+            totalCards: prev.totalCards - 1
+          }));
+          
+          setShowSellModal(false);
+          setSelectedCard(null);
+          setSellPrice('');
+          alert('Card listed for sale successfully!');
+        }
+      };
+
+      const acceptTrade = (tradeId) => {
+        setTradeOffers(prev => prev.map(trade => 
+          trade.id === tradeId ? { ...trade, status: 'accepted' } : trade
+        ));
+        addXP(25);
+        alert('Trade accepted! Check your collection for the new card.');
+      };
+
+      const rejectTrade = (tradeId) => {
+        setTradeOffers(prev => prev.filter(trade => trade.id !== tradeId));
+        alert('Trade offer rejected.');
+      };
+
+      const addCoins = (amount) => {
+        setUserStats(prev => ({ ...prev, coins: prev.coins + amount }));
+      };
+
       const renderDashboard = () => (
         <div className="space-y-8">
           {/* Welcome Section */}
@@ -664,29 +775,29 @@
                 {/* Stats Overview */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
                   <div className="text-center">
-                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-primary) 0%, var(--gn-purple) 100%)'}}>
+                    <div className="gn-stats-circle" style={{background: 'var(--md-primary)'}}>
                       <span className="text-white text-xl font-bold">{userStats.level}</span>
                     </div>
                     <p className="text-sm font-medium text-gray-600">Level</p>
                   </div>
                   
                   <div className="text-center">
-                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-orange) 0%, var(--gn-pink) 100%)'}}>
-                      <Icon name="flame" size={28} color="white" />
+                    <div className="gn-stats-circle" style={{background: 'var(--md-secondary)'}}>
+                      <Icon name="flame" size={28} color="black" />
                     </div>
                     <p className="text-sm font-medium text-gray-600">{userStats.streak} Day Streak</p>
                   </div>
                   
                   <div className="text-center">
-                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-secondary) 0%, var(--gn-teal) 100())'}}>
+                    <div className="gn-stats-circle" style={{background: 'var(--md-primary)'}}>
                       <Icon name="gem" size={28} color="white" />
                     </div>
                     <p className="text-sm font-medium text-gray-600">{userStats.gems} Gems</p>
                   </div>
                   
                   <div className="text-center">
-                    <div className="gn-stats-circle" style={{background: 'linear-gradient(135deg, var(--gn-purple) 0%, var(--gn-pink) 100())'}}>
-                      <Icon name="layers" size={28} color="white" />
+                    <div className="gn-stats-circle" style={{background: 'var(--md-secondary)'}}>
+                      <Icon name="layers" size={28} color="black" />
                     </div>
                     <p className="text-sm font-medium text-gray-600">{userStats.totalCards} Cards</p>
                   </div>
@@ -703,7 +814,7 @@
                       className="h-3 rounded-full transition-all duration-500"
                       style={{
                         width: `${((500 - userStats.xpToNext) / 500) * 100}%`,
-                        background: 'linear-gradient(90deg, var(--gn-primary) 0%, var(--gn-purple) 100%)'
+                        background: 'var(--md-primary)'
                       }}
                     ></div>
                   </div>
@@ -797,6 +908,8 @@
             return renderStudy();
           case 'collection':
             return renderCollection();
+          case 'marketplace':
+            return renderMarketplace();
           case 'quests':
             return renderQuests();
           case 'leaderboard':
@@ -1047,6 +1160,16 @@
                           <button className="gn-icon-button flex-1">
                             <Icon name="edit" size={16} />
                           </button>
+                          <button 
+                            onClick={() => {
+                              setSelectedCard(card);
+                              setShowSellModal(true);
+                            }}
+                            className="gn-icon-button flex-1"
+                            title="Sell Card"
+                          >
+                            🪙
+                          </button>
                           <button className="gn-icon-button flex-1">
                             <Icon name="trash" size={16} />
                           </button>
@@ -1060,6 +1183,175 @@
           </div>
         );
       };
+
+      const renderMarketplace = () => (
+        <div className="space-y-8">
+          {/* Marketplace Header */}
+          <div className="gn-paper">
+            <div className="gn-paper-content p-8">
+              <div className="text-center mb-8">
+                <h2 className="gn-section-title">Card Marketplace</h2>
+                <p className="gn-section-subtitle">Trade cards with other players and discover rare finds</p>
+              </div>
+              
+              <div className="flex justify-center space-x-4 mb-6">
+                <button 
+                  onClick={() => setMarketplaceFilter('all')}
+                  className={`gn-button ${marketplaceFilter === 'all' ? '' : 'gn-button-secondary'}`}
+                >
+                  All Cards
+                </button>
+                <button 
+                  onClick={() => setMarketplaceFilter('sale')}
+                  className={`gn-button ${marketplaceFilter === 'sale' ? '' : 'gn-button-secondary'}`}
+                >
+                  For Sale
+                </button>
+                <button 
+                  onClick={() => setMarketplaceFilter('trade')}
+                  className={`gn-button ${marketplaceFilter === 'trade' ? '' : 'gn-button-secondary'}`}
+                >
+                  Trade Offers
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Marketplace Content */}
+          {marketplaceFilter === 'all' || marketplaceFilter === 'sale' ? (
+            <div className="gn-paper">
+              <div className="gn-paper-content p-8">
+                <h3 className="text-xl font-semibold mb-6">Cards for Sale</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {marketplaceListings.map(listing => (
+                    <div key={listing.id} className="gn-card p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="gn-badge">{listing.subject}</div>
+                        <div className="text-right">
+                          <div className="flex items-center text-lg font-bold text-yellow-600">
+                            🪙 {listing.price}
+                          </div>
+                          <p className="text-sm text-gray-600">by {listing.seller}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="mb-4">
+                        <h4 className="font-semibold mb-2">{listing.front}</h4>
+                        <p className="text-gray-600 text-sm">{listing.back}</p>
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <div className="gn-badge" style={{
+                          backgroundColor: listing.difficulty === 'Easy' ? 'var(--md-secondary)' :
+                                         listing.difficulty === 'Medium' ? 'var(--md-primary)' : 'var(--md-primary)',
+                          color: listing.difficulty === 'Easy' ? 'var(--md-on-secondary)' : 'var(--md-on-primary)'
+                        }}>
+                          {listing.difficulty}
+                        </div>
+                        <button 
+                          onClick={() => buyCard(listing)}
+                          className="gn-button"
+                          disabled={userStats.coins < listing.price}
+                        >
+                          {userStats.coins >= listing.price ? 'Buy Card' : 'Not Enough Coins'}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          {/* Trade Offers */}
+          {marketplaceFilter === 'all' || marketplaceFilter === 'trade' ? (
+            <div className="gn-paper">
+              <div className="gn-paper-content p-8">
+                <h3 className="text-xl font-semibold mb-6">Trade Offers</h3>
+                {tradeOffers.length > 0 ? (
+                  <div className="space-y-4">
+                    {tradeOffers.map(trade => (
+                      <div key={trade.id} className="gn-card p-6">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <h4 className="font-semibold">Trade from {trade.from}</h4>
+                            <p className="text-gray-600">
+                              Offers: <span className="font-medium">{trade.cardOffered}</span>
+                            </p>
+                            <p className="text-gray-600">
+                              Wants: <span className="font-medium">{trade.cardWanted}</span>
+                            </p>
+                          </div>
+                          <div className="flex space-x-2">
+                            <button 
+                              onClick={() => acceptTrade(trade.id)}
+                              className="gn-button"
+                            >
+                              Accept
+                            </button>
+                            <button 
+                              onClick={() => rejectTrade(trade.id)}
+                              className="gn-button-secondary"
+                            >
+                              Reject
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">No trade offers available</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : null}
+
+          {/* Your Listings */}
+          <div className="gn-paper">
+            <div className="gn-paper-content p-8">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-semibold">Your Listings</h3>
+                <button 
+                  onClick={() => addCoins(50)}
+                  className="gn-button-secondary"
+                >
+                  Get Free Coins (50) 🎁
+                </button>
+              </div>
+              
+              {userListings.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {userListings.map(listing => (
+                    <div key={listing.id} className="gn-card p-6">
+                      <div className="gn-badge mb-4">{listing.subject}</div>
+                      <h4 className="font-semibold mb-2">{listing.front}</h4>
+                      <p className="text-gray-600 text-sm mb-4">{listing.back}</p>
+                      <div className="flex justify-between items-center">
+                        <div className="gn-badge">{listing.difficulty}</div>
+                        <div className="text-lg font-bold text-yellow-600">🪙 {listing.price}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-500 mb-4">You haven't listed any cards for sale</p>
+                  <button 
+                    onClick={() => showSection('collection')}
+                    className="gn-button-secondary"
+                  >
+                    Go to Collection to Sell Cards
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+
       const renderQuests = () => (
         <div className="space-y-8">
           <div className="gn-paper">
@@ -1388,12 +1680,21 @@
                   <h1 style={{fontSize: '28px', fontWeight: '700', color: 'var(--gn-text-primary)', margin: '0'}}>
                     ANKID
                   </h1>
-                  <div className="gn-badge" style={{background: 'linear-gradient(135deg, var(--gn-orange) 0%, var(--gn-pink) 100%)', color: 'white'}}>
+                  <div className="gn-badge" style={{background: 'var(--md-secondary)', color: 'var(--md-on-secondary)'}}>
                     Gamified Learning Adventure
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-4 mr-4">
+                    <div className="gn-badge">
+                      <Icon name="gem" size={16} className="mr-1" />
+                      {userStats.gems}
+                    </div>
+                    <div className="gn-badge" style={{background: 'var(--gn-yellow)', color: 'var(--gn-text-primary)'}}>
+                      🪙 {userStats.coins}
+                    </div>
+                  </div>
                   <button className="gn-icon-button">
                     <Icon name="mic" />
                   </button>
@@ -1414,6 +1715,9 @@
                 <button onClick={() => showSection('collection')} className={`gn-nav-tab ${currentSection === 'collection' ? 'active' : ''}`}>
                   Collection
                 </button>
+                <button onClick={() => showSection('marketplace')} className={`gn-nav-tab ${currentSection === 'marketplace' ? 'active' : ''}`}>
+                  Marketplace
+                </button>
                 <button onClick={() => showSection('quests')} className={`gn-nav-tab ${currentSection === 'quests' ? 'active' : ''}`}>
                   Quests
                 </button>
@@ -1431,6 +1735,75 @@
           <div className="gn-container py-8">
             {renderCurrentSection()}
           </div>
+
+          {/* Sell Modal */}
+          {showSellModal && selectedCard && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="gn-paper max-w-md w-full mx-4">
+                <div className="gn-paper-content p-8">
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-xl font-semibold">Sell Card</h3>
+                    <button 
+                      onClick={() => {
+                        setShowSellModal(false);
+                        setSelectedCard(null);
+                        setSellPrice('');
+                      }}
+                      className="gn-icon-button"
+                    >
+                      <Icon name="x-circle" size={20} />
+                    </button>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <div className="gn-card p-4 mb-4">
+                      <div className="gn-badge mb-2">{selectedCard.subject}</div>
+                      <h4 className="font-semibold mb-2">{selectedCard.front}</h4>
+                      <p className="text-gray-600 text-sm">{selectedCard.back}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Sell Price (Coins)
+                    </label>
+                    <input
+                      type="number"
+                      value={sellPrice}
+                      onChange={(e) => setSellPrice(e.target.value)}
+                      className="gn-input"
+                      placeholder="Enter price..."
+                      min="1"
+                    />
+                    <p className="text-sm text-gray-500 mt-2">
+                      Suggested price: {selectedCard.difficulty === 'Easy' ? '10-20' : 
+                                      selectedCard.difficulty === 'Medium' ? '25-35' : '40-50'} coins
+                    </p>
+                  </div>
+                  
+                  <div className="flex space-x-4">
+                    <button 
+                      onClick={sellCard}
+                      className="gn-button flex-1"
+                      disabled={!sellPrice || parseInt(sellPrice) <= 0}
+                    >
+                      List for Sale
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setShowSellModal(false);
+                        setSelectedCard(null);
+                        setSellPrice('');
+                      }}
+                      className="gn-button-secondary flex-1"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       );
     };
